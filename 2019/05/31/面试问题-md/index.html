@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="##1.关于static静态 123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-31T11:00:26.626Z">
+<meta property="og:updated_time" content="2019-05-31T11:39:28.204Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试问题.md">
 <meta name="twitter:description" content="##1.关于static静态 123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;">
@@ -341,6 +341,18 @@
 <p>”引用”也就是指向真实内容的地址值，在方法调用时，实参的地址通过方法调用被传递给相应的形参，在方法体内，形参和实参指向通愉快内存地址，对形参的操作会影响的真实内容。引用传递在Java中并不存在。无论是基本类型和是引用类型，在实参传入形参时，都是值传递，也就是说传递的都是一个副本，而不是内容本身。但是传入引用对象时，是将指针指向同一块内存区域。</p>
 <p><strong>如果是对基本数据类型的数据进行操作，由于原始内容和副本都是存储实际值，并且是在不同的栈区，因此形参的操作，不影响原始内容。</strong></p>
 <p><strong>如果是对引用类型的数据进行操作，分两种情况，一种是形参和实参保持指向同一个对象地址，则形参的操作，会影响实参指向的对象的内容。一种是形参被改动指向新的对象地址（如重新赋值引用），则形参的操作，不会影响实参指向的对象的内容。</strong></p>
+<h2 id="3-equals和hashcode"><a href="#3-equals和hashcode" class="headerlink" title="3. equals和hashcode"></a>3. equals和hashcode</h2><p><strong>==和equals</strong></p>
+<p>equals覆盖之前等于==，用于判断两个对象是否是同一个对象，即他们的地址是否相等。覆盖equals是为了逻辑上的相等，即值相等或者内容相等。(违反对称性和传递性的情况??)</p>
+<p>String类中的equals方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">       <span class="comment">//如果是同一个对象</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == anObject)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果传递进来的参数是String类的实例</span></span><br><span class="line">        <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String)</span><br><span class="line">        &#123;</span><br><span class="line">            String anotherString = (String)anObject;</span><br><span class="line">            <span class="keyword">int</span> n = count;<span class="comment">//字符串长度</span></span><br><span class="line">            <span class="keyword">if</span> (n == anotherString.count) <span class="comment">//如果长度相等就进行比较</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">char</span> v1[] = value;<span class="comment">//取每一个位置的字符</span></span><br><span class="line">                <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">                <span class="keyword">int</span> i = offset;</span><br><span class="line">                <span class="keyword">int</span> j = anotherString.offset;</span><br><span class="line">                <span class="keyword">while</span> (n-- != <span class="number">0</span>) <span class="comment">//对于每一位置逐一比较</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (v1[i++] != v2[j++])</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>覆盖equals时一定要覆盖hashCode方法</p>
+<p>Object.hashCode方法中规定：<strong>如果两个对象根据equals(Object)方法比较是相等的，则调用这两个对象中任意一个对象的hashCode方法必须产生同样的整数结果。</strong>即equals相等，hashCode必须相等。</p>
+<p>比如hashMap，正常情况下两个值相等的值，在hashMap中要插入第二个时应该覆盖第一个，即相同的值指插入一个，若覆盖了equals没有覆盖hashCode，则会将两个都插入。</p>
+<p>如果覆盖equals没有覆盖hashCode，将会违反：相等的对象必须具有相等的散列码(hashCode)。Object类里面的默认equals方法是比较内存地址是否相等，默认的hashCode方法则是根据内存地址产生一个整数，所以Object类本身当然是符合上面规则的。当你覆盖了equals后，内存地址不同的对象可能会相等，而如果这时你没有覆盖hashCode方法的话，hashCode还是根据内存地址来生成，就会出现相等的对象具有不同的散列码的情况。</p>
+<p>反过来覆盖hashCode并不一定要覆盖equals方法。</p>
+</li>
+</ul>
 
       
     </div>
@@ -431,8 +443,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -483,6 +504,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">1.</span> <span class="nav-text">3. equals和hashcode</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
