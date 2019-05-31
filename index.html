@@ -309,16 +309,38 @@
       
         
           
-            <ol>
-<li><p>关于static静态</p>
+            <p>##1.关于static静态</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"testMethod"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ((TestClass)<span class="keyword">null</span>).testMethod();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>该代码可以正常执行输出”testMethod”，若去掉static就会空指针异常。</p>
 <p>null可以转化成任何类型；</p>
 <p>private只是权限声明，被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问；</p>
 <p>static关键字，可以不用实例化，通过类名.方法名访问，也可以通过实例化类的对象，通过对象.方法名访问，但不能通过this关键字访问，static是类方法，在类加载的时候就已经存在，先于任何对象存在，this指代的是当前对象，但对象是在创建时才会在内存中生成的，所以不能使用static。</p>
+<p>##2.值传递和引用传递</p>
+<p><strong>数据在内存中的存储</strong></p>
+<ul>
+<li><p>基本数据类型的局部变量</p>
+<p>直接存储在内存的栈上，也就是虚拟机栈，数据本身的值就存储在栈空间里</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> age = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> weight = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>若栈中没有值为10的地址，开辟一块地址给10，并把age指向10，weight直接指向10，栈中的数据在当前线程下是共享的。</p>
+<p><strong>基本数据类型的数据本身是不会改变的，当局部变量重新赋值时，并不是在内存中改变字面量内容，而是重新在栈中寻找已存在的相同的数据，若栈中不存在，则重新开辟内存存新数据，并且把要重新赋值的局部变量的引用指向新数据所在地址。</strong></p>
 </li>
-<li></li>
-</ol>
+<li><p>基本数据类型的成员变量(类体中定义的变量)</p>
+<p>虚拟机栈指向堆内存中的一块区域，故成员变量名和值都存储在堆中，生命周期和对象是一致的。</p>
+</li>
+<li><p>基于数据类型的静态变量</p>
+<p>方法区中存储着一些共享数据，基本数据类型的静态变量名以及值存储于方法区的运行时常量池，静态变量随类加载而加载，随类消失而消失。</p>
+</li>
+<li><p>引用数据类型(类、接口、数组)</p>
+<p><strong>对于引用数据类型的对象/数组，变量名存在栈中，变量值存储的是对象的地址，并不是对象的实际内容。</strong></p>
+</li>
+</ul>
+<p><strong>值传递</strong></p>
+<p>在方法被调用时，实参通过形参把它的内容副本传入方法内部，此时形参接收到的内容是实参值的一个拷贝，因此在方法内对形参的任何操作，都仅仅是对这个副本的操作，不影响原始值的内容。</p>
+<p>主方法中的值存在于主方法的栈帧中，副本函数使用的是在函数的栈帧中。</p>
+<p><strong>引用传递</strong></p>
+<p>”引用”也就是指向真实内容的地址值，在方法调用时，实参的地址通过方法调用被传递给相应的形参，在方法体内，形参和实参指向通愉快内存地址，对形参的操作会影响的真实内容。引用传递在Java中并不存在。无论是基本类型和是引用类型，在实参传入形参时，都是值传递，也就是说传递的都是一个副本，而不是内容本身。但是传入引用对象时，是将指针指向同一块内存区域。</p>
+<p><strong>如果是对基本数据类型的数据进行操作，由于原始内容和副本都是存储实际值，并且是在不同的栈区，因此形参的操作，不影响原始内容。</strong></p>
+<p><strong>如果是对引用类型的数据进行操作，分两种情况，一种是形参和实参保持指向同一个对象地址，则形参的操作，会影响实参指向的对象的内容。一种是形参被改动指向新的对象地址（如重新赋值引用），则形参的操作，不会影响实参指向的对象的内容。</strong></p>
 
           
         
