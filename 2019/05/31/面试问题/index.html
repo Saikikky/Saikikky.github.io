@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-02T10:11:19.462Z">
+<meta property="og:updated_time" content="2019-06-02T10:13:10.683Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试问题.md">
 <meta name="twitter:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
@@ -453,9 +453,9 @@
 <p>这两个查询语句都会用到索引(col1,col2)，mysql创建联合索引的规则是首先会对联合合索引的最左边的，也就是第一个字段col1的数据进行排序，在第一个字段的排序基础上，然后再对后面第二个字段col2进行排序。其实就相当于实现了类似 order by col1 col2这样一种排序规则。</p>
 <p>第二个语句可以借助mysql查询优化器explain，explain会纠正sql语句该以什么样的顺序执行效率最高，最后才生成真正的执行计划。既然结果一样，那什么执行顺序是最好的。</p>
 <p><strong>因为辅助索引是B+树实现的，虽然可以指定多个列，但是每个列的比较优先级不一样，写在前面的优先比较。一旦出现遗漏，在B+树上就无法继续搜索了（通过补齐等措施解决的除外），因此是按照最左连续匹配来的。既然是在B+树上搜索，对于条件的比较自然是要求精确匹配（即”=”和”IN”）。不过顺序倒是可以颠倒，因为查询优化器重排序一下就好了。</strong></p>
-<h2 id="7-Autowired"><a href="#7-Autowired" class="headerlink" title="7.@Autowired"></a>7.@Autowired</h2></li>
+</li>
 </ul>
-<p>自动装配原理：在容器启动，为对象赋值的时候，会用后置处理器机制，来创建属性的实例，然后再利用反射机制，将实例化好的属性赋值给对象上。</p>
+<h2 id="7-Autowired"><a href="#7-Autowired" class="headerlink" title="7.@Autowired"></a>7.@Autowired</h2><p>自动装配原理：在容器启动，为对象赋值的时候，会用后置处理器机制，来创建属性的实例，然后再利用反射机制，将实例化好的属性赋值给对象上。</p>
 <p>同一类型注入多次为同一实例(单例模式)</p>
 <ul>
 <li><p>@Autowired默认<strong>按类型装配</strong>（这个注解是属于<strong>Spring</strong>的），默认情况下必须要求依赖对象必须存在，如果要允许null值，可以设置它的required属性为false，如：@Autowired(required=false) </p>
