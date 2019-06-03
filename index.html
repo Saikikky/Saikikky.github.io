@@ -238,6 +238,158 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/常见SQL语句/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/常见SQL语句/" itemprop="url">常见SQL语句.md</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-03T08:59:05+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>现有学生表student(s_id, name)和借书表book(b_id, s_id)</p>
+<p>要查找没有借书记录的学生信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">where</span> s_id <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> s_id <span class="keyword">from</span> book);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">left</span> <span class="keyword">join</span> book <span class="keyword">on</span> student.s_id=book.s_id <span class="keyword">where</span> book.s_id=<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> book <span class="keyword">where</span> (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">as</span> <span class="keyword">num</span> <span class="keyword">from</span> student <span class="keyword">where</span> student.s_id=book.s_id) = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>SQL Count(*)、group by、Having的联合使用</p>
+<p>COUNT(*)  函数返回在给定的选择中被选的行数。</p>
+<p>语法：SELECT  COUNT（*） FROM  table 返回总记录数</p>
+<p>表app_category与表category关联。且表间关系是一对多，即同一个app_category_id 对应多个category-id,现在我需要统计出每一个category_id在app_category表中出现的次数那么该如何实现呢？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> category_id, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="keyword">count</span> <span class="keyword">from</span> app_category <span class="keyword">group</span> <span class="keyword">by</span> category_id;</span><br></pre></td></tr></table></figure>
+<p>查询只有count的值大于2的时候 以id分组统计，查询分组后数量大于2的id和数量。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> category_id ,<span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="keyword">count</span> <span class="keyword">FROM</span> app_category <span class="keyword">GROUP</span> <span class="keyword">BY</span> category_id <span class="keyword">HAVING</span> <span class="keyword">count</span>(category_id) &gt;<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>找出借书超过5本的读者,输出借书卡号及所借图书册数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> CNO,借图书册数=<span class="keyword">COUNT</span>(*)</span><br><span class="line"><span class="keyword">FROM</span> BORROW</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> CNO</span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">COUNT</span>(*)&gt;<span class="number">5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>like通配符</p>
+<p>| 通配符 |                             说明                             |<br>| :—-: | :———————————————————-: |<br>|   _    |                      <strong>与任意字符匹配</strong>                      |<br>|   %    |                <strong>与包含一个或多个字符串匹配</strong>                |<br>|   []   | <strong>与特定范围</strong>(例如[a-d]或特定集例如[abcdef])中的任意字符串匹配<strong> |<br>|  [^]   | </strong>与特定范围（例如，[[^^a-f]]）或特定集（例如，[[^^abcdef]]）之外的任意单字符匹配。** |</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">查询id为100开头的学生信息</span><br><span class="line"><span class="keyword">Select</span> * fromStudent <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> ‘<span class="number">100</span>%’;</span><br><span class="line"></span><br><span class="line">查询id为99结尾的学生信息</span><br><span class="line"><span class="keyword">Select</span> * <span class="keyword">from</span> Student <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> ‘%<span class="number">99</span>’;</span><br><span class="line"></span><br><span class="line">查询id包含11在中间的学校信息</span><br><span class="line"><span class="keyword">Select</span>* <span class="keyword">from</span> Student <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> %<span class="number">11</span>%;</span><br><span class="line"></span><br><span class="line">• WHERE name LIKE '_qiu' 可以找到所有三个字母的、以 qiu'结尾的名字（例如，xiaoqiu、daqiu）。 </span><br><span class="line">• WHERE name LIKE '% qiu'可以找到姓以qiu'结尾的所有员工。 </span><br><span class="line">• WHERE name LIKE '% qiu' %' 可以找到姓中任意位置包括qiu'的所有员工。 </span><br><span class="line">• WHERE name LIKE '[X] qiu'可以找到三个字母的、以qiu'结尾并以 X 开始的名字（即仅有 Xiaoqiu 和 Tim） </span><br><span class="line">• WHERE name LIKE x[^x]%' 可以找到以 x开始的、后面的（第二个）字母不为 x 的所有姓。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>max函数</p>
+<p>查询现有图书中价格最高的图书，输出书名及作者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> BNO,BNAME,AUTHOR <span class="keyword">FROM</span> BOOKS</span><br><span class="line"><span class="keyword">WHERE</span> PRICE=(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">MAX</span>(PRICE) <span class="keyword">FROM</span> BOOKS)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>查询当前借了”计算方法”但没有借”计算方法习题集”的读者，输出其借书卡号，并按卡号降序排序输出</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.CNO</span><br><span class="line"><span class="keyword">FROM</span> BORROW a,BOOKS b</span><br><span class="line"><span class="keyword">WHERE</span> a.BNO=b.BNO <span class="keyword">AND</span> b.BNAME=N‘计算方法‘</span><br><span class="line">    <span class="keyword">AND</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>(</span><br><span class="line">        <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> BORROW aa,BOOKS bb</span><br><span class="line">        <span class="keyword">WHERE</span> aa.BNO=bb.BNO</span><br><span class="line">            <span class="keyword">AND</span> bb.BNAME=N‘计算方法习题集‘</span><br><span class="line">            <span class="keyword">AND</span> aa.CNO=a.CNO)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> a.CNO <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/31/面试问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -678,7 +830,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -691,7 +843,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
