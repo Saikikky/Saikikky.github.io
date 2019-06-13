@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="锁的状态​    锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级但不能降级，目的是为了提高获得锁和释放锁的效率。 1.偏向锁 ​    大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-13T08:56:45.609Z">
+<meta property="og:updated_time" content="2019-06-13T11:53:17.354Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="锁的升级和对比.md">
 <meta name="twitter:description" content="锁的状态​    锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级但不能降级，目的是为了提高获得锁和释放锁的效率。 1.偏向锁 ​    大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步">
@@ -320,8 +320,15 @@
 <p>解锁时会用原子的CAS操作将DIsplaced Mark Word替换回到对象头。如果成功表示没有竞争发生，如果失败，表示当前锁存在竞争，锁会膨胀成重量级锁。</p>
 <p><strong>3.重量级锁</strong></p>
 <p>自旋会消耗CPU，为了避免无用的自旋(比如获得锁的线程被阻塞住了)，一旦锁升级为重量级锁，就不会恢复到轻量级锁状态。在重量级锁状态下，其他线程试图获取锁时，都会被阻塞住，当持有锁的线程释放锁之后会唤醒这些线程，被唤醒的线程会再次争夺锁。</p>
-<p><strong><em>PS:CAS操作</em></strong></p>
-<p>比较并交换：CAS操作需要输入两个数值，一个旧值(期望操作前的值)和一个新值，在操作期间先比较旧值有没有发生变化，如果没有发生变化，才叫换成新值，发生了变化则不交换。</p>
+<h3 id="原子操作-锁和CAS"><a href="#原子操作-锁和CAS" class="headerlink" title="原子操作(锁和CAS)"></a>原子操作(锁和CAS)</h3><p><strong><em>PS:CAS操作</em></strong></p>
+<p>​    比较并交换：CAS操作需要输入两个数值，一个旧值(期望操作前的值)和一个新值，在操作期间先比较旧值有没有发生变化，如果没有发生变化，才叫换成新值，发生了变化则不交换，CAS使用版本号是因为为了解决ABA问题，一个值从A——&gt;B——&gt;A，检查，只能保证一个共享变量的原子操作，并发包中的AtomicReference类来保证引用对象之间的原子性，就可以把多个变量放在一个对象里来进行CAS操作。</p>
+<p>i++不是一个原子操作，i++是一个经典的读改写操作，i++也不是线程安全的，i++的过程是</p>
+<p><strong>1.从内存中把i的值取出来放到CPU的寄存器中</strong></p>
+<p><strong>2.CPU寄存器的值+1</strong></p>
+<p><strong>3.把CPU寄存器的值写回内存</strong></p>
+<p>对于读值，+1，写值这三步操作，在这三步任何之间都可能会有CPU调度产生，造成i的值被修改，造成脏读脏写。</p>
+<p>Java中通过锁和循环CAS的方式来实现原子操作。其中循环CAS就是使用并发包中的一些类(Atomic+)，如AtomicBoolean(用原子方式更新的boolean值)、AtomicInteger(用原子方式更新的int值)和AtomicLong(用原子方式更新的long值)，还提供了有用的工具方法，比如以原子的方式将当前值自增1和自减1。</p>
+<p>JVM内部实现了偏向锁、轻量级锁和互斥锁，除了偏向锁，JVM实现锁的方式都用了循环CAS，即当一个线程想进入同步块的时候使用循环CAS的方式来获取锁，当退出同步块的时候使用循环CAS释放锁。</p>
 
       
     </div>
@@ -483,7 +490,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的状态"><span class="nav-number">1.</span> <span class="nav-text">锁的状态</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的状态"><span class="nav-number">1.</span> <span class="nav-text">锁的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原子操作-锁和CAS"><span class="nav-number">2.</span> <span class="nav-text">原子操作(锁和CAS)</span></a></li></ol></div>
             
 
           </div>
