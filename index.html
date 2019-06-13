@@ -238,6 +238,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/13/Java内存模型/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/13/Java内存模型/" itemprop="url">Java内存模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-13T20:00:35+08:00">
+                2019-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Java内存模型-JMM-的基础"><a href="#Java内存模型-JMM-的基础" class="headerlink" title="Java内存模型(JMM)的基础"></a>Java内存模型(JMM)的基础</h2><p>​    <strong><em>Java的并发采用的是共享内存模型，线程之间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。同步是显式进行的，程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。</em></strong></p>
+<p>PS：堆内存(实例域、静态域、数组)在线程之间共享。</p>
+<p>###JMM抽象结构</p>
+<p>Java线程之间的通信由JMM控制，它决定一个线程对共享变量写入何时对另一个线程可见。JMM定义了线程和驻内存之间的抽象关系：线程之间的共享变量存储在主内存(Main)中，每个线程都有一个私有的本地内存(Local)，本地内存存储了该线程以读/写共享变量的副本。本地内存是一个抽象的概念并不真实存在，涵盖了缓存、写缓冲区、寄存器以及其他硬件和编译器优化。</p>
+<p>所以线程A和B要通信首先要线程A把本地内存A中更新过的共享变量刷新到主内存中去，然后B到主内存中去读取线程A之前已经更新过的共享变量。JMM通过控制主内存与每个线程的本地内存之间的交互，来为Java程序员提供内存可见性保证。</p>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>内存屏障(四类)StoreLoad Barriers是一个全能型屏障，但开销昂贵。</p>
+<p><strong>happens-before</strong> 对应于一个或多个编译器和处理器冲排序规则。</p>
+<p><strong><em>如果一个操作执行的结果需要对另一个操作可见且前一个操作按顺序排在第二个操作之前</em></strong>(<strong>并不意味着前一个操作必须要在后一个操作之前执行</strong>)，那么这两个操作之间必须要存在happens-before关系，这两个操作既可以是在一个线程之内也可以是在不同线程之间。</p>
+<h3 id="顺序一致性"><a href="#顺序一致性" class="headerlink" title="顺序一致性"></a>顺序一致性</h3><p>提供了极强的内存可见性保证</p>
+<p>两大特性：</p>
+<ul>
+<li>一个线程中的所有操作必须按照程序的顺序来执行。</li>
+<li>（不管程序是否同步）所有线程都只能看到一个单一的操作执行顺序。在顺序一致性内存模型中，每个操作都必须原子执行且立刻对所有线程可见。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/13/锁的升级和对比-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -979,7 +1112,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
