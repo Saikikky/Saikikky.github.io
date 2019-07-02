@@ -333,6 +333,35 @@
 <p>volatile读的内存语义：当读一个volatile变量时，JMM会把该线程对应的本地内存置为无效。线程接下来将从主内存中读取共享变量。</p>
 <p>JMM在实现volatile写/读得的内存语义时会限制编译 器重排序和处理器重排序，编译器在生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。</p>
 <p>由于volatile仅仅保证对单个volatile变量的读/写具有原子性，而锁的互斥执行的特性可以确保对整个临界区代码的执行具有原子性。在功能上，锁比volatile更强大；在可伸缩性和执行性能上，volatile更有优势。</p>
+<h3 id="锁的内存定义"><a href="#锁的内存定义" class="headerlink" title="锁的内存定义"></a>锁的内存定义</h3><p>锁获取与volatile读有相同的内存语义，锁释放与volatile写有相同的内存语义。    </p>
+<p>ReentrantLock分为公平锁和非公平锁。</p>
+<p>ReentrantLock非公平锁的加锁为CAS(compareAndSet()方法：如果当前状态值等于预期值，则以原子方式将同步状态设置为给定的更新值，此操作具有volatile读和写的内存语义)</p>
+<ul>
+<li><p>公平锁和非公平锁的内存语义</p>
+<ul>
+<li>公平锁和非公平锁释放时，最后都要写一个volatile变量state。</li>
+<li>公平锁获取时，首先会去读volatile变量。</li>
+<li>非公平锁获取时，首先会用CAS更新volatile变量，这个操作同时具有volatile读和写的内存语义。</li>
+</ul>
+</li>
+<li><p>concurrent包</p>
+<p>通用化的实现模式：</p>
+<ul>
+<li>声明共享变量为volatile。</li>
+<li>使用CAS的原子条件更新来实现线程之间的同步。</li>
+<li>同时配合volatile的读/写和CAS所具有的volatile读和写的内存语义来实现线程间的通信。</li>
+</ul>
+</li>
+</ul>
+<h3 id="final域的内存语义"><a href="#final域的内存语义" class="headerlink" title="final域的内存语义"></a>final域的内存语义</h3><ul>
+<li><p>final域的重排序规则</p>
+<ul>
+<li>在构造函数内对一个final域的写入，与随后把这个被构造对象的引用赋值给一个引用变量，这两个操作之间不能重排序。</li>
+<li>初次读一个包含final域的对象的引用，与随后初次读这个final域，这两个操作之间不能重排序。 </li>
+</ul>
+<p>在构造函数返回前，被构造对象的引用不能为其他线程所见，因为此时的final域可能还没有初始化，在构造函数返回后，任意线程都将保证能看到final域正确初始化之后的值。</p>
+</li>
+</ul>
 
           
         
