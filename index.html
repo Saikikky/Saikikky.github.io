@@ -323,7 +323,7 @@
 <li>一个线程中的所有操作必须按照程序的顺序来执行。</li>
 <li>（不管程序是否同步）所有线程都只能看到一个单一的操作执行顺序。在顺序一致性内存模型中，每个操作都必须原子执行且立刻对所有线程可见。</li>
 </ul>
-<h3 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h3><p>锁的happens-before规则保证释放锁和获取锁的两个线程之间的内存可见性，意味着对一个volatile变量的读，总是能看到(任意线程)对这个volatile变量最后的写入。</p>
+<h3 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h3><p>锁的happens-before规则保证释放锁和获取锁的两个线程之间的内存可见性，<strong>意味着对一个volatile变量的读，总是能看到(任意线程)对这个volatile变量最后的写入</strong>。</p>
 <p>volatile自身具有下列特性：</p>
 <ul>
 <li>可见性：对一个volatile变量的读，总是能看到(任意线程)对这个volatile变量最后的写入。</li>
@@ -362,6 +362,23 @@
 <p>在构造函数返回前，被构造对象的引用不能为其他线程所见，因为此时的final域可能还没有初始化，在构造函数返回后，任意线程都将保证能看到final域正确初始化之后的值。</p>
 </li>
 </ul>
+<h3 id="happens-before"><a href="#happens-before" class="headerlink" title="happens-before"></a>happens-before</h3><ul>
+<li><p>JMM对两种不同性质的重排序采取了不同的策略</p>
+<p>对于会改变程序执行结果的重排序，JMM 要求编译器和处理器必须禁止这种重排序；对于不会改变程序执行结果的重排序，JMM对编译器和处理器不做要求。</p>
+</li>
+<li><p>As-if-serial语义保证单线程内程序的执行结果不被改变，happens-before关系保证正确同步的多线程程序的执行结果不被改变。</p>
+</li>
+<li>happens-before规则<ul>
+<li>程序顺序规则：一个线程中的每个操作，happens-before于该线程中的任意后续操作。</li>
+<li>监视器锁规则：对一个锁的解锁，happens-before于随后对这个锁的加锁。</li>
+<li>volatile变量规则：对一个volatile域的写，happens-before于任意后续对这个volitale域的读。</li>
+<li>传递性：如果A  happens-before B，且B happens-before C，那么A happens-before C。</li>
+<li>start()规则：如果线程A执行操作ThreadB.start()(启动线程B)，那么A线程的ThreadB.start()操作happens-before于线程B中的任意操作。</li>
+<li>join()规则：如果线程A执行操作ThreadB.join()并成功返回，那么线程B中的任意操作happens-before于线程A从ThreadB.join()操作成功返回</li>
+</ul>
+</li>
+</ul>
+<h3 id="双重检查锁定和延迟初始化"><a href="#双重检查锁定和延迟初始化" class="headerlink" title="双重检查锁定和延迟初始化"></a>双重检查锁定和延迟初始化</h3><p>基于volatile和初始化的解决方案（……………）</p>
 
           
         
