@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="锁的状态​    锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级但不能降级，目的是为了提高获得锁和释放锁的效率。 1.偏向锁 ​    大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步">
+<meta name="description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
 <meta name="keywords" content="Java基础">
 <meta property="og:type" content="article">
-<meta property="og:title" content="锁的升级和对比.md">
-<meta property="og:url" content="http://yoursite.com/2019/06/13/锁的升级和对比-md/index.html">
+<meta property="og:title" content="并发编程">
+<meta property="og:url" content="http://yoursite.com/2019/07/02/并发编程/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="锁的状态​    锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级但不能降级，目的是为了提高获得锁和释放锁的效率。 1.偏向锁 ​    大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步">
+<meta property="og:description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-13T11:53:17.354Z">
+<meta property="og:updated_time" content="2019-07-02T11:44:42.772Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="锁的升级和对比.md">
-<meta name="twitter:description" content="锁的状态​    锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级但不能降级，目的是为了提高获得锁和释放锁的效率。 1.偏向锁 ​    大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步">
+<meta name="twitter:title" content="并发编程">
+<meta name="twitter:description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/06/13/锁的升级和对比-md/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/02/并发编程/">
 
 
 
 
 
-  <title>锁的升级和对比.md | Saikikky</title>
+  <title>并发编程 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/13/锁的升级和对比-md/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/并发编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">锁的升级和对比.md</h1>
+          <h1 class="post-title" itemprop="name headline">并发编程</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-13T15:49:22+08:00">
-                2019-06-13
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T17:12:37+08:00">
+                2019-07-02
               </time>
             
 
@@ -309,26 +309,21 @@
       
 
       
-        <h3 id="锁的状态"><a href="#锁的状态" class="headerlink" title="锁的状态"></a>锁的状态</h3><p>​    锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态。锁可以升级但不能降级，目的是为了提高获得锁和释放锁的效率。</p>
-<p><strong>1.偏向锁</strong></p>
-<p>​    大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步块时不需要进行CAS操作来加锁和解锁，只需测试对象头重是否存储着指向当前线程的偏向锁。测试失败则如果偏向锁标记为1，则尝试使用CAS将对象头的偏向锁指向当前线程。如果没有则使用CAS竞争锁。</p>
-<p>​    若关闭偏向锁则程序默认进入轻量级锁状态。</p>
-<p><strong>2.轻量级锁</strong></p>
-<p><em>加锁</em></p>
-<p>线程在执行同步块之前，JVM会先在当前线程的栈帧中创建用于存储锁记录的空间，并将对象头重的Mark Word复制到锁记录中(Displaced Mark Word)。然后线程尝试使用CAS将对象头中的Mark Word替换为指向锁记录的指针，如果成功线程获得锁，失败则表示其他线程竞争锁，当前线程便尝试使用自旋来获取锁。</p>
-<p><em>解锁</em></p>
-<p>解锁时会用原子的CAS操作将DIsplaced Mark Word替换回到对象头。如果成功表示没有竞争发生，如果失败，表示当前锁存在竞争，锁会膨胀成重量级锁。</p>
-<p><strong>3.重量级锁</strong></p>
-<p>自旋会消耗CPU，为了避免无用的自旋(比如获得锁的线程被阻塞住了)，一旦锁升级为重量级锁，就不会恢复到轻量级锁状态。在重量级锁状态下，其他线程试图获取锁时，都会被阻塞住，当持有锁的线程释放锁之后会唤醒这些线程，被唤醒的线程会再次争夺锁。</p>
-<h3 id="原子操作-锁和CAS"><a href="#原子操作-锁和CAS" class="headerlink" title="原子操作(锁和CAS)"></a>原子操作(锁和CAS)</h3><p><strong><em>PS:CAS操作</em></strong></p>
-<p>​    比较并交换：CAS操作需要输入两个数值，一个旧值(期望操作前的值)和一个新值，在操作期间先比较旧值有没有发生变化，如果没有发生变化，才叫换成新值，发生了变化则不交换，CAS使用版本号是因为为了解决ABA问题，一个值从A——&gt;B——&gt;A，检查，只能保证一个共享变量的原子操作，并发包中的AtomicReference类来保证引用对象之间的原子性，就可以把多个变量放在一个对象里来进行CAS操作。</p>
-<p>i++不是一个原子操作，i++是一个经典的读改写操作，i++也不是线程安全的，i++的过程是</p>
-<p><strong>1.从内存中把i的值取出来放到CPU的寄存器中</strong></p>
-<p><strong>2.CPU寄存器的值+1</strong></p>
-<p><strong>3.把CPU寄存器的值写回内存</strong></p>
-<p>对于读值，+1，写值这三步操作，在这三步任何之间都可能会有CPU调度产生，造成i的值被修改，造成脏读脏写。</p>
-<p>Java中通过锁和循环CAS的方式来实现原子操作。其中循环CAS就是使用并发包中的一些类(Atomic+)，如AtomicBoolean(用原子方式更新的boolean值)、AtomicInteger(用原子方式更新的int值)和AtomicLong(用原子方式更新的long值)，还提供了有用的工具方法，比如以原子的方式将当前值自增1和自减1。</p>
-<p>JVM内部实现了偏向锁、轻量级锁和互斥锁，除了偏向锁，JVM实现锁的方式都用了循环CAS，即当一个线程想进入同步块的时候使用循环CAS的方式来获取锁，当退出同步块的时候使用循环CAS释放锁。</p>
+        <h3 id="suspend-、resume-、stop"><a href="#suspend-、resume-、stop" class="headerlink" title="suspend()、resume()、stop()"></a>suspend()、resume()、stop()</h3><p>​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。</p>
+<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><ul>
+<li><p>volatile和synchronized关键字</p>
+</li>
+<li><p>等待/通知机制（wait、notify、notifyAll）</p>
+</li>
+<li><p>管道输入/输出流</p>
+<p>管道输入/输出流和普通的文件输入/输出流或者网络输入/输出流不同之处在于，它主要用于线程之间的数据传输，而传输的媒介为内存。</p>
+</li>
+<li><p>Thread.join()</p>
+</li>
+<li><p>ThreadLocal</p>
+<p>即线程变量，是一个以ThreadLocal对象为键、任意对象为值的存储结构。这个结构被附带在线程上，也就是说一个线程可以根据一个ThreadLocal对象查询到绑定在这个线程上的一个值。可以通过set(T)方法来设置一个值，在当前线程下再通过get()方法获取到原先设置的值。</p>
+</li>
+</ul>
 
       
     </div>
@@ -359,8 +354,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/03/常见SQL语句/" rel="next" title="常见SQL语句.md">
-                <i class="fa fa-chevron-left"></i> 常见SQL语句.md
+              <a href="/2019/06/13/锁的升级和对比-md/" rel="next" title="锁的升级和对比.md">
+                <i class="fa fa-chevron-left"></i> 锁的升级和对比.md
               </a>
             
           </div>
@@ -368,10 +363,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/02/并发编程/" rel="prev" title="并发编程">
-                并发编程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -494,7 +485,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的状态"><span class="nav-number">1.</span> <span class="nav-text">锁的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原子操作-锁和CAS"><span class="nav-number">2.</span> <span class="nav-text">原子操作(锁和CAS)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#suspend-、resume-、stop"><span class="nav-number">1.</span> <span class="nav-text">suspend()、resume()、stop()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程通信"><span class="nav-number">2.</span> <span class="nav-text">线程通信</span></a></li></ol></div>
             
 
           </div>
