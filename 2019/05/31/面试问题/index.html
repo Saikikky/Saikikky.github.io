@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-13T07:50:11.638Z">
+<meta property="og:updated_time" content="2019-07-03T02:32:06.940Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试问题.md">
 <meta name="twitter:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
@@ -392,6 +392,7 @@
 <h3 id="HashMap的死循环问题-在并发条件下"><a href="#HashMap的死循环问题-在并发条件下" class="headerlink" title="HashMap的死循环问题(在并发条件下)"></a>HashMap的死循环问题(在并发条件下)</h3><p>扩容时链表成环，导致执行get操作的时候造成死循环。问题出在transfer函数，即扩容之后的数据迁移部分。transfer函数：首先获取新表的长度，之后遍历新表的每一个entry，然后每个ertry中的链表，以反转的形式，形成rehash之后的链表。</p>
 <p>并发问题：</p>
 <p><strong>若当前线程此时获得entry节点，但是被线程中断无法继续执行，此时线程二进入transfer函数，并把函数顺利执行，此时新表中的某个位置有了节点，之后线程一获得执行权继续执行，因为并发transfer，所以两者都是扩容的同一个链表，当线程一执行到e.next = new table[i] 的时候，由于线程二之前数据迁移的原因导致此时new table[i] 上就有ertry存在，所以线程一执行的时候，会将next节点，设置为自己，导致自己互相使用next引用对方，因此产生链表，导致死循环。</strong>(这个过程还需要再看看图和代码执行顺序)</p>
+<h3 id="concurrentHashMap"><a href="#concurrentHashMap" class="headerlink" title="concurrentHashMap"></a>concurrentHashMap</h3><p><strong>concurrentHashMap不支持key和value 值为null的原因</strong>：ConcurrentHashmap和Hashtable都是支持并发的，这样会有一个问题，当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射。HashMap是非并发的，可以通过contains(key)来做这个判断。而支持并发的Map在调用m.contains（key）和m.get(key),m可能已经不同了。</p>
 <h2 id="5-synchronized关键字"><a href="#5-synchronized关键字" class="headerlink" title="5.synchronized关键字"></a>5.synchronized关键字</h2><ul>
 <li><p>修饰方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// todo</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -589,7 +590,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -635,7 +636,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于static静态"><span class="nav-number">1.</span> <span class="nav-text">1. 关于static静态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-值传递和引用传递"><span class="nav-number">2.</span> <span class="nav-text">2. 值传递和引用传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">3.</span> <span class="nav-text">3. equals和hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Hashtable和HashMap"><span class="nav-number">4.</span> <span class="nav-text">4.Hashtable和HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的死循环问题-在并发条件下"><span class="nav-number">4.1.</span> <span class="nav-text">HashMap的死循环问题(在并发条件下)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-synchronized关键字"><span class="nav-number">5.</span> <span class="nav-text">5.synchronized关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引"><span class="nav-number">6.</span> <span class="nav-text">6.索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Autowired"><span class="nav-number">7.</span> <span class="nav-text">7.@Autowired</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于static静态"><span class="nav-number">1.</span> <span class="nav-text">1. 关于static静态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-值传递和引用传递"><span class="nav-number">2.</span> <span class="nav-text">2. 值传递和引用传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">3.</span> <span class="nav-text">3. equals和hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Hashtable和HashMap"><span class="nav-number">4.</span> <span class="nav-text">4.Hashtable和HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的死循环问题-在并发条件下"><span class="nav-number">4.1.</span> <span class="nav-text">HashMap的死循环问题(在并发条件下)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concurrentHashMap"><span class="nav-number">4.2.</span> <span class="nav-text">concurrentHashMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-synchronized关键字"><span class="nav-number">5.</span> <span class="nav-text">5.synchronized关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引"><span class="nav-number">6.</span> <span class="nav-text">6.索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Autowired"><span class="nav-number">7.</span> <span class="nav-text">7.@Autowired</span></a></li></ol></div>
             
 
           </div>
