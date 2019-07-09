@@ -309,10 +309,19 @@
       
         
           
-            <h2 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h2><p>比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。</p>
+            <h2 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h2><p>比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。</p>
 <p>Lock接口的使用方式</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">lock.lock();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在finally块中释放锁，目的是保证在获取到锁之后，最终能够被释放。</p>
+<h3 id="队列同步器AbstractQueuedSynchronizer"><a href="#队列同步器AbstractQueuedSynchronizer" class="headerlink" title="队列同步器AbstractQueuedSynchronizer"></a>队列同步器AbstractQueuedSynchronizer</h3><p>Lock接口的实现基本都是通过聚合了一个同步器的子类来完成线程访问控制的。</p>
+<p>同步器用来构建锁或者其他同步组件的基础框架，使用一个int成员变量表示同步状态，通过<strong>内置的FIFO队列</strong>来完成资源获取线程的排队工作。</p>
+<p>同步器主要使用方式是继承，子类被推荐定义为自动义同步组件的静态内部类，同步器自身并没有实现任何同步接口，它仅仅是定义了若干同步状态获取和释放的方法来供自定义组件使用，同步器既可以支持独占式地获取同步状态也可以支持共享式地获取同步状态，这样就可以方便实现不同类型的同步组件。(ReentrantLock、ReentrantReadWriteLock和CountDownLatch等)</p>
+<ul>
+<li><p>同步器与锁</p>
+<p>锁是面向使用者的，它定义了使用者与锁交互的接口(比如可以允许两个线程并行访问)，隐藏了实现细节；同步器面向的是锁的实现者，简化锁的实现方式，屏蔽同步状态管理、线程的排队、等待和唤醒灯底层的操作。说白了，同步器就是实现锁的关键，利用同步器实现锁的语义。</p>
+</li>
+</ul>
+<p>同步器的设计基于模板方法模式，使用者继承同步器并重写制定的方法，随后将同步器组合在自定义同步组件的实现中，并调用同步器提供的模版方法，而这些模版方法将会调用使用者重写的方法。</p>
 <h3 id="重入锁ReentrantLock"><a href="#重入锁ReentrantLock" class="headerlink" title="重入锁ReentrantLock"></a>重入锁ReentrantLock</h3><p>支持重进入的锁，表示该锁能够支持一个线程对资源的重复加锁，此外，还支持获取锁时的公平和非公平性选择。(公平锁就是在绝对时间上，先对锁进行获取的请求一定先被满足)(synchronized关键字隐式的支持重进入，比如一个synchronized修饰的递归方法，在方法执行时，执行线程在获取了锁之后仍能连续多次的获得该锁)</p>
 <p><strong>重复获得多少次锁，释放的时候就要释放多少次，同步状态值</strong></p>
 <h3 id="读写锁ReentrantReadWriteLock"><a href="#读写锁ReentrantReadWriteLock" class="headerlink" title="读写锁ReentrantReadWriteLock"></a>读写锁ReentrantReadWriteLock</h3><p>读写锁在同一时刻可以允许多个读线程访问，不是排他锁。但是在写线程访问时，所有的读线程和其他线程均被阻塞。读写锁维护了一堆锁，一个读锁和一个写锁。</p>
