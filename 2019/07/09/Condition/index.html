@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="本文来自：高爽|Coder，原文地址：http://blog.csdn.net/ghsau/article/details/7481142，转载请注明。 Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多个等待 set （wait-set）。其中，Lock 替代了">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-09T07:32:49.168Z">
+<meta property="og:updated_time" content="2019-07-09T08:43:10.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Condition">
 <meta name="twitter:description" content="本文来自：高爽|Coder，原文地址：http://blog.csdn.net/ghsau/article/details/7481142，转载请注明。 Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多个等待 set （wait-set）。其中，Lock 替代了">
@@ -334,6 +334,12 @@
 <p> 这就是多个Condition的强大之处，假设缓存队列中已经存满，那么阻塞的肯定是写线程，唤醒的肯定是读线程，相反，阻塞的肯定是读线程，唤醒的肯定是写线程，那么假设只有一个Condition会有什么效果呢，缓存队列中已经存满，这个Lock不知道唤醒的是读线程还是写线程了，如果唤醒的是读线程，皆大欢喜，如果唤醒的是写线程，那么线程刚被唤醒，又被阻塞了，这时又去唤醒，这样就浪费了很多时间。</p>
 </li>
 </ol>
+<hr>
+<p>任意一个Java对象都拥有一组监视器方法(Object上)，主要包括wait()、notify()、notifyAll()方法，与synchronized关键字配合使用，可以实现等待/通知模式。Condition接口也提供了类似Object监视器的方法。与Lock配合可以实现等待/通知模式。使用前要注意在调用方法前获取锁。</p>
+<p>一般会将Condition对象作为成员变量。当调用await()方法后，当前线程会释放锁并在此等待。而其他线程调用Condition对象的signal()方法，通知当前线程之后，当前线程才从await()方法返回，并且在返回前已经获取了锁。</p>
+<p>如果一个线程调用了Condition.await()方法，那么该线程将会释放锁、构造成节点加入等待队列并进入等待状态。节点饮用更新的过程并没有使用CAS保证，原因在于调用await()方法的线程必定是获取了锁的线程，也就是该过程是由锁来保证线程安全的。在Object监视器模型上，一个对象拥有一个同步队列和等待队列，而并发包中的Lock拥有一个同步队列和多个等待队列。Condition的实现是同步器的内部类，因此每个Condition实例都能访问同步器提供的方法，相当于每个Condition都拥有所属同步器的引用。</p>
+<p>调用await()方法时，相当于是同步队列的首节点(获取了锁的节点)移动到Condition的等待队列中。同步队列的首节点并不是直接加入等待队列，而是通过addConditionWaiter()方法把当前线程构造成一个新的节点并将其加入等待队列中。</p>
+<p>调用signal()方法，唤醒在等待队列中等待时间最长的节点(首节点)，在唤醒节点之前，会将节点移到同步队列中。调用该方法的前置条件是当前线程必须获取了锁，接着获取等待队列的首节点，并将其移动到同步队列并使用LockSupport唤醒节点中的线程。</p>
 
       
     </div>
