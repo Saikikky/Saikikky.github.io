@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-11T08:45:55.138Z">
+<meta property="og:updated_time" content="2019-07-13T06:59:58.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
@@ -339,6 +339,19 @@
 <p>如何判断在统计的时候容器是否发生了变化？使用modCount变量，在put、remove和clean方法里操作元素前都会将变量modCount进行加1，那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化。</p>
 </li>
 </ul>
+<h3 id="线程安全的队列"><a href="#线程安全的队列" class="headerlink" title="线程安全的队列"></a>线程安全的队列</h3><ul>
+<li><p>阻塞算法：队列可以用一个锁(入队出队一个锁)或者两个锁(入队和出队用不同的锁)</p>
+</li>
+<li><p>非阻塞算法：使用循环CAS的方式实现 ConcurrentLinkedQueue</p>
+<p>ConcurrentLinkedQueue是一个基于链接节点的无界线程安全队列，它采用先进先出的规则对节点进行排序，当我们添加一个元素的时候，它会添加到队列的尾部；当我们获取一个元素的时候，它会返回队列头部的元素。它采用了“wait-free“算法(即CAS算法)来实现。</p>
+</li>
+</ul>
+<h4 id="阻塞队列"><a href="#阻塞队列" class="headerlink" title="阻塞队列"></a>阻塞队列</h4><p>阻塞队列是一个支持两个附加操作的队列，这两个附加操作支持阻塞的插入和移除方法。</p>
+<ol>
+<li>支持阻塞的插入方法：当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
+<li>支持阻塞的移除方法：在队列为空时，获取元素的线程会等待队列变为非空。</li>
+</ol>
+<p>阻塞队列经常用于生产者和消费者的场景，生产者是向队列里添加元素的线程，消费者则是取元素的线程，阻塞队列就是生产者用来存放元素、消费者用来获取元素的容器。</p>
 
       
     </div>
@@ -500,7 +513,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">2.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">2.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li></ol></div>
             
 
           </div>
