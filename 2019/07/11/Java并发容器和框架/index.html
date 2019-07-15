@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-13T06:59:58.497Z">
+<meta property="og:updated_time" content="2019-07-15T06:37:07.532Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
@@ -351,7 +351,9 @@
 <li>支持阻塞的插入方法：当队列满时，队列会阻塞插入元素的线程，直到队列不满。</li>
 <li>支持阻塞的移除方法：在队列为空时，获取元素的线程会等待队列变为非空。</li>
 </ol>
-<p>阻塞队列经常用于生产者和消费者的场景，生产者是向队列里添加元素的线程，消费者则是取元素的线程，阻塞队列就是生产者用来存放元素、消费者用来获取元素的容器。</p>
+<p>阻塞队列经常用于生产者和消费者的场景，生产者是向队列里添加元素的线程，消费者则是取元素的线程，阻塞队列就是生产者用来存放元素、消费者用来获取元素的容器。(7种阻塞队列)</p>
+<p><strong>实现原理</strong></p>
+<p>使用通知模式实现，就是当生产者往满的队列里添加元素时会阻塞住生产者，当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。</p>
 
       
     </div>
