@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-15T06:37:07.532Z">
+<meta property="og:updated_time" content="2019-07-23T08:59:42.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
@@ -339,6 +339,7 @@
 <p>如何判断在统计的时候容器是否发生了变化？使用modCount变量，在put、remove和clean方法里操作元素前都会将变量modCount进行加1，那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化。</p>
 </li>
 </ul>
+<hr>
 <h3 id="线程安全的队列"><a href="#线程安全的队列" class="headerlink" title="线程安全的队列"></a>线程安全的队列</h3><ul>
 <li><p>阻塞算法：队列可以用一个锁(入队出队一个锁)或者两个锁(入队和出队用不同的锁)</p>
 </li>
@@ -354,6 +355,9 @@
 <p>阻塞队列经常用于生产者和消费者的场景，生产者是向队列里添加元素的线程，消费者则是取元素的线程，阻塞队列就是生产者用来存放元素、消费者用来获取元素的容器。(7种阻塞队列)</p>
 <p><strong>实现原理</strong></p>
 <p>使用通知模式实现，就是当生产者往满的队列里添加元素时会阻塞住生产者，当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。</p>
+<hr>
+<h3 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h3><p>Fork/Join框架是Java7提供的一个用于并行执行任务的框架，是一个把大任务分割成若干个小任务，最终汇总每个小任务结果后得到大任务结果的框架。Fork就是把一个大任务切分为若干子任务并行的执行，Join就是合并这些子任务的执行结果，最后得到这个大任务的结果。</p>
+<h4 id="工作窃取算法"><a href="#工作窃取算法" class="headerlink" title="工作窃取算法"></a>工作窃取算法</h4><p>某个线程从其他队列里窃取任务来执行。将一个大任务分成互不依赖的子任务，为了减少线程间的竞争，把这些子任务分别放到不同的队列里，并为每个队列创建一个单独的线程来执行队列里的任务，线程和队列一一对应。但有的线程会把自己的任务先干完，而其他线程对应的队列里还有任务等待处理，就去其他线程的队伍里窃取一个任务来执行，这时他们会访问同一个队列，所以为了减少窃取任务线程和被窃取任务线程之间的竞争，通常会使用双端队列，被窃取的任务线程永远从双端队列的头部拿任务执行，而窃取任务的线程永远从双端队列的尾部拿任务执行。</p>
 
       
     </div>
@@ -515,7 +519,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">2.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">2.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">2.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">2.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">3.</span> <span class="nav-text">Fork/Join框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#工作窃取算法"><span class="nav-number">3.1.</span> <span class="nav-text">工作窃取算法</span></a></li></ol></li></ol></div>
             
 
           </div>
