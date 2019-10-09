@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Java基础,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -86,18 +86,17 @@
 
 
 
-<meta name="description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
-<meta name="keywords" content="Java基础">
+<meta name="description" content="搭建Spring Cloud Demo中遇到的问题 SpringCloud无法引入@EnableFeignClients问题 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发编程">
-<meta property="og:url" content="http://yoursite.com/2019/07/02/并发编程/index.html">
+<meta property="og:title" content="Saikikky">
+<meta property="og:url" content="http://yoursite.com/2019/09/24/搭建Spring Cloud Demo中遇到的问题/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
+<meta property="og:description" content="搭建Spring Cloud Demo中遇到的问题 SpringCloud无法引入@EnableFeignClients问题 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-02T11:44:42.772Z">
+<meta property="og:updated_time" content="2019-09-24T06:32:27.994Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="并发编程">
-<meta name="twitter:description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
+<meta name="twitter:title" content="Saikikky">
+<meta name="twitter:description" content="搭建Spring Cloud Demo中遇到的问题 SpringCloud无法引入@EnableFeignClients问题 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt">
 
 
 
@@ -127,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/02/并发编程/">
+  <link rel="canonical" href="http://yoursite.com/2019/09/24/搭建Spring Cloud Demo中遇到的问题/">
 
 
 
 
 
-  <title>并发编程 | Saikikky</title>
+  <title> | Saikikky</title>
   
 
 
@@ -242,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/并发编程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/24/搭建Spring Cloud Demo中遇到的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +258,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">并发编程</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -271,8 +270,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T17:12:37+08:00">
-                2019-07-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-24T14:32:27+08:00">
+                2019-09-24
               </time>
             
 
@@ -309,21 +308,24 @@
       
 
       
-        <h3 id="suspend-、resume-、stop"><a href="#suspend-、resume-、stop" class="headerlink" title="suspend()、resume()、stop()"></a>suspend()、resume()、stop()</h3><p>​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。</p>
-<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><ul>
-<li><p>volatile和synchronized关键字</p>
+        <h3 id="搭建Spring-Cloud-Demo中遇到的问题"><a href="#搭建Spring-Cloud-Demo中遇到的问题" class="headerlink" title="搭建Spring Cloud Demo中遇到的问题"></a>搭建Spring Cloud Demo中遇到的问题</h3><ol>
+<li><p><strong>SpringCloud无法引入@EnableFeignClients问题</strong></p>
+<p>问题描述：</p>
+<p>SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入feign--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-feign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>版本不兼容问题，修改SpringBoot版本为1.5.13.RELEASE，Spring Cloude版本为Edgware.SR4后导入成功。(公司pom文件显示用的是1.5.11.RELEASE版本的SpringBoot和Edgware.RELEASE版本的Spring Cloud)</p>
 </li>
-<li><p>等待/通知机制（wait、notify、notifyAll）</p>
+<li><p><strong>服务消费者无法调用服务提供者的方法</strong></p>
+<p>问题描述：</p>
+<p>Eureka注册中心启动正常，服务提供者和服务调用者都成功注册到注册中心，其中注册中心端口号为8000，提供者端口号为9000，调用者端口号为9001。全部成功启动之后，直接调用服务提供者提供的方法可以成功访问，但通过调用者9001端口访问服务显示feign.RetryableException: Read timed out executing GET <a href="http://spring-cloud-producer/hello?name=s]" target="_blank" rel="noopener">http://spring-cloud-producer/hello?name=s]</a> with root cause错误，百度发现是超时问题修改了各种熔断 ribbon和feign配置都不起作用。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同一实例最大重试次数，不包括首次调用。默认值为0</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=0</span></span><br><span class="line"><span class="comment"># 同一个微服务其他实例的最大重试次数，不包括第一次调用的实例。默认值为1</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=0</span></span><br><span class="line"><span class="comment"># 是否所有操作（GET、POST等）都允许重试。默认值为false</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=false</span></span><br><span class="line"><span class="comment">## 设置连接超时时间</span></span><br><span class="line"><span class="string">ribbon.ConnectTimeout=60000</span></span><br><span class="line"><span class="comment">## 设置读取超时时间</span></span><br><span class="line"><span class="string">ribbon.ReadTimeout=60000</span></span><br><span class="line"><span class="comment">## 关闭feign的熔断</span></span><br><span class="line"><span class="string">feign.hystrix.enabled=false</span></span><br><span class="line"><span class="comment">## 用于禁用Hystrix的超时时间</span></span><br><span class="line"><span class="string">hystrix.command.default.execution.timeout.enabled=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 对所有操作请求都进行重试</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=true</span></span><br><span class="line"><span class="comment">## 切换实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=2</span></span><br><span class="line"><span class="comment">## 对当前实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=1</span></span><br></pre></td></tr></table></figure>
+<p>最后问题是8000端口无法访问？？但注册中心正常启动且服务提供端也可以正常启动  改成8080端口之后可以访问，重启电脑之后8000端口也可以访问，初步判断是端口占用的问题，但Eureka注册和服务器调用注册等的端口是如何工作的要再了解一下。</p>
+<p>项目正常运行之后 通过netstat -anp tcp命令查看端口使用情况发现启用了五个127.0.0.1.8000 所以Eureka注册中心启动的时候究竟启动了几个怎么启动的需要看下。</p>
 </li>
-<li><p>管道输入/输出流</p>
-<p>管道输入/输出流和普通的文件输入/输出流或者网络输入/输出流不同之处在于，它主要用于线程之间的数据传输，而传输的媒介为内存。</p>
+<li><p>设置FeignClient中的fallback不起作用，发现是没有打开feign对hystrix的支持。在配置文件中加入如下配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  hystrix:</span></span><br><span class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>Thread.join()</p>
-</li>
-<li><p>ThreadLocal</p>
-<p>即线程变量，是一个以ThreadLocal对象为键、任意对象为值的存储结构。这个结构被附带在线程上，也就是说一个线程可以根据一个ThreadLocal对象查询到绑定在这个线程上的一个值。可以通过set(T)方法来设置一个值，在当前线程下再通过get()方法获取到原先设置的值。</p>
-</li>
-</ul>
+</ol>
 
       
     </div>
@@ -339,12 +341,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java基础/" rel="tag"># Java基础</a>
-          
-        </div>
-      
 
       
       
@@ -354,8 +350,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/13/锁的升级和对比-md/" rel="next" title="锁的升级和对比.md">
-                <i class="fa fa-chevron-left"></i> 锁的升级和对比.md
+              <a href="/2019/07/11/Java并发容器和框架/" rel="next" title="Java并发容器和框架">
+                <i class="fa fa-chevron-left"></i> Java并发容器和框架
               </a>
             
           </div>
@@ -363,10 +359,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/02/锁/" rel="prev" title="锁">
-                锁 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -489,7 +481,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#suspend-、resume-、stop"><span class="nav-number">1.</span> <span class="nav-text">suspend()、resume()、stop()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程通信"><span class="nav-number">2.</span> <span class="nav-text">线程通信</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#搭建Spring-Cloud-Demo中遇到的问题"><span class="nav-number">1.</span> <span class="nav-text">搭建Spring Cloud Demo中遇到的问题</span></a></li></ol></div>
             
 
           </div>
