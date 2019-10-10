@@ -238,6 +238,276 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/MySQL索引/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/15/MySQL索引/" itemprop="url">MySQL索引</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-15T08:59:05+08:00">
+                2019-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h3><h4 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h4><ul>
+<li>普通索引</li>
+</ul>
+<blockquote>
+<p>最基本的索引，没有任何限制</p>
+</blockquote>
+<ul>
+<li>唯一索引 unique</li>
+</ul>
+<blockquote>
+<p>与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。</p>
+</blockquote>
+<ul>
+<li>主键索引 primary</li>
+</ul>
+<blockquote>
+<p>特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。</p>
+</blockquote>
+<ul>
+<li>组合索引</li>
+</ul>
+<blockquote>
+<p>多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字段，索引才会被使用。使用组合索引时遵循最左前缀集合。</p>
+</blockquote>
+<ul>
+<li>全文索引 fulltext (大量文本检索时)</li>
+</ul>
+<blockquote>
+<p>主要用来查找文本中的关键字，而不是直接与索引中的值相比较。fulltext 与其他索引不大相同，更像是一个搜索引擎。不是简单的 where 语句的参数匹配。配合 match against 操作使用，并不是一般的 where 语句加 like。可以在 char、varchar、text 列上创建全文索引。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; select * from fulltext_test </span><br><span class="line">&gt;     where match(content,tag) against('xxx xxx');</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>match() 函数中指定的列必须和全文索引中指定的列完全相同，否则就会报错，无法使用全文索引，这是因为全文索引不会记录关键字来自哪一列。如果想要对某一列使用全文索引，请单独为该列创建全文索引。索引的关键词用against标识,IN BOOLEAN MODE(布尔全文索引)是只有含有关键字就行,不用在乎位置,是不是起启位置.</p>
+</blockquote>
+<ul>
+<li>在数据量较大的时候，将数据放入一个没有全局索引的表中，然后再用create index 创建 fulltext 索引，要比先为一张表创建 fulltext 然后再将数据写入的速度快很多。</li>
+<li>MySQL 中的全文索引，有两个变量，最小搜索长度和最大搜索长度，对于长度小于最小搜索长度和大于最大搜索长度的词语，都不会被索引。通俗点就是说，想对一个词语使用全文索引搜索，那么这个词语的长度必须在以上两个变量的区间内。show variables like ‘%ft%’;查看发现只能检索 3 或 4—84 区间范围内的关键字，当然可以修改这个大小。</li>
+</ul>
+</blockquote>
+<h4 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name[col_name <span class="keyword">data</span> <span class="keyword">type</span>]</span><br><span class="line">[<span class="keyword">unique</span>|fulltext][<span class="keyword">index</span>|<span class="keyword">key</span>][index_name](col_name[<span class="keyword">length</span>])[<span class="keyword">asc</span>|<span class="keyword">desc</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>unique|fulltext为可选参数，分别表示唯一索引、全文索引</li>
+<li>index和key为同义词，两者作用相同，用来指定创建索引</li>
+<li>col_name为需要创建索引的字段列，该列必须从数据表中该定义的多个列中选择</li>
+<li>index_name指定索引的名称，为可选参数，如果不指定，默认col_name为索引值</li>
+<li>length为可选参数，表示索引的长度，只有字符串类型的字段才能指定索引长度</li>
+<li>asc或desc指定升序或降序的索引值存储</li>
+</ul>
+<p>基本上所有的索引都有三种创建方式：直接用语句创建索引，修改表结构创建索引和创建表的时候直接指定，一般情况下主键索引会直接指定。</p>
+<h4 id="索引实现"><a href="#索引实现" class="headerlink" title="索引实现"></a>索引实现</h4><ul>
+<li><p>MySQL索引的实现在存储引擎层而不是服务器层。</p>
+</li>
+<li><p>MySQL 索引底层实现是 B+Tree，B+Tree 对索引列顺序存储，很适合查找范围数据。</p>
+<pre><code>&gt; BTree 对索引有所限制
+</code></pre><ul>
+<li>必须要遵循最左原则，否则无法使用索引<blockquote>
+<ul>
+<li>不能跳过索引中的列</li>
+<li>如果查询中有某列的范围查询，则其右边所有列都无法使用索引优化查询。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>哈希索引基于哈希表实现，要求查询要精确匹配所有的列。哈希索引的原理是：对于每一行数据，对所有的索引列都会计算一个哈希值，不同键值的行计算出来的哈希值都不一样。哈希索引将所有的哈希值存储在索引中，同时保存指向每个数据行的指针，这样就可以根据哈希值找到指针并返回到行。</p>
+</li>
+<li><p>哈希索引的限制：(但若是可以使用哈希索引，效率会很高)</p>
+<ul>
+<li><p>只包含哈希值和指针，不包含字段值，所以无法使用”覆盖索引“这一优化方式。</p>
+<blockquote>
+<p>覆盖索引：就是 select 的数据列只用从索引中就可以取得，不必从数据表中读取，也就是说查询列要被所使用的的索引覆盖。只有 B-Tree 索引可以做覆盖索引，因为要存储索引的列。</p>
+</blockquote>
+</li>
+<li><p>并不是按照顺序存储的，索引不能用于排序。</p>
+</li>
+<li>不支持部分索引列匹配查找，哈希索引始终是使用索引列的全部内容计算哈希值的。</li>
+<li>只支持等值查询，不支持范围查询。</li>
+</ul>
+</li>
+</ul>
+<p><strong><em>Innodb 有一个特殊的功能：当注意到一些索引值被使用的非常频繁并且符合哈希特点(每次查询的列都一样)，会在内存中基于 B-Tree 的索引之上再创建一个哈希索引，完全自动的内部行为。</em></strong> </p>
+<h4 id="索引效率"><a href="#索引效率" class="headerlink" title="索引效率"></a>索引效率</h4><ul>
+<li><p>独立的列：索引不能是表达式的一部分，也不能是函数的参数。</p>
+<p>例如：</p>
+<ul>
+<li>此时的索引不起作用，无法使用 actor_id 列的索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> actor_id <span class="keyword">from</span> sakila.actor <span class="keyword">where</span> actor_id + <span class="number">1</span> = <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>下面的情况 actor_id 不在表达式中，则索引可以使用</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> actor_id <span class="keyword">from</span> sakila.actor <span class="keyword">where</span> actor_id = <span class="number">5</span> - <span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择合适的索引列顺序：最左原则</p>
+</li>
+<li><p>mysql 设计索引的时候要尽量同时满足排序，又满足查找行。</p>
+<ul>
+<li>只有当索引的列顺序和 order by 子句的顺序完全一致，并且所有列的排序方向(正序和倒序)都是一样时，mysql 才能使用索引来对结果做排序。</li>
+<li>如果查询需要关联多张表时，只有当 order by 子句引用的字段全部为一个表时，才能使用索引做排序。</li>
+</ul>
+</li>
+<li><p>搜索的索引列：</p>
+<ul>
+<li>不一定是所要选择的列，即 where 后面的查询条件加索引，而不是 select 后面的选择列。</li>
+</ul>
+</li>
+<li><p>使用唯一索引</p>
+</li>
+<li><p>使用短索引</p>
+<ul>
+<li>如果对字符串列进行索引，应该指定一个前缀长度</li>
+</ul>
+</li>
+<li><p>innodb 表，指定主键，并且是自增的最好。</p>
+</li>
+<li><p>模糊查询中，%xxx 会导致索引失效，xxx%可以用，因为XXX 开头的数据存储在一起可以使用索引加快查询，但%开头的内容是没有规律的，它的查询就相当于是全局查询不用索引。</p>
+<ul>
+<li>要是%xxx 能够使用索引，数据库中存储倒序内容，使用索引时查询reverse(%XXX)即可。</li>
+</ul>
+</li>
+<li><p>若所选索引列区分度不大，即前缀重复率太高，则在查询的时候，会变成全范围查询。</p>
+</li>
+</ul>
+<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><ul>
+<li>myisam对应非聚簇索引，mysql对应聚簇索引</li>
+</ul>
+<blockquote>
+<p>myisam在用到索引时先到索引表(树)中查找，找到数据所在的行，再去数据表中拿到数据。所以 myisam 的索引文件和数据文件是分开的，叫做非聚簇索引。索引指向数据在行的位置。</p>
+</blockquote>
+<blockquote>
+<p>而在聚簇索引中，索引文件和数据文件是同一个文件，所以在 innodb 中找到了索引也就找到了数据，既存储主键索引值，又存储行数据，称为聚簇索引。innodb 索引指向主键对数据的引用，非主键索引则指向对主键的引用，若没有主键索引，会使用唯一索引，若没有唯一索引则会使用数据库内部的一个行的 id来当做主键索引。</p>
+</blockquote>
+<p>并不是一种单独的索引类型，而是一种数据存储方式。一般情况下主键是聚簇索引的索引列。</p>
+<blockquote>
+<p>innodb 的聚簇索引在同一个 B-Tree 中保存了索引列和具体的数据，实际的数据保存在叶子页中，中间的节点页保存指向下一层页面的指针。“聚簇”的意思是数据行被按照一定顺序一个个紧密的排列在一起存储，一个表只能有一个聚簇索引，因为数据的存放方式只有一种。</p>
+</blockquote>
+<ul>
+<li>在聚簇索引中，数据会被按照顺序整理排序，所以使用 where 进行范围查询时，会大大加快速度，但非聚簇索引不会对数据进行排序。</li>
+<li>聚簇索引将主键组织到一颗B+树上，行数据储存在叶子节点上，在查询主键时，可以直接通过B+树的检索算法找到对应的叶节点，找到行数据；但是在对非主键数据进行查找的时候，需要第一步现在辅助索引中找到主键，再用主键执行一遍 B+ 树的搜索算法找到行数据</li>
+</ul>
+<p>在 innodb 中聚簇索引就是表，不需要像 myisam 那样建立独立的行存储。</p>
+<p>myisam 会将数据按照插入的顺序存储在磁盘上，创建索引时二级索引的叶子节点包含行号和主键或者索引列，会按照索引列排序。</p>
+<h5 id="聚簇索引的优势"><a href="#聚簇索引的优势" class="headerlink" title="聚簇索引的优势"></a>聚簇索引的优势</h5><ul>
+<li>行数据和叶子节点存储在一起，同一页中会有多行数据，访问同一数据页不同行记录时，已经将页加载到了 buffer 中，再次访问的时候，会在内存中完成访问，不必访问磁盘。主键和行数据一起被载入内存，找到叶子节点就可以返回行数据。</li>
+<li>辅助索引使用主键作为“指针”而不是使用地址值作为指针的好处是减少了当出现行移动或者数据页分裂时辅助索引的维护工作。</li>
+<li>聚簇索引的数据的物理存放顺序与索引顺序是一致的，即：只要索引是相邻的，那么对应的数据一定也是相邻的存放在磁盘上的。</li>
+<li>非聚簇索引的物理地址是凌乱的，拿到这些物理地址，按照合适的算法进行 I/O 读取，会不停的寻道，聚簇索引只需要一次。</li>
+</ul>
+<h4 id="维护索引"><a href="#维护索引" class="headerlink" title="维护索引"></a>维护索引</h4><p>维护表的目的是找到并修复损坏的表，维护准确的索引统计信息，减少碎片。</p>
+<p>索引项的值发生改变，此时索引项在索引表中的位置，就需要发生改变，就叫索引维护。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/11/Java8 新特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1701,140 +1971,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/并发编程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Saikikky Wang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Saikikky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/02/并发编程/" itemprop="url">并发编程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T17:12:37+08:00">
-                2019-07-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="suspend-、resume-、stop"><a href="#suspend-、resume-、stop" class="headerlink" title="suspend()、resume()、stop()"></a>suspend()、resume()、stop()</h3><p>​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。</p>
-<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><ul>
-<li><p>volatile和synchronized关键字</p>
-</li>
-<li><p>等待/通知机制（wait、notify、notifyAll）</p>
-</li>
-<li><p>管道输入/输出流</p>
-<p>管道输入/输出流和普通的文件输入/输出流或者网络输入/输出流不同之处在于，它主要用于线程之间的数据传输，而传输的媒介为内存。</p>
-</li>
-<li><p>Thread.join()</p>
-</li>
-<li><p>ThreadLocal</p>
-<p>即线程变量，是一个以ThreadLocal对象为键、任意对象为值的存储结构。这个结构被附带在线程上，也就是说一个线程可以根据一个ThreadLocal对象查询到绑定在这个线程上的一个值。可以通过set(T)方法来设置一个值，在当前线程下再通过get()方法获取到原先设置的值。</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1885,7 +2021,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

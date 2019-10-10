@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="实习学习总结,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
+<meta name="keywords" content="实习学习总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL索引">
+<meta property="og:url" content="http://yoursite.com/2019/08/15/MySQL索引/index.html">
+<meta property="og:site_name" content="Saikikky">
+<meta property="og:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-10-10T03:25:22.653Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL索引">
+<meta name="twitter:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/08/15/MySQL索引/">
+
+
+
+
+
+  <title>MySQL索引 | Saikikky</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    
+    <a href="https://github.com/Saikikky" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Saikikky</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/MySQL索引/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL索引</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-15T08:59:05+08:00">
+                2019-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h3><h4 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h4><ul>
+<li>普通索引</li>
+</ul>
+<blockquote>
+<p>最基本的索引，没有任何限制</p>
+</blockquote>
+<ul>
+<li>唯一索引 unique</li>
+</ul>
+<blockquote>
+<p>与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。</p>
+</blockquote>
+<ul>
+<li>主键索引 primary</li>
+</ul>
+<blockquote>
+<p>特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。</p>
+</blockquote>
+<ul>
+<li>组合索引</li>
+</ul>
+<blockquote>
+<p>多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字段，索引才会被使用。使用组合索引时遵循最左前缀集合。</p>
+</blockquote>
+<ul>
+<li>全文索引 fulltext (大量文本检索时)</li>
+</ul>
+<blockquote>
+<p>主要用来查找文本中的关键字，而不是直接与索引中的值相比较。fulltext 与其他索引不大相同，更像是一个搜索引擎。不是简单的 where 语句的参数匹配。配合 match against 操作使用，并不是一般的 where 语句加 like。可以在 char、varchar、text 列上创建全文索引。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; select * from fulltext_test </span><br><span class="line">&gt;     where match(content,tag) against('xxx xxx');</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>match() 函数中指定的列必须和全文索引中指定的列完全相同，否则就会报错，无法使用全文索引，这是因为全文索引不会记录关键字来自哪一列。如果想要对某一列使用全文索引，请单独为该列创建全文索引。索引的关键词用against标识,IN BOOLEAN MODE(布尔全文索引)是只有含有关键字就行,不用在乎位置,是不是起启位置.</p>
+</blockquote>
+<ul>
+<li>在数据量较大的时候，将数据放入一个没有全局索引的表中，然后再用create index 创建 fulltext 索引，要比先为一张表创建 fulltext 然后再将数据写入的速度快很多。</li>
+<li>MySQL 中的全文索引，有两个变量，最小搜索长度和最大搜索长度，对于长度小于最小搜索长度和大于最大搜索长度的词语，都不会被索引。通俗点就是说，想对一个词语使用全文索引搜索，那么这个词语的长度必须在以上两个变量的区间内。show variables like ‘%ft%’;查看发现只能检索 3 或 4—84 区间范围内的关键字，当然可以修改这个大小。</li>
+</ul>
+</blockquote>
+<h4 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table_name[col_name <span class="keyword">data</span> <span class="keyword">type</span>]</span><br><span class="line">[<span class="keyword">unique</span>|fulltext][<span class="keyword">index</span>|<span class="keyword">key</span>][index_name](col_name[<span class="keyword">length</span>])[<span class="keyword">asc</span>|<span class="keyword">desc</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>unique|fulltext为可选参数，分别表示唯一索引、全文索引</li>
+<li>index和key为同义词，两者作用相同，用来指定创建索引</li>
+<li>col_name为需要创建索引的字段列，该列必须从数据表中该定义的多个列中选择</li>
+<li>index_name指定索引的名称，为可选参数，如果不指定，默认col_name为索引值</li>
+<li>length为可选参数，表示索引的长度，只有字符串类型的字段才能指定索引长度</li>
+<li>asc或desc指定升序或降序的索引值存储</li>
+</ul>
+<p>基本上所有的索引都有三种创建方式：直接用语句创建索引，修改表结构创建索引和创建表的时候直接指定，一般情况下主键索引会直接指定。</p>
+<h4 id="索引实现"><a href="#索引实现" class="headerlink" title="索引实现"></a>索引实现</h4><ul>
+<li><p>MySQL索引的实现在存储引擎层而不是服务器层。</p>
+</li>
+<li><p>MySQL 索引底层实现是 B+Tree，B+Tree 对索引列顺序存储，很适合查找范围数据。</p>
+<pre><code>&gt; BTree 对索引有所限制
+</code></pre><ul>
+<li>必须要遵循最左原则，否则无法使用索引<blockquote>
+<ul>
+<li>不能跳过索引中的列</li>
+<li>如果查询中有某列的范围查询，则其右边所有列都无法使用索引优化查询。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>哈希索引基于哈希表实现，要求查询要精确匹配所有的列。哈希索引的原理是：对于每一行数据，对所有的索引列都会计算一个哈希值，不同键值的行计算出来的哈希值都不一样。哈希索引将所有的哈希值存储在索引中，同时保存指向每个数据行的指针，这样就可以根据哈希值找到指针并返回到行。</p>
+</li>
+<li><p>哈希索引的限制：(但若是可以使用哈希索引，效率会很高)</p>
+<ul>
+<li><p>只包含哈希值和指针，不包含字段值，所以无法使用”覆盖索引“这一优化方式。</p>
+<blockquote>
+<p>覆盖索引：就是 select 的数据列只用从索引中就可以取得，不必从数据表中读取，也就是说查询列要被所使用的的索引覆盖。只有 B-Tree 索引可以做覆盖索引，因为要存储索引的列。</p>
+</blockquote>
+</li>
+<li><p>并不是按照顺序存储的，索引不能用于排序。</p>
+</li>
+<li>不支持部分索引列匹配查找，哈希索引始终是使用索引列的全部内容计算哈希值的。</li>
+<li>只支持等值查询，不支持范围查询。</li>
+</ul>
+</li>
+</ul>
+<p><strong><em>Innodb 有一个特殊的功能：当注意到一些索引值被使用的非常频繁并且符合哈希特点(每次查询的列都一样)，会在内存中基于 B-Tree 的索引之上再创建一个哈希索引，完全自动的内部行为。</em></strong> </p>
+<h4 id="索引效率"><a href="#索引效率" class="headerlink" title="索引效率"></a>索引效率</h4><ul>
+<li><p>独立的列：索引不能是表达式的一部分，也不能是函数的参数。</p>
+<p>例如：</p>
+<ul>
+<li>此时的索引不起作用，无法使用 actor_id 列的索引</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> actor_id <span class="keyword">from</span> sakila.actor <span class="keyword">where</span> actor_id + <span class="number">1</span> = <span class="number">5</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>下面的情况 actor_id 不在表达式中，则索引可以使用</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> actor_id <span class="keyword">from</span> sakila.actor <span class="keyword">where</span> actor_id = <span class="number">5</span> - <span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择合适的索引列顺序：最左原则</p>
+</li>
+<li><p>mysql 设计索引的时候要尽量同时满足排序，又满足查找行。</p>
+<ul>
+<li>只有当索引的列顺序和 order by 子句的顺序完全一致，并且所有列的排序方向(正序和倒序)都是一样时，mysql 才能使用索引来对结果做排序。</li>
+<li>如果查询需要关联多张表时，只有当 order by 子句引用的字段全部为一个表时，才能使用索引做排序。</li>
+</ul>
+</li>
+<li><p>搜索的索引列：</p>
+<ul>
+<li>不一定是所要选择的列，即 where 后面的查询条件加索引，而不是 select 后面的选择列。</li>
+</ul>
+</li>
+<li><p>使用唯一索引</p>
+</li>
+<li><p>使用短索引</p>
+<ul>
+<li>如果对字符串列进行索引，应该指定一个前缀长度</li>
+</ul>
+</li>
+<li><p>innodb 表，指定主键，并且是自增的最好。</p>
+</li>
+<li><p>模糊查询中，%xxx 会导致索引失效，xxx%可以用，因为XXX 开头的数据存储在一起可以使用索引加快查询，但%开头的内容是没有规律的，它的查询就相当于是全局查询不用索引。</p>
+<ul>
+<li>要是%xxx 能够使用索引，数据库中存储倒序内容，使用索引时查询reverse(%XXX)即可。</li>
+</ul>
+</li>
+<li><p>若所选索引列区分度不大，即前缀重复率太高，则在查询的时候，会变成全范围查询。</p>
+</li>
+</ul>
+<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><ul>
+<li>myisam对应非聚簇索引，mysql对应聚簇索引</li>
+</ul>
+<blockquote>
+<p>myisam在用到索引时先到索引表(树)中查找，找到数据所在的行，再去数据表中拿到数据。所以 myisam 的索引文件和数据文件是分开的，叫做非聚簇索引。索引指向数据在行的位置。</p>
+</blockquote>
+<blockquote>
+<p>而在聚簇索引中，索引文件和数据文件是同一个文件，所以在 innodb 中找到了索引也就找到了数据，既存储主键索引值，又存储行数据，称为聚簇索引。innodb 索引指向主键对数据的引用，非主键索引则指向对主键的引用，若没有主键索引，会使用唯一索引，若没有唯一索引则会使用数据库内部的一个行的 id来当做主键索引。</p>
+</blockquote>
+<p>并不是一种单独的索引类型，而是一种数据存储方式。一般情况下主键是聚簇索引的索引列。</p>
+<blockquote>
+<p>innodb 的聚簇索引在同一个 B-Tree 中保存了索引列和具体的数据，实际的数据保存在叶子页中，中间的节点页保存指向下一层页面的指针。“聚簇”的意思是数据行被按照一定顺序一个个紧密的排列在一起存储，一个表只能有一个聚簇索引，因为数据的存放方式只有一种。</p>
+</blockquote>
+<ul>
+<li>在聚簇索引中，数据会被按照顺序整理排序，所以使用 where 进行范围查询时，会大大加快速度，但非聚簇索引不会对数据进行排序。</li>
+<li>聚簇索引将主键组织到一颗B+树上，行数据储存在叶子节点上，在查询主键时，可以直接通过B+树的检索算法找到对应的叶节点，找到行数据；但是在对非主键数据进行查找的时候，需要第一步现在辅助索引中找到主键，再用主键执行一遍 B+ 树的搜索算法找到行数据</li>
+</ul>
+<p>在 innodb 中聚簇索引就是表，不需要像 myisam 那样建立独立的行存储。</p>
+<p>myisam 会将数据按照插入的顺序存储在磁盘上，创建索引时二级索引的叶子节点包含行号和主键或者索引列，会按照索引列排序。</p>
+<h5 id="聚簇索引的优势"><a href="#聚簇索引的优势" class="headerlink" title="聚簇索引的优势"></a>聚簇索引的优势</h5><ul>
+<li>行数据和叶子节点存储在一起，同一页中会有多行数据，访问同一数据页不同行记录时，已经将页加载到了 buffer 中，再次访问的时候，会在内存中完成访问，不必访问磁盘。主键和行数据一起被载入内存，找到叶子节点就可以返回行数据。</li>
+<li>辅助索引使用主键作为“指针”而不是使用地址值作为指针的好处是减少了当出现行移动或者数据页分裂时辅助索引的维护工作。</li>
+<li>聚簇索引的数据的物理存放顺序与索引顺序是一致的，即：只要索引是相邻的，那么对应的数据一定也是相邻的存放在磁盘上的。</li>
+<li>非聚簇索引的物理地址是凌乱的，拿到这些物理地址，按照合适的算法进行 I/O 读取，会不停的寻道，聚簇索引只需要一次。</li>
+</ul>
+<h4 id="维护索引"><a href="#维护索引" class="headerlink" title="维护索引"></a>维护索引</h4><p>维护表的目的是找到并修复损坏的表，维护准确的索引统计信息，减少碎片。</p>
+<p>索引项的值发生改变，此时索引项在索引表中的位置，就需要发生改变，就叫索引维护。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/实习学习总结/" rel="tag"># 实习学习总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/11/Java8 新特性/" rel="next" title="Java8新特性">
+                <i class="fa fa-chevron-left"></i> Java8新特性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Saikikky Wang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL索引"><span class="nav-number">1.</span> <span class="nav-text">MySQL索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引类型"><span class="nav-number">1.1.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语句"><span class="nav-number">1.2.</span> <span class="nav-text">语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引实现"><span class="nav-number">1.3.</span> <span class="nav-text">索引实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引效率"><span class="nav-number">1.4.</span> <span class="nav-text">索引效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚簇索引和非聚簇索引"><span class="nav-number">1.5.</span> <span class="nav-text">聚簇索引和非聚簇索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#聚簇索引的优势"><span class="nav-number">1.5.1.</span> <span class="nav-text">聚簇索引的优势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维护索引"><span class="nav-number">1.6.</span> <span class="nav-text">维护索引</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Saikikky Wang</span>
+
+  
+</div>
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
