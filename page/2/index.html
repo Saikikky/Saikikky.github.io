@@ -238,6 +238,287 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/31/面试问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/31/面试问题/" itemprop="url">面试问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-31T10:30:35+08:00">
+                2019-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-关于static静态"><a href="#1-关于static静态" class="headerlink" title="1. 关于static静态"></a>1. 关于static静态</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"testMethod"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ((TestClass)<span class="keyword">null</span>).testMethod();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该代码可以正常执行输出”testMethod”，若去掉static就会空指针异常。</p>
+<p>null可以转化成任何类型；</p>
+<p>private只是权限声明，被其修饰的类、属性以及方法只能被该类的对象访问，其子类不能访问，更不能允许跨包访问；</p>
+<p>static关键字，可以不用实例化，通过类名.方法名访问，也可以通过实例化类的对象，通过对象.方法名访问，但不能通过this关键字访问，static是类方法，在类加载的时候就已经存在，先于任何对象存在，this指代的是当前对象，但对象是在创建时才会在内存中生成的，所以不能使用static。</p>
+<h2 id="2-值传递和引用传递"><a href="#2-值传递和引用传递" class="headerlink" title="2. 值传递和引用传递"></a>2. 值传递和引用传递</h2><p><strong>数据在内存中的存储</strong></p>
+<ul>
+<li><p>基本数据类型的局部变量</p>
+<p><strong>直接存储在内存的栈上，也就是虚拟机栈，数据本身的值就存储在栈空间里</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> age = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">int</span> weight = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<p>若栈中没有值为10的地址，开辟一块地址给10，并把age指向10，weight直接指向10，栈中的数据在当前线程下是共享的。</p>
+<p><strong>基本数据类型的数据本身是不会改变的，当局部变量重新赋值时，并不是在内存中改变字面量内容，而是重新在栈中寻找已存在的相同的数据，若栈中不存在，则重新开辟内存存新数据，并且把要重新赋值的局部变量的引用指向新数据所在地址。</strong></p>
+</li>
+<li><p>基本数据类型的成员变量(类体中定义的变量)</p>
+<p>虚拟机栈指向堆内存中的一块区域，故<strong>成员变量名和值都存储在堆中</strong>，生命周期和对象是一致的。</p>
+</li>
+<li><p>基于数据类型的静态变量</p>
+<p>方法区中存储着一些共享数据，基本数据类型的静态变量名以及值存储于方法区的运行时常量池，静态变量随类加载而加载，随类消失而消失。</p>
+</li>
+<li><p>引用数据类型(类、接口、数组)</p>
+<p><strong>对于引用数据类型的对象/数组，变量名存在栈中，变量值存储的是对象的地址，并不是对象的实际内容。</strong></p>
+</li>
+</ul>
+<p><strong>值传递</strong></p>
+<p>在方法被调用时，实参通过形参把它的内容副本传入方法内部，此时形参接收到的内容是实参值的一个拷贝，因此在方法内对形参的任何操作，都仅仅是对这个副本的操作，不影响原始值的内容。</p>
+<p>主方法中的值存在于主方法的栈帧中，副本函数使用的是在函数的栈帧中。</p>
+<p><strong>引用传递</strong></p>
+<p>”引用”也就是指向真实内容的地址值，在方法调用时，实参的地址通过方法调用被传递给相应的形参，在方法体内，形参和实参指向通愉快内存地址，对形参的操作会影响的真实内容。引用传递在Java中并不存在。无论是基本类型和是引用类型，在实参传入形参时，都是值传递，也就是说传递的都是一个副本，而不是内容本身。但是传入引用对象时，是将指针指向同一块内存区域。</p>
+<p><strong>如果是对基本数据类型的数据进行操作，由于原始内容和副本都是存储实际值，并且是在不同的栈区，因此形参的操作，不影响原始内容。</strong></p>
+<p><strong>如果是对引用类型的数据进行操作，分两种情况，一种是形参和实参保持指向同一个对象地址，则形参的操作，会影响实参指向的对象的内容。一种是形参被改动指向新的对象地址（如重新赋值引用），则形参的操作，不会影响实参指向的对象的内容。</strong></p>
+<h2 id="3-equals和hashcode"><a href="#3-equals和hashcode" class="headerlink" title="3. equals和hashcode"></a>3. equals和hashcode</h2><p><strong>==和equals</strong></p>
+<p>equals覆盖之前等于==，用于判断两个对象是否是同一个对象，即他们的地址是否相等。覆盖equals是为了逻辑上的相等，即值相等或者内容相等。(违反对称性和传递性的情况??)</p>
+<p>String类中的equals方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">       <span class="comment">//如果是同一个对象</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == anObject)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果传递进来的参数是String类的实例</span></span><br><span class="line">        <span class="keyword">if</span> (anObject <span class="keyword">instanceof</span> String)</span><br><span class="line">        &#123;</span><br><span class="line">            String anotherString = (String)anObject;</span><br><span class="line">            <span class="keyword">int</span> n = count;<span class="comment">//字符串长度</span></span><br><span class="line">            <span class="keyword">if</span> (n == anotherString.count) <span class="comment">//如果长度相等就进行比较</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">char</span> v1[] = value;<span class="comment">//取每一个位置的字符</span></span><br><span class="line">                <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">                <span class="keyword">int</span> i = offset;</span><br><span class="line">                <span class="keyword">int</span> j = anotherString.offset;</span><br><span class="line">                <span class="keyword">while</span> (n-- != <span class="number">0</span>) <span class="comment">//对于每一位置逐一比较</span></span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (v1[i++] != v2[j++])</span><br><span class="line">                        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>覆盖equals时一定要覆盖hashCode方法</p>
+<p>Object.hashCode方法中规定：<strong>如果两个对象根据equals(Object)方法比较是相等的，则调用这两个对象中任意一个对象的hashCode方法必须产生同样的整数结果。</strong>即equals相等，hashCode必须相等。</p>
+<p>比如hashMap，正常情况下两个值相等的值，在hashMap中要插入第二个时应该覆盖第一个，即相同的值指插入一个，若覆盖了equals没有覆盖hashCode，则会将两个都插入。</p>
+<p>如果覆盖equals没有覆盖hashCode，将会违反：相等的对象必须具有相等的散列码(hashCode)。Object类里面的默认equals方法是比较内存地址是否相等，默认的hashCode方法则是根据内存地址产生一个整数，所以Object类本身当然是符合上面规则的。当你覆盖了equals后，内存地址不同的对象可能会相等，而如果这时你没有覆盖hashCode方法的话，hashCode还是根据内存地址来生成，就会出现相等的对象具有不同的散列码的情况。</p>
+<p>反过来覆盖hashCode并不一定要覆盖equals方法。</p>
+</li>
+</ul>
+<h2 id="4-Hashtable和HashMap"><a href="#4-Hashtable和HashMap" class="headerlink" title="4.Hashtable和HashMap"></a>4.Hashtable和HashMap</h2><ul>
+<li><p>继承和实现方法不同</p>
+<ul>
+<li>HashMap和Hashtable都实现了Map、Cloneable、java.io.Serializable接口</li>
+<li>HashMap继承于AbstractMap，而Hashtable继承于Dictionary</li>
+</ul>
+</li>
+<li><p>Hashtable是线程安全的，HashMap不是</p>
+<p>要使HashMap线程安全，可以使用Collections的synchronizedMap静态方法，或者直接使用JDK 5.0之后提供的java.util.concurrent包里的ConcurrentHashMap类。故Hashtable效率比较低。</p>
+<p>为什么Hashtable是线程安全的，它的remove,put，get做成了同步方法，保证了Hashtable的线程安全性。</p>
+</li>
+<li><p>HashMap的key、value都可以为null，Hashtable的key、value都不可以为null。</p>
+<p> 当HashMap的key为null时，HashMap会将其固定的插入table[0]位置(即HashMap散列表的第一个位置)；而且table[0]处只会容纳一个key为null的值，当有多个key为null的值插入的时候，table[0]会保留最后插入的value。</p>
+<p>put()方法实现：首先hash(key)得到key的hashcode()，hashmap根据获得的hashcode找到要插入的位置所在的链，在这个链里面放的都是hashcode相同的Entry键值对，在找到这个链之后，会通过equals()方法判断是否已经存在要插入的键值对，而这个equals比较的其实就是key。它用来存放key-value这样的一个键值对，返回值是key在Map中存放的旧value，如果之前不存在则返回null。HashMap的put方法是这样实现的。</p>
+</li>
+<li><p>容量的初始值和扩容方式不同</p>
+<ul>
+<li><p>HashMap默认的容量大小是16；增加容量时，每次将容量变为“原始容量x2”。为2^n</p>
+<p>确定数组位置的实现是 <code>i=（n-1）&amp; hash</code>，当n为2的幂次方时，（n-1）&amp; hash 的值是均匀分布的。而且当n是2的幂次方时：hash &amp; (length - 1) == hash % length，&amp;性能比%好。</p>
+</li>
+<li><p>Hashtable默认的容量大小是11；增加容量时，每次将容量变为“原始容量x2 + 1”。</p>
+</li>
+</ul>
+</li>
+<li><p>添加key-value时的hash值算法不同</p>
+<ul>
+<li>HashMap添加元素时，是使用自定义的哈希算法。</li>
+<li>Hashtable没有自定义哈希算法，而直接采用的key的hashCode()。</li>
+</ul>
+</li>
+<li><p>遍历方法不同</p>
+<ul>
+<li>HashMap只支持Iterator(迭代器)遍历。</li>
+<li>而Hashtable支持Iterator(迭代器)和Enumeration(枚举器)两种方式遍历。</li>
+</ul>
+<p>Hashtable古老，父类被弃用，<code>但同步机制并不能避免在iterator或Enumeration遍历过程中其他线程对Hashtable的put、 remove、clear操作，这些写操作都会被毫无阻拦得成功执行。</code>  (不确定？？) 主要应该是同步导致的性能开销问题弃用。</p>
+</li>
+</ul>
+<h3 id="HashMap的死循环问题-在并发条件下"><a href="#HashMap的死循环问题-在并发条件下" class="headerlink" title="HashMap的死循环问题(在并发条件下)"></a>HashMap的死循环问题(在并发条件下)</h3><p>扩容时链表成环，导致执行get操作的时候造成死循环。问题出在transfer函数，即扩容之后的数据迁移部分。transfer函数：首先获取新表的长度，之后遍历新表的每一个entry，然后每个ertry中的链表，以反转的形式，形成rehash之后的链表。</p>
+<p>并发问题：</p>
+<p><strong>若当前线程此时获得entry节点，但是被线程中断无法继续执行，此时线程二进入transfer函数，并把函数顺利执行，此时新表中的某个位置有了节点，之后线程一获得执行权继续执行，因为并发transfer，所以两者都是扩容的同一个链表，当线程一执行到e.next = new table[i] 的时候，由于线程二之前数据迁移的原因导致此时new table[i] 上就有ertry存在，所以线程一执行的时候，会将next节点，设置为自己，导致自己互相使用next引用对方，因此产生链表，导致死循环。</strong>(这个过程还需要再看看图和代码执行顺序)</p>
+<h3 id="concurrentHashMap"><a href="#concurrentHashMap" class="headerlink" title="concurrentHashMap"></a>concurrentHashMap</h3><p><strong>concurrentHashMap不支持key和value 值为null的原因</strong>：ConcurrentHashmap和Hashtable都是支持并发的，这样会有一个问题，当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射。HashMap是非并发的，可以通过contains(key)来做这个判断。而支持并发的Map在调用m.contains（key）和m.get(key),m可能已经不同了。</p>
+<h2 id="5-synchronized关键字"><a href="#5-synchronized关键字" class="headerlink" title="5.synchronized关键字"></a>5.synchronized关键字</h2><ul>
+<li><p>修饰方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// todo</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>跟下面的修饰代码块的代码是等价的。</p>
+<p>Synchronized关键字不能被继承，如果在父类中的某个方法使用了synchronized关键字，而在子类中覆盖了这个方法，在子类中的这个方法默认情况下并不是同步的，而必须显式地在子类的这个方法中加上synchronized关键字才可以。当然，还可以在子类方法中调用父类中相应的方法，这样虽然子类中的方法不是同步的，但子类调用了父类的同步方法，因此，子类的方法也就相当于同步了。</p>
+<ul>
+<li>在定义接口方法时不能使用synchronized关键字。</li>
+<li>构造方法不能使用synchronized关键字，但可以使用synchronized代码块来进行同步。 </li>
+</ul>
+</li>
+<li><p>修饰代码块</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">      <span class="comment">// todo</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一个线程访问一个对象中的synchronized(this)同步代码块时，其他试图访问该对象的线程将被阻塞</li>
+<li>当一个线程访问对象的一个synchronized(this)同步代码块时，另一个线程仍然可以访问该对象中的非synchronized(this)同步代码块</li>
+</ul>
+</li>
+<li><p>指定给某个对象加锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">(SomeObject obj)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">//obj 锁定的对象</span></span><br><span class="line">   <span class="keyword">synchronized</span>(obj)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// todo</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修饰一个静态方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="comment">// todo</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>静态方法是属于类的而不属于对象的。同样的，synchronized修饰的静态方法锁定的是这个类的所有对象。</p>
+</li>
+<li><p>修饰类 与修饰静态方法类似，给整个类加锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">synchronized</span>(ClassName.class) &#123;</span><br><span class="line">         <span class="comment">// todo</span></span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>无论synchronized关键字加在方法上还是对象上，如果它作用的对象是非静态的，则它取得的锁是对象；如果synchronized作用的对象是一个静态方法或一个类，则它取得的锁是对类，该类所有的对象同一把锁。 </strong></p>
+<p><strong>synchronized methods(){} 与synchronized（this）{}之间没有什么区别，只是synchronized methods(){} 便于阅读理解，而synchronized（this）{}可以更精确的控制冲突限制访问区域，有时候表现更高效率。</strong></p>
+<h2 id="6-索引"><a href="#6-索引" class="headerlink" title="6.索引"></a>6.索引</h2><ul>
+<li><p>优点</p>
+<ul>
+<li>创建唯一性索引，保证数据库表中每一行数据的唯一性</li>
+<li>大大加快数据的检索速度，这也是创建索引的最主要的原因</li>
+<li>加速表和表之间的连接，特别是在实现数据的参考完整性方面特别有意义。</li>
+<li>在使用分组和排序子句进行数据检索时，同样可以显著减少查询中分组和排序的时间。</li>
+<li>通过使用索引，可以在查询的过程中使用优化隐藏器，提高系统的性能。</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>创建索引和维护索引要耗费时间，这种时间随着数据量的增加而增加</li>
+<li>索引需要占物理空间，除了数据表占数据空间之外，每一个索引还要占一定的物理空间，如果要建立聚簇索引，那么需要的空间就会更大</li>
+<li>当对表中的数据进行增加、删除和修改的时候，索引也要动态的维护，降低了数据的维护速度</li>
+</ul>
+</li>
+<li><p>索引的最左前缀匹配原则</p>
+<p>在mysql建立联合索引时会遵循最左前缀匹配的原则，即最左优先，在检索数据时从联合索引的最左边开始匹配，示例：<br>对列col1、列col2和列col3建一个联合索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">KEY test_col1_col2_col3 on test(col1,col2,col3);</span><br></pre></td></tr></table></figure>
+<p>联合索引 test_col1_col2_col3 实际建立了(col1)、(col1,col2)、(col,col2,col3)三个索引。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM test WHERE col1=“1” AND clo2=“2” AND clo4=“4”</span><br></pre></td></tr></table></figure>
+<p>上面这个查询语句执行时会依照最左前缀匹配原则，检索时会使用索引(col1,col2)进行数据匹配。</p>
+<ul>
+<li>注意</li>
+</ul>
+<p>索引的字段是可以任意顺序的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM test WHERE col1=“1” AND clo2=“2”</span><br><span class="line">SELECT * FROM test WHERE col2=“2” AND clo1=“1”</span><br></pre></td></tr></table></figure>
+<p>这两个查询语句都会用到索引(col1,col2)，mysql创建联合索引的规则是首先会对联合合索引的最左边的，也就是第一个字段col1的数据进行排序，在第一个字段的排序基础上，然后再对后面第二个字段col2进行排序。其实就相当于实现了类似 order by col1 col2这样一种排序规则。</p>
+<p>第二个语句可以借助mysql查询优化器explain，explain会纠正sql语句该以什么样的顺序执行效率最高，最后才生成真正的执行计划。既然结果一样，那什么执行顺序是最好的。</p>
+<p><strong>因为辅助索引是B+树实现的，虽然可以指定多个列，但是每个列的比较优先级不一样，写在前面的优先比较。一旦出现遗漏，在B+树上就无法继续搜索了（通过补齐等措施解决的除外），因此是按照最左连续匹配来的。既然是在B+树上搜索，对于条件的比较自然是要求精确匹配（即”=”和”IN”）。不过顺序倒是可以颠倒，因为查询优化器重排序一下就好了。</strong></p>
+</li>
+</ul>
+<p>  <strong><em>当b+树的数据项是复合的数据结构，比如(name,age,sex)的时候，b+数是按照从左到右的顺序来建立搜索树的，比如当(张三,20,F)这样的数据来检索的时候，b+树会优先比较name来确定下一步的所搜方向，如果name相同再依次比较age和sex，最后得到检索的数据；但当(20,F)这样的没有name的数据来的时候，b+树就不知道下一步该查哪个节点，因为建立搜索树的时候name就是第一个比较因子，必须要先根据name来搜索才能知道下一步去哪里查询。比如当(张三,F)这样的数据来检索时，b+树可以用name来指定搜索方向，但下一个字段age的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是F的数据了， 这个是非常重要的性质，即索引的最左匹配特性。</em></strong></p>
+<h2 id="7-Autowired"><a href="#7-Autowired" class="headerlink" title="7.@Autowired"></a>7.@Autowired</h2><p>自动装配原理：在容器启动，为对象赋值的时候，会用后置处理器机制，来创建属性的实例，然后再利用反射机制，将实例化好的属性赋值给对象上。</p>
+<p>同一类型注入多次为同一实例(单例模式)</p>
+<ul>
+<li><p>@Autowired默认<strong>按类型装配</strong>（这个注解是属于<strong>Spring</strong>的），默认情况下必须要求依赖对象必须存在，如果要允许null值，可以设置它的required属性为false，如：@Autowired(required=false) </p>
+<p>如果我们想使用名称装配可以结合@Qualifier注解进行使用</p>
+<p>@Qualifier注解当bean不唯一时使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span>() <span class="meta">@Qualifier</span>(<span class="string">"baseDao"</span>)    </span><br><span class="line"><span class="keyword">private</span> BaseDao baseDao;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Resource <strong>是JDK1.6支持的注解</strong>，<strong>默认按照名称进行装配</strong>，名称可以通过name属性进行指定，如果没有指定name属性，当注解写在字段上时，默认取字段名，按照名称查找，如果注解写在setter方法上默认取属性名进行装配。当找不到与名称匹配的bean时才按照类型进行装配。但是需要注意的是，如果name属性一旦指定，就只会按照名称进行装配。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Resource</span>(name=<span class="string">"baseDao"</span>)    </span><br><span class="line"><span class="keyword">private</span> BaseDao baseDao;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>byName</strong> 通过参数名 自动装配，如果一个bean的name 和另外一个bean的 property 相同，就自动装配。<br><strong>byType</strong> 通过参数的数据类型自动自动装配，如果一个bean的数据类型和另外一个bean的property属性的数据类型兼容，就自动装配。</p>
+<p>@Required注解检查 但他只检查属性是否已经设置而不会测试属性是否非空</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/29/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -403,7 +684,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
