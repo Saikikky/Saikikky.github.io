@@ -238,6 +238,145 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/22/Redis简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/22/Redis简介/" itemprop="url">Redis 简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-22T08:59:05+08:00">
+                2019-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h3><p>是一个高性能的key-value数据库。有以下三个特点：</p>
+<ul>
+<li><p>支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</p>
+</li>
+<li><p>不仅仅支持简单的key-value类型的数据，同时还提供list、set、zset、hash等数据结构的存储。</p>
+<p><strong>zset是set的一个升级版本，在set的基础上增加了一格顺序属性，这一属性在添加元素的同时可以指定，每次指定后，zset会自动重新按照新的值调整顺序。可以理解为有两列的mysql表，一列存储value，一列存储顺序。操作中key理解成zset的名字。</strong></p>
+</li>
+<li><p>支持数据备份，即master-slave模式的数据备份。</p>
+</li>
+</ul>
+<h4 id="Redis优势"><a href="#Redis优势" class="headerlink" title="Redis优势"></a>Redis优势</h4><ul>
+<li>性能极高</li>
+<li>丰富的数据类型</li>
+<li>Redis所有的操作都是原子性的，要么成功执行要么失败要么完全不执行，多个操作也支持事务。但事务的执行并不是原子的。事务可以理解为一个打包的批量执行脚本，但批量指令并非原子化的操作，中间某条指令的失败不会导致前面已做指令的回滚，也不会造成后续的指令不做。</li>
+<li>丰富的特性等。</li>
+</ul>
+<h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><p>客户端基本语法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> redis-cli</span></span><br></pre></td></tr></table></figure>
+<p>PING用来检测redis服务是否启动，若启动会出现PONG。</p>
+<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">例如</span></span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span><span class="bash">其中runoobkey是一个键</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/Oracle和Mysql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1828,158 +1967,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/09/Condition/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Saikikky Wang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Saikikky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/09/Condition/" itemprop="url">Condition</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-09T15:17:01+08:00">
-                2019-07-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文来自：<a href="http://blog.csdn.net/ghsau" target="_blank" rel="noopener">高爽|Coder</a>，原文地址：<a href="http://blog.csdn.net/ghsau/article/details/7481142，转载请注明。" target="_blank" rel="noopener">http://blog.csdn.net/ghsau/article/details/7481142，转载请注明。</a></p>
-<p><strong><em>Condition 将 Object 监视器方法（wait、notify 和 notifyAll）分解成截然不同的对象，以便通过将这些对象与任意 Lock 实现组合使用，为每个对象提供多个等待 set （wait-set）。其中，Lock 替代了 synchronized 方法和语句的使用，Condition 替代了 Object 监视器方法的使用</em></strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest2</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">final</span> Business business = <span class="keyword">new</span> Business();</span><br><span class="line">		<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				threadExecute(business, <span class="string">"sub"</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).start();</span><br><span class="line">		threadExecute(business, <span class="string">"main"</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">threadExecute</span><span class="params">(Business business, String threadType)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">try</span> &#123;</span><br><span class="line">				<span class="keyword">if</span>(<span class="string">"main"</span>.equals(threadType)) &#123;</span><br><span class="line">					business.main(i);</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					business.sub(i);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Business</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> bool = <span class="keyword">true</span>;</span><br><span class="line">	<span class="keyword">private</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">	<span class="keyword">private</span> Condition condition = lock.newCondition(); </span><br><span class="line">	<span class="keyword">public</span> <span class="comment">/*synchronized*/</span> <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> loop)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		lock.lock();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">while</span>(bool) &#123;				</span><br><span class="line">				condition.await();<span class="comment">//this.wait();</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">				System.out.println(<span class="string">"main thread seq of "</span> + i + <span class="string">", loop of "</span> + loop);</span><br><span class="line">			&#125;</span><br><span class="line">			bool = <span class="keyword">true</span>;</span><br><span class="line">			condition.signal();<span class="comment">//this.notify();</span></span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;	</span><br><span class="line">	<span class="keyword">public</span> <span class="comment">/*synchronized*/</span> <span class="function"><span class="keyword">void</span> <span class="title">sub</span><span class="params">(<span class="keyword">int</span> loop)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		lock.lock();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">while</span>(!bool) &#123;</span><br><span class="line">				condition.await();<span class="comment">//this.wait();</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">				System.out.println(<span class="string">"sub thread seq of "</span> + i + <span class="string">", loop of "</span> + loop);</span><br><span class="line">			&#125;</span><br><span class="line">			bool = <span class="keyword">false</span>;</span><br><span class="line">			condition.signal();<span class="comment">//this.notify();</span></span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			lock.unlock();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在Condition中，用await()替换wait()，用signal()替换notify()，用signalAll()替换notifyAll()，传统线程的通信方式，Condition都可以实现，这里注意，Condition是被绑定到Lock上的，要创建一个Lock的Condition必须用newCondition()方法。这样看来，Condition和传统的线程通信没什么区别，Condition的强大之处在于它可以为多个线程间建立不同的Condition，下面引入API中的一段代码，加以说明。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BoundedBuffer</span> </span>&#123;</span><br><span class="line">   <span class="keyword">final</span> Lock lock = <span class="keyword">new</span> ReentrantLock();<span class="comment">//锁对象</span></span><br><span class="line">   <span class="keyword">final</span> Condition notFull  = lock.newCondition();<span class="comment">//写线程条件 </span></span><br><span class="line">   <span class="keyword">final</span> Condition notEmpty = lock.newCondition();<span class="comment">//读线程条件 </span></span><br><span class="line"> </span><br><span class="line">   <span class="keyword">final</span> Object[] items = <span class="keyword">new</span> Object[<span class="number">100</span>];<span class="comment">//缓存队列</span></span><br><span class="line">   <span class="keyword">int</span> putptr<span class="comment">/*写索引*/</span>, takeptr<span class="comment">/*读索引*/</span>, count<span class="comment">/*队列中存在的数据个数*/</span>;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Object x)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">     lock.lock();</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">       <span class="keyword">while</span> (count == items.length)<span class="comment">//如果队列满了 </span></span><br><span class="line">         notFull.await();<span class="comment">//阻塞写线程</span></span><br><span class="line">       items[putptr] = x;<span class="comment">//赋值 </span></span><br><span class="line">       <span class="keyword">if</span> (++putptr == items.length) putptr = <span class="number">0</span>;<span class="comment">//如果写索引写到队列的最后一个位置了，那么置为0</span></span><br><span class="line">       ++count;<span class="comment">//个数++</span></span><br><span class="line">       notEmpty.signal();<span class="comment">//唤醒读线程</span></span><br><span class="line">     &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">       lock.unlock();</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> </span><br><span class="line">   <span class="function"><span class="keyword">public</span> Object <span class="title">take</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">     lock.lock();</span><br><span class="line">     <span class="keyword">try</span> &#123;</span><br><span class="line">       <span class="keyword">while</span> (count == <span class="number">0</span>)<span class="comment">//如果队列为空</span></span><br><span class="line">         notEmpty.await();<span class="comment">//阻塞读线程</span></span><br><span class="line">       Object x = items[takeptr];<span class="comment">//取值 </span></span><br><span class="line">       <span class="keyword">if</span> (++takeptr == items.length) takeptr = <span class="number">0</span>;<span class="comment">//如果读索引读到队列的最后一个位置了，那么置为0</span></span><br><span class="line">       --count;<span class="comment">//个数--</span></span><br><span class="line">       notFull.signal();<span class="comment">//唤醒写线程</span></span><br><span class="line">       <span class="keyword">return</span> x;</span><br><span class="line">     &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">       lock.unlock();</span><br><span class="line">     &#125;</span><br><span class="line">   &#125; </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<p>这是一个处于多线程工作环境下的缓存区，缓存区提供了两个方法，put和take，put是存数据，take是取数据，内部有个缓存队列，具体变量和方法说明见代码，这个缓存区类实现的功能：有多个线程往里面存数据和从里面取数据，其缓存队列(先进先出后进后出)能缓存的最大数值是100，多个线程间是互斥的，当缓存队列中存储的值达到100时，将写线程阻塞，并唤醒读线程，当缓存队列中存储的值为0时，将读线程阻塞，并唤醒写线程，这也是ArrayBlockingQueue的内部实现。下面分析一下代码的执行过程.</p>
-<ol>
-<li><p>一个写线程执行，调用put方法；</p>
-</li>
-<li><p>判断count是否为100，显然没有100；</p>
-</li>
-<li><p>继续执行，存入值；</p>
-</li>
-<li><p>判断当前写入的索引位置++后，是否和100相等，相等将写入索引值变为0，并将count+1；</p>
-</li>
-<li><p>仅唤醒读线程阻塞队列中的一个；</p>
-</li>
-<li><p>一个读线程执行，调用take方法；</p>
-</li>
-<li><p>……</p>
-</li>
-<li><p>仅唤醒写线程阻塞队列中的一个。</p>
-<p> 这就是多个Condition的强大之处，假设缓存队列中已经存满，那么阻塞的肯定是写线程，唤醒的肯定是读线程，相反，阻塞的肯定是读线程，唤醒的肯定是写线程，那么假设只有一个Condition会有什么效果呢，缓存队列中已经存满，这个Lock不知道唤醒的是读线程还是写线程了，如果唤醒的是读线程，皆大欢喜，如果唤醒的是写线程，那么线程刚被唤醒，又被阻塞了，这时又去唤醒，这样就浪费了很多时间。</p>
-</li>
-</ol>
-<hr>
-<p>任意一个Java对象都拥有一组监视器方法(Object上)，主要包括wait()、notify()、notifyAll()方法，与synchronized关键字配合使用，可以实现等待/通知模式。Condition接口也提供了类似Object监视器的方法。与Lock配合可以实现等待/通知模式。使用前要注意在调用方法前获取锁。</p>
-<p>一般会将Condition对象作为成员变量。当调用await()方法后，当前线程会释放锁并在此等待。而其他线程调用Condition对象的signal()方法，通知当前线程之后，当前线程才从await()方法返回，并且在返回前已经获取了锁。</p>
-<p>如果一个线程调用了Condition.await()方法，那么该线程将会释放锁、构造成节点加入等待队列并进入等待状态。节点饮用更新的过程并没有使用CAS保证，原因在于调用await()方法的线程必定是获取了锁的线程，也就是该过程是由锁来保证线程安全的。在Object监视器模型上，一个对象拥有一个同步队列和等待队列，而并发包中的Lock拥有一个同步队列和多个等待队列。Condition的实现是同步器的内部类，因此每个Condition实例都能访问同步器提供的方法，相当于每个Condition都拥有所属同步器的引用。</p>
-<p>调用await()方法时，相当于是同步队列的首节点(获取了锁的节点)移动到Condition的等待队列中。同步队列的首节点并不是直接加入等待队列，而是通过addConditionWaiter()方法把当前线程构造成一个新的节点并将其加入等待队列中。</p>
-<p>调用signal()方法，唤醒在等待队列中等待时间最长的节点(首节点)，在唤醒节点之前，会将节点移到同步队列中。调用该方法的前置条件是当前线程必须获取了锁，接着获取等待队列的首节点，并将其移动到同步队列并使用LockSupport唤醒节点中的线程。</p>
-<p>被唤醒后的线程，将从await()方法中的while循环中退出，进而调用同步器的方法加入到获取同步状态的竞争中，成功获取同步状态(或者说锁)之后，被唤醒的线程将从先前调用的await()方法返回，此时该线程已经成功地获取了锁。</p>
-<p>Condition的signalAll()方法，相当于对等待队列中的每个节点均执行一次signal()方法，效果就是将等待队列中所有节点全部移动到同步队列中，并唤醒每个节点的线程。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2030,7 +2017,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
