@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
+<meta name="description" content="Oracle和MySQL Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。  SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。  关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。  MySQL是单进程多线程，Oracle是多进程(Windows下也是">
 <meta name="keywords" content="实习学习总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="事务">
-<meta property="og:url" content="http://yoursite.com/2019/08/10/事务/index.html">
+<meta property="og:title" content="Oracle和MySQL">
+<meta property="og:url" content="http://yoursite.com/2019/08/20/Oracle和Mysql/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
+<meta property="og:description" content="Oracle和MySQL Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。  SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。  关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。  MySQL是单进程多线程，Oracle是多进程(Windows下也是">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-10T03:16:49.121Z">
+<meta property="og:updated_time" content="2019-10-10T03:26:29.267Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="事务">
-<meta name="twitter:description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
+<meta name="twitter:title" content="Oracle和MySQL">
+<meta name="twitter:description" content="Oracle和MySQL Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。  SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。  关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。  MySQL是单进程多线程，Oracle是多进程(Windows下也是">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/10/事务/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/20/Oracle和Mysql/">
 
 
 
 
 
-  <title>事务 | Saikikky</title>
+  <title>Oracle和MySQL | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/事务/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/Oracle和Mysql/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">事务</h1>
+          <h1 class="post-title" itemprop="name headline">Oracle和MySQL</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-10T08:59:05+08:00">
-                2019-08-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T08:59:05+08:00">
+                2019-08-20
               </time>
             
 
@@ -309,44 +309,43 @@
       
 
       
-        <h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h4><p>传播行为、隔离规则、回滚规则、事务超时和是否只读？</p>
-<h5 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h5><blockquote>
-<p>当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。</p>
-</blockquote>
+        <h3 id="Oracle和MySQL"><a href="#Oracle和MySQL" class="headerlink" title="Oracle和MySQL"></a>Oracle和MySQL</h3><ul>
+<li><p>Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。</p>
+</li>
+<li><p>SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。</p>
+</li>
+<li><p>关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。</p>
+</li>
+<li><p>MySQL是单进程多线程，Oracle是多进程(Windows下也是单进程)，在Windows操作系统下只能使用一个用户，或者是在不同的用户之间做切换，但在Linux下，是多用户或者相同用户可以同时连接操作系统。</p>
+</li>
+<li><p>数据库和实例以及用户之间的关系。</p>
+<p>MySQL的实例是用户登陆时系统分配给用户的，而用户必须是先在MySQL中创建好，然后登陆用户mysql -u username -p。instance&gt;database</p>
+<p>Oracle的实例是在创建数据库的时候就默认创建好的，而用户基于数据库实例，实例之间可以没有关系所以其中的用户也不尽相同，登陆不同的实例相当于登陆了不同的数据库。</p>
+<p>instance=database</p>
+</li>
+<li><p>SQL语法</p>
 <ul>
-<li>Spring 中定义了七种传播行为<ul>
-<li>PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。</li>
-<li>PROPAGATION_SUPPORTS 表示当前方法不需要事务上下文，但是如果存在当前事务的话，那么该方法会在这个事务中运行。</li>
-<li>PROPAGATION_MANDATORY 表示方法必须在事务中运行，如果当前事务不存在，抛出异常。</li>
-<li>PROPAGATION_REQUIRED_NEW 表示当前方法必须运行在它自己的事务中。一个新的事务将被启动。如果存在当前事务，在该方法执行期间，当前事务会被挂起。</li>
-<li>PROPAGATION_NOT_SUPPORTED 表示该方法不应该运行在事务中。如果存在当前事务，在方法运行期间，当前事务将被挂起。</li>
-<li>PROPAGATION_NEVER 表示当前方法不应该运行在事务上下文中。如果当前正有一个事务在运行，则会抛出异常。</li>
-<li>PROPAGATION_NESTED 表示如果当前已经存在一个事务，那么该方法将会在嵌套事务中运行。嵌套的事务可以独立于当前事务进行单独地提交或回滚。如果当前事务不存在，那么其行为与PROPAGATION_REQUIRED一样。注意各厂商对这种传播行为的支持是有所差异的。可以参考资源管理器的文档来确认它们是否支持嵌套事务</li>
-</ul>
+<li><p>建表时，Oracle不支持在建表的同时增加字段注释，需要单独加注释</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> predict_data <span class="keyword">as</span>  (</span><br><span class="line">  <span class="keyword">id</span>             <span class="built_in">integer</span>       <span class="keyword">NOT</span> <span class="literal">NULL</span>,    </span><br><span class="line">  uid            varchar2(<span class="number">80</span>),</span><br><span class="line">  <span class="keyword">mid</span>            varchar2(<span class="number">80</span>),</span><br><span class="line">  <span class="built_in">time</span>           <span class="built_in">date</span>        ,</span><br><span class="line">  <span class="keyword">content</span>        varchar2(<span class="number">300</span>),</span><br><span class="line">  <span class="keyword">constraint</span> predict_data primary <span class="keyword">key</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"><span class="comment">#字段注释</span></span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">table</span> predict_data <span class="keyword">is</span> <span class="string">'预测表'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.id <span class="keyword">is</span> <span class="string">'主键'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.uid <span class="keyword">is</span> <span class="string">'用户名'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.mid <span class="keyword">is</span> <span class="string">'博文id'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.time <span class="keyword">is</span> <span class="string">'发文时间'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.content <span class="keyword">is</span> <span class="string">'发文内容'</span>;</span><br></pre></td></tr></table></figure>
+<p>MySQL可以同时增加字段注释</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> predict_data (</span><br><span class="line">  <span class="keyword">id</span>               <span class="built_in">int</span>                <span class="keyword">NOT</span> <span class="literal">NULL</span>     <span class="keyword">COMMENT</span> <span class="string">'主键'</span>, </span><br><span class="line">  uid               <span class="built_in">varchar</span>(<span class="number">80</span>)      <span class="keyword">NOT</span> <span class="literal">NULL</span>     <span class="keyword">COMMENT</span> <span class="string">'用户标记'</span>,</span><br><span class="line">  <span class="keyword">mid</span>               <span class="built_in">varchar</span>(<span class="number">80</span>)      <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'博文标记'</span>    ,</span><br><span class="line">  <span class="built_in">time</span>              datetime          <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'发博时间'</span>    ,</span><br><span class="line">  <span class="keyword">content</span>        <span class="built_in">varchar</span>(<span class="number">300</span>)   <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'博文内容'</span>    ,</span><br><span class="line">  CONSTRAINTpredict_data PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>),</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=gbk <span class="keyword">COLLATE</span>=gbk_bin;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动增长的数据类型处理</p>
+<p>MySQL有自动增长的数据类型，插入记录时不用操作此字段，会自动获得数据值。Oracle没有自动增长的数据类型，需要建立一个自动增长的序列号，插入记录时要把序列号的下一个赋值给该字段。</p>
+</li>
+<li><p>单引号的处理</p>
+<p>MySQL中可以用双引号包含字符串，Oracle只能用单引号包起字符串。在插入和修改字符串之前必须要做单引号的替换：把所有出现的一个单引号替换成两个单引号。</p>
+</li>
+<li><p>分页</p>
+<p>MySQL中用LIMIT开始位置，记录个数，Oracle中每个结果集只有一个ROWNUM字段标明它的位置。</p>
 </li>
 </ul>
-<h5 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h5><blockquote>
-<p>隔离级别定义了一个事务可能受其他并发事务影响的程度。</p>
-</blockquote>
-<ul>
-<li><p>并发事务引起的问题</p>
-<p>| 脏读           | 发生在一个事务读取了另一个事务改写但尚未提交的数据时，如果改写在之后被回滚，那么第一个事务获取的数据就是无效的。 |<br>| ————– | ———————————————————— |<br>| <strong>不可重复读</strong> | <strong>不可重复读发生在一个事务执行相同的查询两次或者两次以上，但每次都得到不同的数据。这通常是因为另一个并发事务在两次查询期间进行了更新。</strong> |<br>| <strong>幻读</strong>       | <strong>发生在一个事务读取了几行数据，接着另一个并发事务插入了一些数据时，在随后的查询中，第一个事务就会发现多了一些原本不存在的记录。</strong> |</p>
-<ul>
-<li>不可重复读重点是修改，同样的条件读取过得数据再次读取的时候发现值不一样了。</li>
-<li>幻读的重点是新增和删除，同样的条件第一次和第二次读出来的记录数不一样。</li>
-<li>对于前者，只需要锁住满足条件的记录；对于后者，要锁住满足条件及其相近的记录。</li>
-</ul>
 </li>
-<li><p>隔离级别</p>
-<p>| 隔离级别                   | 含义                                                         |<br>| ————————– | ———————————————————— |<br>| ISOLATION_DEFAULT          | 后端数据库默认的隔离级别。大多数默认Read committed，MySQL 默认Repeatable read |<br>| ISOLATION_READ_UNCOMMITTED | 最低的隔离级别，允许读取尚未提交的数据变更，脏读、幻读、不可重复读。 |<br>| ISOLATION_READ_COMMITTED   | 允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生。 |<br>| ISOLATION_REPEATABLE_READ  | 对同一字段的多次读取结果是一致的，除非数据是被本身事务所修改，可以阻止脏读和不可重复读，但幻读还是有可能发生， |<br>| ISOLATION_SERIALIZABLE     | 最高的隔离级别，完全服从 ACID的隔离级别，确保阻止脏读、不可重复读和幻读，也是最慢的事务隔离级别 |</p>
+<li><p>索引</p>
+<p>索引是关系数据库中用于存放每一条记录的一种对象，主要目的是加快数据的读取速度和完整性检查。建立索引是一项技术性要求高的工作，一般在数据库设计阶段与数据库结构一道考虑，应用系统的性能与索引的合理直接有关。</p>
+<p>Oracle和MySQL的常用索引结构基本都是B树。</p>
 </li>
 </ul>
-<h5 id="只读"><a href="#只读" class="headerlink" title="只读"></a>只读</h5><blockquote>
-<p>是否为只读事务，如果事务只对后端的数据库进行该操作，数据库可以利用事务的只读特性来进行一些特定的优化。</p>
-</blockquote>
-<h5 id="事务超时"><a href="#事务超时" class="headerlink" title="事务超时"></a>事务超时</h5><blockquote>
-<p>事务不能运行太长时间，因为事务可能对数据库锁定，所以长时间的事务会不必要的占用数据库资源。实物超时就是指，事务在一定时间内没有执行完毕，就会自动回滚，而不是一直等待它结束。</p>
-</blockquote>
 
       
     </div>
@@ -377,8 +376,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/07/for循环中创建对象和for循环外创建对象/" rel="next" title="for循环内外创建对象">
-                <i class="fa fa-chevron-left"></i> for循环内外创建对象
+              <a href="/2019/08/15/MySQL索引/" rel="next" title="MySQL索引">
+                <i class="fa fa-chevron-left"></i> MySQL索引
               </a>
             
           </div>
@@ -386,10 +385,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/11/Java8 新特性/" rel="prev" title="Java8新特性">
-                Java8新特性 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -512,7 +507,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">1.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事务属性"><span class="nav-number">1.1.</span> <span class="nav-text">事务属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#传播行为"><span class="nav-number">1.1.1.</span> <span class="nav-text">传播行为</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#隔离级别"><span class="nav-number">1.1.2.</span> <span class="nav-text">隔离级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#只读"><span class="nav-number">1.1.3.</span> <span class="nav-text">只读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务超时"><span class="nav-number">1.1.4.</span> <span class="nav-text">事务超时</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle和MySQL"><span class="nav-number">1.</span> <span class="nav-text">Oracle和MySQL</span></a></li></ol></div>
             
 
           </div>

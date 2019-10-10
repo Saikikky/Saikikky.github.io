@@ -238,6 +238,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/Oracle和Mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/20/Oracle和Mysql/" itemprop="url">Oracle和MySQL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T08:59:05+08:00">
+                2019-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Oracle和MySQL"><a href="#Oracle和MySQL" class="headerlink" title="Oracle和MySQL"></a>Oracle和MySQL</h3><ul>
+<li><p>Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。</p>
+</li>
+<li><p>SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。</p>
+</li>
+<li><p>关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。</p>
+</li>
+<li><p>MySQL是单进程多线程，Oracle是多进程(Windows下也是单进程)，在Windows操作系统下只能使用一个用户，或者是在不同的用户之间做切换，但在Linux下，是多用户或者相同用户可以同时连接操作系统。</p>
+</li>
+<li><p>数据库和实例以及用户之间的关系。</p>
+<p>MySQL的实例是用户登陆时系统分配给用户的，而用户必须是先在MySQL中创建好，然后登陆用户mysql -u username -p。instance&gt;database</p>
+<p>Oracle的实例是在创建数据库的时候就默认创建好的，而用户基于数据库实例，实例之间可以没有关系所以其中的用户也不尽相同，登陆不同的实例相当于登陆了不同的数据库。</p>
+<p>instance=database</p>
+</li>
+<li><p>SQL语法</p>
+<ul>
+<li><p>建表时，Oracle不支持在建表的同时增加字段注释，需要单独加注释</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> predict_data <span class="keyword">as</span>  (</span><br><span class="line">  <span class="keyword">id</span>             <span class="built_in">integer</span>       <span class="keyword">NOT</span> <span class="literal">NULL</span>,    </span><br><span class="line">  uid            varchar2(<span class="number">80</span>),</span><br><span class="line">  <span class="keyword">mid</span>            varchar2(<span class="number">80</span>),</span><br><span class="line">  <span class="built_in">time</span>           <span class="built_in">date</span>        ,</span><br><span class="line">  <span class="keyword">content</span>        varchar2(<span class="number">300</span>),</span><br><span class="line">  <span class="keyword">constraint</span> predict_data primary <span class="keyword">key</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"><span class="comment">#字段注释</span></span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">table</span> predict_data <span class="keyword">is</span> <span class="string">'预测表'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.id <span class="keyword">is</span> <span class="string">'主键'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.uid <span class="keyword">is</span> <span class="string">'用户名'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.mid <span class="keyword">is</span> <span class="string">'博文id'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.time <span class="keyword">is</span> <span class="string">'发文时间'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.content <span class="keyword">is</span> <span class="string">'发文内容'</span>;</span><br></pre></td></tr></table></figure>
+<p>MySQL可以同时增加字段注释</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> predict_data (</span><br><span class="line">  <span class="keyword">id</span>               <span class="built_in">int</span>                <span class="keyword">NOT</span> <span class="literal">NULL</span>     <span class="keyword">COMMENT</span> <span class="string">'主键'</span>, </span><br><span class="line">  uid               <span class="built_in">varchar</span>(<span class="number">80</span>)      <span class="keyword">NOT</span> <span class="literal">NULL</span>     <span class="keyword">COMMENT</span> <span class="string">'用户标记'</span>,</span><br><span class="line">  <span class="keyword">mid</span>               <span class="built_in">varchar</span>(<span class="number">80</span>)      <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'博文标记'</span>    ,</span><br><span class="line">  <span class="built_in">time</span>              datetime          <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'发博时间'</span>    ,</span><br><span class="line">  <span class="keyword">content</span>        <span class="built_in">varchar</span>(<span class="number">300</span>)   <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'博文内容'</span>    ,</span><br><span class="line">  CONSTRAINTpredict_data PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>),</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=gbk <span class="keyword">COLLATE</span>=gbk_bin;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动增长的数据类型处理</p>
+<p>MySQL有自动增长的数据类型，插入记录时不用操作此字段，会自动获得数据值。Oracle没有自动增长的数据类型，需要建立一个自动增长的序列号，插入记录时要把序列号的下一个赋值给该字段。</p>
+</li>
+<li><p>单引号的处理</p>
+<p>MySQL中可以用双引号包含字符串，Oracle只能用单引号包起字符串。在插入和修改字符串之前必须要做单引号的替换：把所有出现的一个单引号替换成两个单引号。</p>
+</li>
+<li><p>分页</p>
+<p>MySQL中用LIMIT开始位置，记录个数，Oracle中每个结果集只有一个ROWNUM字段标明它的位置。</p>
+</li>
+</ul>
+</li>
+<li><p>索引</p>
+<p>索引是关系数据库中用于存放每一条记录的一种对象，主要目的是加快数据的读取速度和完整性检查。建立索引是一项技术性要求高的工作，一般在数据库设计阶段与数据库结构一道考虑，应用系统的性能与索引的合理直接有关。</p>
+<p>Oracle和MySQL的常用索引结构基本都是B树。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/MySQL索引/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1824,153 +1980,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/锁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Saikikky Wang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Saikikky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/02/锁/" itemprop="url">锁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T20:48:03+08:00">
-                2019-07-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h2><p>比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。</p>
-<p>Lock接口的使用方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">lock.lock();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在finally块中释放锁，目的是保证在获取到锁之后，最终能够被释放。</p>
-<h3 id="队列同步器AbstractQueuedSynchronizer"><a href="#队列同步器AbstractQueuedSynchronizer" class="headerlink" title="队列同步器AbstractQueuedSynchronizer"></a>队列同步器AbstractQueuedSynchronizer</h3><p>Lock接口的实现基本都是通过聚合了一个同步器的子类来完成线程访问控制的。</p>
-<p>同步器用来构建锁或者其他同步组件的基础框架，使用一个int成员变量表示同步状态，通过<strong>内置的FIFO队列</strong>来完成资源获取线程的排队工作。</p>
-<p>同步器主要使用方式是继承，子类被推荐定义为自动义同步组件的静态内部类，同步器自身并没有实现任何同步接口，它仅仅是定义了若干同步状态获取和释放的方法来供自定义组件使用，同步器既可以支持独占式地获取同步状态也可以支持共享式地获取同步状态，这样就可以方便实现不同类型的同步组件。(ReentrantLock、ReentrantReadWriteLock和CountDownLatch等)</p>
-<ul>
-<li><p>同步器与锁</p>
-<p>锁是面向使用者的，它定义了使用者与锁交互的接口(比如可以允许两个线程并行访问)，隐藏了实现细节；同步器面向的是锁的实现者，简化锁的实现方式，屏蔽同步状态管理、线程的排队、等待和唤醒灯底层的操作。说白了，同步器就是实现锁的关键，利用同步器实现锁的语义。</p>
-</li>
-</ul>
-<p>同步器的设计基于模板方法模式，使用者继承同步器并重写制定的方法，随后将同步器组合在自定义同步组件的实现中，并调用同步器提供的模版方法，而这些模版方法将会调用使用者重写的方法。</p>
-<ul>
-<li><p>独占式锁</p>
-<p>在获取同步状态时，同步器维护一个同步队列，获取状态失败的线程都会被加入到队列中并在队列中进行自旋；移出队列(或停止自旋)的条件是前驱节点为头节点且成功获取了同步状态。在释放同步状态时，同步器调用tryRelease(int arg)方法释放同步状态，然后唤醒头节点的后继节点。</p>
-</li>
-<li><p>共享式同步锁</p>
-<p>支持多个线程同时共享资源(读锁)，写锁为独占式访问。</p>
-</li>
-<li><p>独占式超时获取同步状态</p>
-<p>流程与独占式锁类似，在未获取到同步状态时，会使当前线程等待nanosTimeout纳秒，如果当前线程在nanosTimeout纳秒内没有获取到同步状态，将会从等待逻辑中自动返回。(抛出中断异常)</p>
-</li>
-</ul>
-<h3 id="重入锁ReentrantLock"><a href="#重入锁ReentrantLock" class="headerlink" title="重入锁ReentrantLock"></a>重入锁ReentrantLock</h3><p>支持重进入的锁，表示该锁能够支持一个线程对资源的重复加锁，此外，还支持获取锁时的公平和非公平性选择。(公平锁就是在绝对时间上，先对锁进行获取的请求一定先被满足)(synchronized关键字隐式的支持重进入，比如一个synchronized修饰的递归方法，在方法执行时，执行线程在获取了锁之后仍能连续多次的获得该锁)</p>
-<p><strong>重复获得多少次锁，释放的时候就要释放多少次，同步状态值</strong></p>
-<h3 id="读写锁ReentrantReadWriteLock"><a href="#读写锁ReentrantReadWriteLock" class="headerlink" title="读写锁ReentrantReadWriteLock"></a>读写锁ReentrantReadWriteLock</h3><p>读写锁在同一时刻可以允许多个读线程访问，不是排他锁。但是在写线程访问时，所有的读线程和其他线程均被阻塞。读写锁维护了一堆锁，一个读锁和一个写锁。</p>
-<p><strong><em>遵循获取写锁、获取读锁再释放写锁的次序，写锁能够降级为读锁</em></strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2021,7 +2030,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
