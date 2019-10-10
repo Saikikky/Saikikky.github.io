@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Java并发,">
+  <meta name="keywords" content="实习学习总结,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
-<meta name="keywords" content="Java并发">
+<meta name="description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
+<meta name="keywords" content="实习学习总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="锁">
-<meta property="og:url" content="http://yoursite.com/2019/07/02/锁/index.html">
+<meta property="og:title" content="事务">
+<meta property="og:url" content="http://yoursite.com/2019/09/24/事务/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
+<meta property="og:description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-11T02:22:10.083Z">
+<meta property="og:updated_time" content="2019-10-10T03:09:48.726Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="锁">
-<meta name="twitter:description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
+<meta name="twitter:title" content="事务">
+<meta name="twitter:description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/02/锁/">
+  <link rel="canonical" href="http://yoursite.com/2019/09/24/事务/">
 
 
 
 
 
-  <title>锁 | Saikikky</title>
+  <title>事务 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/锁/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/24/事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">锁</h1>
+          <h1 class="post-title" itemprop="name headline">事务</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T20:48:03+08:00">
-                2019-07-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-09-24T14:32:31+08:00">
+                2019-09-24
               </time>
             
 
@@ -309,34 +309,44 @@
       
 
       
-        <h2 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h2><p>比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。</p>
-<p>Lock接口的使用方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">lock.lock();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在finally块中释放锁，目的是保证在获取到锁之后，最终能够被释放。</p>
-<h3 id="队列同步器AbstractQueuedSynchronizer"><a href="#队列同步器AbstractQueuedSynchronizer" class="headerlink" title="队列同步器AbstractQueuedSynchronizer"></a>队列同步器AbstractQueuedSynchronizer</h3><p>Lock接口的实现基本都是通过聚合了一个同步器的子类来完成线程访问控制的。</p>
-<p>同步器用来构建锁或者其他同步组件的基础框架，使用一个int成员变量表示同步状态，通过<strong>内置的FIFO队列</strong>来完成资源获取线程的排队工作。</p>
-<p>同步器主要使用方式是继承，子类被推荐定义为自动义同步组件的静态内部类，同步器自身并没有实现任何同步接口，它仅仅是定义了若干同步状态获取和释放的方法来供自定义组件使用，同步器既可以支持独占式地获取同步状态也可以支持共享式地获取同步状态，这样就可以方便实现不同类型的同步组件。(ReentrantLock、ReentrantReadWriteLock和CountDownLatch等)</p>
+        <h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h4><p>传播行为、隔离规则、回滚规则、事务超时和是否只读？</p>
+<h5 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h5><blockquote>
+<p>当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。</p>
+</blockquote>
 <ul>
-<li><p>同步器与锁</p>
-<p>锁是面向使用者的，它定义了使用者与锁交互的接口(比如可以允许两个线程并行访问)，隐藏了实现细节；同步器面向的是锁的实现者，简化锁的实现方式，屏蔽同步状态管理、线程的排队、等待和唤醒灯底层的操作。说白了，同步器就是实现锁的关键，利用同步器实现锁的语义。</p>
+<li>Spring 中定义了七种传播行为<ul>
+<li>PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。</li>
+<li>PROPAGATION_SUPPORTS 表示当前方法不需要事务上下文，但是如果存在当前事务的话，那么该方法会在这个事务中运行。</li>
+<li>PROPAGATION_MANDATORY 表示方法必须在事务中运行，如果当前事务不存在，抛出异常。</li>
+<li>PROPAGATION_REQUIRED_NEW 表示当前方法必须运行在它自己的事务中。一个新的事务将被启动。如果存在当前事务，在该方法执行期间，当前事务会被挂起。</li>
+<li>PROPAGATION_NOT_SUPPORTED 表示该方法不应该运行在事务中。如果存在当前事务，在方法运行期间，当前事务将被挂起。</li>
+<li>PROPAGATION_NEVER 表示当前方法不应该运行在事务上下文中。如果当前正有一个事务在运行，则会抛出异常。</li>
+<li>PROPAGATION_NESTED 表示如果当前已经存在一个事务，那么该方法将会在嵌套事务中运行。嵌套的事务可以独立于当前事务进行单独地提交或回滚。如果当前事务不存在，那么其行为与PROPAGATION_REQUIRED一样。注意各厂商对这种传播行为的支持是有所差异的。可以参考资源管理器的文档来确认它们是否支持嵌套事务</li>
+</ul>
 </li>
 </ul>
-<p>同步器的设计基于模板方法模式，使用者继承同步器并重写制定的方法，随后将同步器组合在自定义同步组件的实现中，并调用同步器提供的模版方法，而这些模版方法将会调用使用者重写的方法。</p>
+<h5 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h5><blockquote>
+<p>隔离级别定义了一个事务可能受其他并发事务影响的程度。</p>
+</blockquote>
 <ul>
-<li><p>独占式锁</p>
-<p>在获取同步状态时，同步器维护一个同步队列，获取状态失败的线程都会被加入到队列中并在队列中进行自旋；移出队列(或停止自旋)的条件是前驱节点为头节点且成功获取了同步状态。在释放同步状态时，同步器调用tryRelease(int arg)方法释放同步状态，然后唤醒头节点的后继节点。</p>
+<li><p>并发事务引起的问题</p>
+<p>| 脏读           | 发生在一个事务读取了另一个事务改写但尚未提交的数据时，如果改写在之后被回滚，那么第一个事务获取的数据就是无效的。 |<br>| ————– | ———————————————————— |<br>| <strong>不可重复读</strong> | <strong>不可重复读发生在一个事务执行相同的查询两次或者两次以上，但每次都得到不同的数据。这通常是因为另一个并发事务在两次查询期间进行了更新。</strong> |<br>| <strong>幻读</strong>       | <strong>发生在一个事务读取了几行数据，接着另一个并发事务插入了一些数据时，在随后的查询中，第一个事务就会发现多了一些原本不存在的记录。</strong> |</p>
+<ul>
+<li>不可重复读重点是修改，同样的条件读取过得数据再次读取的时候发现值不一样了。</li>
+<li>幻读的重点是新增和删除，同样的条件第一次和第二次读出来的记录数不一样。</li>
+<li>对于前者，只需要锁住满足条件的记录；对于后者，要锁住满足条件及其相近的记录。</li>
+</ul>
 </li>
-<li><p>共享式同步锁</p>
-<p>支持多个线程同时共享资源(读锁)，写锁为独占式访问。</p>
-</li>
-<li><p>独占式超时获取同步状态</p>
-<p>流程与独占式锁类似，在未获取到同步状态时，会使当前线程等待nanosTimeout纳秒，如果当前线程在nanosTimeout纳秒内没有获取到同步状态，将会从等待逻辑中自动返回。(抛出中断异常)</p>
+<li><p>隔离级别</p>
+<p>| 隔离级别                   | 含义                                                         |<br>| ————————– | ———————————————————— |<br>| ISOLATION_DEFAULT          | 后端数据库默认的隔离级别。大多数默认Read committed，MySQL 默认Repeatable read |<br>| ISOLATION_READ_UNCOMMITTED | 最低的隔离级别，允许读取尚未提交的数据变更，脏读、幻读、不可重复读。 |<br>| ISOLATION_READ_COMMITTED   | 允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生。 |<br>| ISOLATION_REPEATABLE_READ  | 对同一字段的多次读取结果是一致的，除非数据是被本身事务所修改，可以阻止脏读和不可重复读，但幻读还是有可能发生， |<br>| ISOLATION_SERIALIZABLE     | 最高的隔离级别，完全服从 ACID的隔离级别，确保阻止脏读、不可重复读和幻读，也是最慢的事务隔离级别 |</p>
 </li>
 </ul>
-<h3 id="重入锁ReentrantLock"><a href="#重入锁ReentrantLock" class="headerlink" title="重入锁ReentrantLock"></a>重入锁ReentrantLock</h3><p>支持重进入的锁，表示该锁能够支持一个线程对资源的重复加锁，此外，还支持获取锁时的公平和非公平性选择。(公平锁就是在绝对时间上，先对锁进行获取的请求一定先被满足)(synchronized关键字隐式的支持重进入，比如一个synchronized修饰的递归方法，在方法执行时，执行线程在获取了锁之后仍能连续多次的获得该锁)</p>
-<p><strong>重复获得多少次锁，释放的时候就要释放多少次，同步状态值</strong></p>
-<h3 id="读写锁ReentrantReadWriteLock"><a href="#读写锁ReentrantReadWriteLock" class="headerlink" title="读写锁ReentrantReadWriteLock"></a>读写锁ReentrantReadWriteLock</h3><p>读写锁在同一时刻可以允许多个读线程访问，不是排他锁。但是在写线程访问时，所有的读线程和其他线程均被阻塞。读写锁维护了一堆锁，一个读锁和一个写锁。</p>
-<p><strong><em>遵循获取写锁、获取读锁再释放写锁的次序，写锁能够降级为读锁</em></strong></p>
+<h5 id="只读"><a href="#只读" class="headerlink" title="只读"></a>只读</h5><blockquote>
+<p>是否为只读事务，如果事务只对后端的数据库进行该操作，数据库可以利用事务的只读特性来进行一些特定的优化。</p>
+</blockquote>
+<h5 id="事务超时"><a href="#事务超时" class="headerlink" title="事务超时"></a>事务超时</h5><blockquote>
+<p>事务不能运行太长时间，因为事务可能对数据库锁定，所以长时间的事务会不必要的占用数据库资源。实物超时就是指，事务在一定时间内没有执行完毕，就会自动回滚，而不是一直等待它结束。</p>
+</blockquote>
 
       
     </div>
@@ -354,7 +364,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java并发/" rel="tag"># Java并发</a>
+            <a href="/tags/实习学习总结/" rel="tag"># 实习学习总结</a>
           
         </div>
       
@@ -367,8 +377,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/02/并发编程/" rel="next" title="并发编程">
-                <i class="fa fa-chevron-left"></i> 并发编程
+              <a href="/2019/09/24/熔断、限流和降级/" rel="next" title="熔断、限流和降级">
+                <i class="fa fa-chevron-left"></i> 熔断、限流和降级
               </a>
             
           </div>
@@ -376,10 +386,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/09/Condition/" rel="prev" title="Condition">
-                Condition <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -502,7 +508,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock接口"><span class="nav-number">1.</span> <span class="nav-text">Lock接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#队列同步器AbstractQueuedSynchronizer"><span class="nav-number">1.1.</span> <span class="nav-text">队列同步器AbstractQueuedSynchronizer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁ReentrantLock"><span class="nav-number">1.2.</span> <span class="nav-text">重入锁ReentrantLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁ReentrantReadWriteLock"><span class="nav-number">1.3.</span> <span class="nav-text">读写锁ReentrantReadWriteLock</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">1.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事务属性"><span class="nav-number">1.1.</span> <span class="nav-text">事务属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#传播行为"><span class="nav-number">1.1.1.</span> <span class="nav-text">传播行为</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#隔离级别"><span class="nav-number">1.1.2.</span> <span class="nav-text">隔离级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#只读"><span class="nav-number">1.1.3.</span> <span class="nav-text">只读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务超时"><span class="nav-number">1.1.4.</span> <span class="nav-text">事务超时</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

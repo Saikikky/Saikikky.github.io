@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Java并发,">
+  <meta name="keywords" content="实习学习总结,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
-<meta name="keywords" content="Java并发">
+<meta name="description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta name="keywords" content="实习学习总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="锁">
-<meta property="og:url" content="http://yoursite.com/2019/07/02/锁/index.html">
+<meta property="og:title" content="搭建Spring Cloud Demo中遇到的问题">
+<meta property="og:url" content="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
+<meta property="og:description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-11T02:22:10.083Z">
+<meta property="og:updated_time" content="2019-10-10T03:08:52.287Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="锁">
-<meta name="twitter:description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
+<meta name="twitter:title" content="搭建Spring Cloud Demo中遇到的问题">
+<meta name="twitter:description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/02/锁/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
 
 
 
 
 
-  <title>锁 | Saikikky</title>
+  <title>搭建Spring Cloud Demo中遇到的问题 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/锁/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">锁</h1>
+          <h1 class="post-title" itemprop="name headline">搭建Spring Cloud Demo中遇到的问题</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T20:48:03+08:00">
-                2019-07-02
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-29T08:59:05+08:00">
+                2019-07-29
               </time>
             
 
@@ -309,34 +309,24 @@
       
 
       
-        <h2 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h2><p>比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。</p>
-<p>Lock接口的使用方式</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">lock.lock();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在finally块中释放锁，目的是保证在获取到锁之后，最终能够被释放。</p>
-<h3 id="队列同步器AbstractQueuedSynchronizer"><a href="#队列同步器AbstractQueuedSynchronizer" class="headerlink" title="队列同步器AbstractQueuedSynchronizer"></a>队列同步器AbstractQueuedSynchronizer</h3><p>Lock接口的实现基本都是通过聚合了一个同步器的子类来完成线程访问控制的。</p>
-<p>同步器用来构建锁或者其他同步组件的基础框架，使用一个int成员变量表示同步状态，通过<strong>内置的FIFO队列</strong>来完成资源获取线程的排队工作。</p>
-<p>同步器主要使用方式是继承，子类被推荐定义为自动义同步组件的静态内部类，同步器自身并没有实现任何同步接口，它仅仅是定义了若干同步状态获取和释放的方法来供自定义组件使用，同步器既可以支持独占式地获取同步状态也可以支持共享式地获取同步状态，这样就可以方便实现不同类型的同步组件。(ReentrantLock、ReentrantReadWriteLock和CountDownLatch等)</p>
-<ul>
-<li><p>同步器与锁</p>
-<p>锁是面向使用者的，它定义了使用者与锁交互的接口(比如可以允许两个线程并行访问)，隐藏了实现细节；同步器面向的是锁的实现者，简化锁的实现方式，屏蔽同步状态管理、线程的排队、等待和唤醒灯底层的操作。说白了，同步器就是实现锁的关键，利用同步器实现锁的语义。</p>
+        <ol>
+<li><p>SpringCloud无法引入@EnableFeignClients问题**</p>
+<p>问题描述：</p>
+<p>SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入feign--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-feign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>版本不兼容问题，修改SpringBoot版本为1.5.13.RELEASE，Spring Cloude版本为Edgware.SR4后导入成功。(公司pom文件显示用的是1.5.11.RELEASE版本的SpringBoot和Edgware.RELEASE版本的Spring Cloud)</p>
 </li>
-</ul>
-<p>同步器的设计基于模板方法模式，使用者继承同步器并重写制定的方法，随后将同步器组合在自定义同步组件的实现中，并调用同步器提供的模版方法，而这些模版方法将会调用使用者重写的方法。</p>
-<ul>
-<li><p>独占式锁</p>
-<p>在获取同步状态时，同步器维护一个同步队列，获取状态失败的线程都会被加入到队列中并在队列中进行自旋；移出队列(或停止自旋)的条件是前驱节点为头节点且成功获取了同步状态。在释放同步状态时，同步器调用tryRelease(int arg)方法释放同步状态，然后唤醒头节点的后继节点。</p>
+<li><p><strong>服务消费者无法调用服务提供者的方法</strong></p>
+<p>问题描述：</p>
+<p>Eureka注册中心启动正常，服务提供者和服务调用者都成功注册到注册中心，其中注册中心端口号为8000，提供者端口号为9000，调用者端口号为9001。全部成功启动之后，直接调用服务提供者提供的方法可以成功访问，但通过调用者9001端口访问服务显示feign.RetryableException: Read timed out executing GET <a href="http://spring-cloud-producer/hello?name=s]" target="_blank" rel="noopener">http://spring-cloud-producer/hello?name=s]</a> with root cause错误，百度发现是超时问题修改了各种熔断 ribbon和feign配置都不起作用。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同一实例最大重试次数，不包括首次调用。默认值为0</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=0</span></span><br><span class="line"><span class="comment"># 同一个微服务其他实例的最大重试次数，不包括第一次调用的实例。默认值为1</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=0</span></span><br><span class="line"><span class="comment"># 是否所有操作（GET、POST等）都允许重试。默认值为false</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=false</span></span><br><span class="line"><span class="comment">## 设置连接超时时间</span></span><br><span class="line"><span class="string">ribbon.ConnectTimeout=60000</span></span><br><span class="line"><span class="comment">## 设置读取超时时间</span></span><br><span class="line"><span class="string">ribbon.ReadTimeout=60000</span></span><br><span class="line"><span class="comment">## 关闭feign的熔断</span></span><br><span class="line"><span class="string">feign.hystrix.enabled=false</span></span><br><span class="line"><span class="comment">## 用于禁用Hystrix的超时时间</span></span><br><span class="line"><span class="string">hystrix.command.default.execution.timeout.enabled=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 对所有操作请求都进行重试</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=true</span></span><br><span class="line"><span class="comment">## 切换实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=2</span></span><br><span class="line"><span class="comment">## 对当前实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=1</span></span><br></pre></td></tr></table></figure>
+<p>最后问题是8000端口无法访问？？但注册中心正常启动且服务提供端也可以正常启动  改成8080端口之后可以访问，重启电脑之后8000端口也可以访问，初步判断是端口占用的问题，但Eureka注册和服务器调用注册等的端口是如何工作的要再了解一下。</p>
+<p>项目正常运行之后 通过netstat -anp tcp命令查看端口使用情况发现启用了五个127.0.0.1.8000 所以Eureka注册中心启动的时候究竟启动了几个怎么启动的需要看下。</p>
 </li>
-<li><p>共享式同步锁</p>
-<p>支持多个线程同时共享资源(读锁)，写锁为独占式访问。</p>
+<li><p>设置FeignClient中的fallback不起作用，发现是没有打开feign对hystrix的支持。在配置文件中加入如下配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  hystrix:</span></span><br><span class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>独占式超时获取同步状态</p>
-<p>流程与独占式锁类似，在未获取到同步状态时，会使当前线程等待nanosTimeout纳秒，如果当前线程在nanosTimeout纳秒内没有获取到同步状态，将会从等待逻辑中自动返回。(抛出中断异常)</p>
-</li>
-</ul>
-<h3 id="重入锁ReentrantLock"><a href="#重入锁ReentrantLock" class="headerlink" title="重入锁ReentrantLock"></a>重入锁ReentrantLock</h3><p>支持重进入的锁，表示该锁能够支持一个线程对资源的重复加锁，此外，还支持获取锁时的公平和非公平性选择。(公平锁就是在绝对时间上，先对锁进行获取的请求一定先被满足)(synchronized关键字隐式的支持重进入，比如一个synchronized修饰的递归方法，在方法执行时，执行线程在获取了锁之后仍能连续多次的获得该锁)</p>
-<p><strong>重复获得多少次锁，释放的时候就要释放多少次，同步状态值</strong></p>
-<h3 id="读写锁ReentrantReadWriteLock"><a href="#读写锁ReentrantReadWriteLock" class="headerlink" title="读写锁ReentrantReadWriteLock"></a>读写锁ReentrantReadWriteLock</h3><p>读写锁在同一时刻可以允许多个读线程访问，不是排他锁。但是在写线程访问时，所有的读线程和其他线程均被阻塞。读写锁维护了一堆锁，一个读锁和一个写锁。</p>
-<p><strong><em>遵循获取写锁、获取读锁再释放写锁的次序，写锁能够降级为读锁</em></strong></p>
+</ol>
 
       
     </div>
@@ -354,7 +344,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java并发/" rel="tag"># Java并发</a>
+            <a href="/tags/实习学习总结/" rel="tag"># 实习学习总结</a>
           
         </div>
       
@@ -367,8 +357,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/02/并发编程/" rel="next" title="并发编程">
-                <i class="fa fa-chevron-left"></i> 并发编程
+              <a href="/2019/07/11/Java并发容器和框架/" rel="next" title="Java并发容器和框架">
+                <i class="fa fa-chevron-left"></i> Java并发容器和框架
               </a>
             
           </div>
@@ -377,8 +367,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/09/Condition/" rel="prev" title="Condition">
-                Condition <i class="fa fa-chevron-right"></i>
+              <a href="/2019/09/24/熔断、限流和降级/" rel="prev" title="熔断、限流和降级">
+                熔断、限流和降级 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -431,17 +421,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -492,22 +473,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock接口"><span class="nav-number">1.</span> <span class="nav-text">Lock接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#队列同步器AbstractQueuedSynchronizer"><span class="nav-number">1.1.</span> <span class="nav-text">队列同步器AbstractQueuedSynchronizer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁ReentrantLock"><span class="nav-number">1.2.</span> <span class="nav-text">重入锁ReentrantLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁ReentrantReadWriteLock"><span class="nav-number">1.3.</span> <span class="nav-text">读写锁ReentrantReadWriteLock</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
