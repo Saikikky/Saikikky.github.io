@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta name="description" content="熔断、限流和降级(rabbit mq)熔断熔断机制是应对雪崩效应的一种微服务链路保护机制，一般情况下当内部出现错误导致某个微服务不可用或者响应时间太长的情况，会进行服务的降级，进而熔断该节点微服务的调用，快读返回错误的响应信息。当检测到该节点微服务调用响应正常之后，恢复调用链路。 在Spring Cloud中，Hystrix会监控微服务间调用的状况，当失败的调用到一定阈值，缺省是5秒内20次调用失">
 <meta name="keywords" content="实习学习总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建Spring Cloud Demo中遇到的问题">
-<meta property="og:url" content="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/index.html">
+<meta property="og:title" content="熔断、限流和降级">
+<meta property="og:url" content="http://yoursite.com/2019/08/05/熔断、限流和降级/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta property="og:description" content="熔断、限流和降级(rabbit mq)熔断熔断机制是应对雪崩效应的一种微服务链路保护机制，一般情况下当内部出现错误导致某个微服务不可用或者响应时间太长的情况，会进行服务的降级，进而熔断该节点微服务的调用，快读返回错误的响应信息。当检测到该节点微服务调用响应正常之后，恢复调用链路。 在Spring Cloud中，Hystrix会监控微服务间调用的状况，当失败的调用到一定阈值，缺省是5秒内20次调用失">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-10T03:08:52.287Z">
+<meta property="og:updated_time" content="2019-10-10T03:16:37.166Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建Spring Cloud Demo中遇到的问题">
-<meta name="twitter:description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta name="twitter:title" content="熔断、限流和降级">
+<meta name="twitter:description" content="熔断、限流和降级(rabbit mq)熔断熔断机制是应对雪崩效应的一种微服务链路保护机制，一般情况下当内部出现错误导致某个微服务不可用或者响应时间太长的情况，会进行服务的降级，进而熔断该节点微服务的调用，快读返回错误的响应信息。当检测到该节点微服务调用响应正常之后，恢复调用链路。 在Spring Cloud中，Hystrix会监控微服务间调用的状况，当失败的调用到一定阈值，缺省是5秒内20次调用失">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/05/熔断、限流和降级/">
 
 
 
 
 
-  <title>搭建Spring Cloud Demo中遇到的问题 | Saikikky</title>
+  <title>熔断、限流和降级 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/05/熔断、限流和降级/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">搭建Spring Cloud Demo中遇到的问题</h1>
+          <h1 class="post-title" itemprop="name headline">熔断、限流和降级</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-29T08:59:05+08:00">
-                2019-07-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-05T08:59:05+08:00">
+                2019-08-05
               </time>
             
 
@@ -309,24 +309,44 @@
       
 
       
-        <ol>
-<li><p>SpringCloud无法引入@EnableFeignClients问题**</p>
-<p>问题描述：</p>
-<p>SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入feign--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-feign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>版本不兼容问题，修改SpringBoot版本为1.5.13.RELEASE，Spring Cloude版本为Edgware.SR4后导入成功。(公司pom文件显示用的是1.5.11.RELEASE版本的SpringBoot和Edgware.RELEASE版本的Spring Cloud)</p>
+        <h2 id="熔断、限流和降级-rabbit-mq"><a href="#熔断、限流和降级-rabbit-mq" class="headerlink" title="熔断、限流和降级(rabbit mq)"></a>熔断、限流和降级(rabbit mq)</h2><h3 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h3><p>熔断机制是应对雪崩效应的一种微服务链路保护机制，一般情况下当内部出现错误导致某个微服务不可用或者响应时间太长的情况，会进行服务的降级，进而熔断该节点微服务的调用，快读返回错误的响应信息。当检测到该节点微服务调用响应正常之后，恢复调用链路。</p>
+<p>在Spring Cloud中，Hystrix会监控微服务间调用的状况，当失败的调用到一定阈值，缺省是5秒内20次调用失败，就会启动熔断机制。</p>
+<p>熔断解决一下问题：</p>
+<ul>
+<li>当所依赖的对象不稳定时，能够起到快速失败的目的</li>
+<li>快速失败之后，能够根据一定的算法动态试探所依赖的对象是否恢复</li>
+</ul>
+<h3 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h3><p>限流的目的是通过对并发反问/请求进行限速或者一个时间窗口内的请求进行限速来保护系统，一旦达到限制速率则可以拒绝服务(定向到错误页或告知资源没有了)、排队或者等待(比如秒杀、评论、下单)、降级(返回兜底数据或默认数据，如商品详情页库存默认有货)。</p>
+<p>一般情况下，开发高并发系统常见的限流有：限制总并发数(数据库连接池、线程池)、限制瞬时并发数、限制时间窗口内的平均速率，其他还有限制远程接口调用速率、限制MQ的消费速率，另外还可以根据网络连接数、网络流量、CPU或内存负载等来限流。</p>
+<h3 id="降级"><a href="#降级" class="headerlink" title="降级"></a>降级</h3><p>降级是指自己的待遇下降了，从RPC调用环节来讲，就是去访问一个本地的伪装者而不是真正的服务。当服务器压力剧增的情况下，根据实际业务情况及流量，对一些服务和页面有策略的不处理或换种简单的方式处理，从而释放服务器资源以及保证核心交易正常运作或高效运作。</p>
+<p>服务降级主要用于：当整个微服务架构整体的负载超出了预设的上限阈值或即将到来的流量预计将会超过预设的阈值时，为了保证重要的或基本的服务能正常运行，可以将一些不重要或者不紧急的服务或任务进行服务的延迟使用或暂停使用。</p>
+<p>当某个模块内部出现问题，直接将入口取消掉，接口关闭，不会影响其他模块的运行。</p>
+<p>当微服务A调用微服务B时，不直接调用B，而是给一个RabbitMQ发送message，此时A为生产者，消息就存储在MQ中，之后B有一个监听listen，可以监听到有内容发送了，当B没有问题的时候会从MQ中读取message，<u>当A发现一段时间之后B没有读取内容会重新发送？？？(不确定)</u></p>
+<h3 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h3><p>消息队列主要用途：不同进程Process/线程Thread之间通信。</p>
+<p>MQ是一种常见的上下游“逻辑解耦+物理解耦”的消息通信服务。</p>
+<ul>
+<li>不同进程之间传递消息时，两个进程之间耦合程度过高，改动一个进程，引发必须修改另一个进程，为了隔离这两个进程，在两进程间抽离出一层(一个模块)，所有两进程之间传递的消息，都必须通过消息队列来传递，单独修改某一个进程，不会影响另一个。</li>
+<li>不同进程之间传递消息时，为了实现标准化，将消息的格式规范化了，并且，某一个进程接受的消息太多，一下子无法处理完，并且也有先后顺序，必须对收到的消息进行排队，因此诞生了事实上的消息队列。</li>
+</ul>
+<p><strong>什么时候使用MQ</strong></p>
+<ul>
+<li><p>数据驱动的任务依赖(任务之间有依赖关系)</p>
+<p>MQ用来传递上游任务执行完成的消息，并不用于传递真正的输入输出数据。</p>
 </li>
-<li><p><strong>服务消费者无法调用服务提供者的方法</strong></p>
-<p>问题描述：</p>
-<p>Eureka注册中心启动正常，服务提供者和服务调用者都成功注册到注册中心，其中注册中心端口号为8000，提供者端口号为9000，调用者端口号为9001。全部成功启动之后，直接调用服务提供者提供的方法可以成功访问，但通过调用者9001端口访问服务显示feign.RetryableException: Read timed out executing GET <a href="http://spring-cloud-producer/hello?name=s]" target="_blank" rel="noopener">http://spring-cloud-producer/hello?name=s]</a> with root cause错误，百度发现是超时问题修改了各种熔断 ribbon和feign配置都不起作用。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同一实例最大重试次数，不包括首次调用。默认值为0</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=0</span></span><br><span class="line"><span class="comment"># 同一个微服务其他实例的最大重试次数，不包括第一次调用的实例。默认值为1</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=0</span></span><br><span class="line"><span class="comment"># 是否所有操作（GET、POST等）都允许重试。默认值为false</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=false</span></span><br><span class="line"><span class="comment">## 设置连接超时时间</span></span><br><span class="line"><span class="string">ribbon.ConnectTimeout=60000</span></span><br><span class="line"><span class="comment">## 设置读取超时时间</span></span><br><span class="line"><span class="string">ribbon.ReadTimeout=60000</span></span><br><span class="line"><span class="comment">## 关闭feign的熔断</span></span><br><span class="line"><span class="string">feign.hystrix.enabled=false</span></span><br><span class="line"><span class="comment">## 用于禁用Hystrix的超时时间</span></span><br><span class="line"><span class="string">hystrix.command.default.execution.timeout.enabled=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 对所有操作请求都进行重试</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=true</span></span><br><span class="line"><span class="comment">## 切换实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=2</span></span><br><span class="line"><span class="comment">## 对当前实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=1</span></span><br></pre></td></tr></table></figure>
-<p>最后问题是8000端口无法访问？？但注册中心正常启动且服务提供端也可以正常启动  改成8080端口之后可以访问，重启电脑之后8000端口也可以访问，初步判断是端口占用的问题，但Eureka注册和服务器调用注册等的端口是如何工作的要再了解一下。</p>
-<p>项目正常运行之后 通过netstat -anp tcp命令查看端口使用情况发现启用了五个127.0.0.1.8000 所以Eureka注册中心启动的时候究竟启动了几个怎么启动的需要看下。</p>
+<li><p>上游不关心执行结果</p>
 </li>
-<li><p>设置FeignClient中的fallback不起作用，发现是没有打开feign对hystrix的支持。在配置文件中加入如下配置。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  hystrix:</span></span><br><span class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<li><p>上游关注执行结果，但执行时间很长(调用离线处理，或者跨公网调用)</p>
 </li>
-</ol>
+</ul>
+<p>MQ的不足是：</p>
+<ul>
+<li>系统更加复杂，多了一个MQ组件。</li>
+<li>消息传递路径更长，延时会增加。</li>
+<li>消息可靠性和重复性互为矛盾，消息不丢不重难以同时保证。</li>
+<li>生产者无法知道消费者的执行结果。</li>
+</ul>
+<p><strong>调用方实时依赖执行结果的业务场景，要用直接调用，而不是MQ</strong>。</p>
+<p>例如：用户登录场景，登录页面调用passport服务，passport服务的执行结果直接影响登录结果，此处的“登录页面”与“passport服务”就必须使用调用关系，而不能使用MQ通信。<strong><em>调用与被调用的关系，是无法被MQ取代的。</em></strong> </p>
 
       
     </div>
@@ -357,8 +377,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/11/Java并发容器和框架/" rel="next" title="Java并发容器和框架">
-                <i class="fa fa-chevron-left"></i> Java并发容器和框架
+              <a href="/2019/07/29/搭建Spring Cloud Demo中遇到的问题/" rel="next" title="搭建Spring Cloud Demo中遇到的问题">
+                <i class="fa fa-chevron-left"></i> 搭建Spring Cloud Demo中遇到的问题
               </a>
             
           </div>
@@ -367,8 +387,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/05/熔断、限流和降级/" rel="prev" title="熔断、限流和降级">
-                熔断、限流和降级 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/08/06/自定义注解/" rel="prev" title="自定义注解">
+                自定义注解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -421,8 +441,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -473,6 +502,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#熔断、限流和降级-rabbit-mq"><span class="nav-number">1.</span> <span class="nav-text">熔断、限流和降级(rabbit mq)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#熔断"><span class="nav-number">1.1.</span> <span class="nav-text">熔断</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#限流"><span class="nav-number">1.2.</span> <span class="nav-text">限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#降级"><span class="nav-number">1.3.</span> <span class="nav-text">降级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ"><span class="nav-number">1.4.</span> <span class="nav-text">RabbitMQ</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

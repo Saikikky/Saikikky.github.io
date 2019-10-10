@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta name="description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
 <meta name="keywords" content="实习学习总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建Spring Cloud Demo中遇到的问题">
-<meta property="og:url" content="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/index.html">
+<meta property="og:title" content="事务">
+<meta property="og:url" content="http://yoursite.com/2019/08/10/事务/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta property="og:description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-10T03:08:52.287Z">
+<meta property="og:updated_time" content="2019-10-10T03:16:49.121Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建Spring Cloud Demo中遇到的问题">
-<meta name="twitter:description" content="SpringCloud无法引入@EnableFeignClients问题** 问题描述： SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。 12345&amp;lt;!--引入feign--&amp;gt;        &amp;lt;dependency">
+<meta name="twitter:title" content="事务">
+<meta name="twitter:description" content="事务事务属性传播行为、隔离规则、回滚规则、事务超时和是否只读？ 传播行为 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。   Spring 中定义了七种传播行为 PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。 P">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
+  <link rel="canonical" href="http://yoursite.com/2019/08/10/事务/">
 
 
 
 
 
-  <title>搭建Spring Cloud Demo中遇到的问题 | Saikikky</title>
+  <title>事务 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">搭建Spring Cloud Demo中遇到的问题</h1>
+          <h1 class="post-title" itemprop="name headline">事务</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-29T08:59:05+08:00">
-                2019-07-29
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-10T08:59:05+08:00">
+                2019-08-10
               </time>
             
 
@@ -309,24 +309,44 @@
       
 
       
-        <ol>
-<li><p>SpringCloud无法引入@EnableFeignClients问题**</p>
-<p>问题描述：</p>
-<p>SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入feign--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-feign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>版本不兼容问题，修改SpringBoot版本为1.5.13.RELEASE，Spring Cloude版本为Edgware.SR4后导入成功。(公司pom文件显示用的是1.5.11.RELEASE版本的SpringBoot和Edgware.RELEASE版本的Spring Cloud)</p>
+        <h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h4><p>传播行为、隔离规则、回滚规则、事务超时和是否只读？</p>
+<h5 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h5><blockquote>
+<p>当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。</p>
+</blockquote>
+<ul>
+<li>Spring 中定义了七种传播行为<ul>
+<li>PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。</li>
+<li>PROPAGATION_SUPPORTS 表示当前方法不需要事务上下文，但是如果存在当前事务的话，那么该方法会在这个事务中运行。</li>
+<li>PROPAGATION_MANDATORY 表示方法必须在事务中运行，如果当前事务不存在，抛出异常。</li>
+<li>PROPAGATION_REQUIRED_NEW 表示当前方法必须运行在它自己的事务中。一个新的事务将被启动。如果存在当前事务，在该方法执行期间，当前事务会被挂起。</li>
+<li>PROPAGATION_NOT_SUPPORTED 表示该方法不应该运行在事务中。如果存在当前事务，在方法运行期间，当前事务将被挂起。</li>
+<li>PROPAGATION_NEVER 表示当前方法不应该运行在事务上下文中。如果当前正有一个事务在运行，则会抛出异常。</li>
+<li>PROPAGATION_NESTED 表示如果当前已经存在一个事务，那么该方法将会在嵌套事务中运行。嵌套的事务可以独立于当前事务进行单独地提交或回滚。如果当前事务不存在，那么其行为与PROPAGATION_REQUIRED一样。注意各厂商对这种传播行为的支持是有所差异的。可以参考资源管理器的文档来确认它们是否支持嵌套事务</li>
+</ul>
 </li>
-<li><p><strong>服务消费者无法调用服务提供者的方法</strong></p>
-<p>问题描述：</p>
-<p>Eureka注册中心启动正常，服务提供者和服务调用者都成功注册到注册中心，其中注册中心端口号为8000，提供者端口号为9000，调用者端口号为9001。全部成功启动之后，直接调用服务提供者提供的方法可以成功访问，但通过调用者9001端口访问服务显示feign.RetryableException: Read timed out executing GET <a href="http://spring-cloud-producer/hello?name=s]" target="_blank" rel="noopener">http://spring-cloud-producer/hello?name=s]</a> with root cause错误，百度发现是超时问题修改了各种熔断 ribbon和feign配置都不起作用。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同一实例最大重试次数，不包括首次调用。默认值为0</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=0</span></span><br><span class="line"><span class="comment"># 同一个微服务其他实例的最大重试次数，不包括第一次调用的实例。默认值为1</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=0</span></span><br><span class="line"><span class="comment"># 是否所有操作（GET、POST等）都允许重试。默认值为false</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=false</span></span><br><span class="line"><span class="comment">## 设置连接超时时间</span></span><br><span class="line"><span class="string">ribbon.ConnectTimeout=60000</span></span><br><span class="line"><span class="comment">## 设置读取超时时间</span></span><br><span class="line"><span class="string">ribbon.ReadTimeout=60000</span></span><br><span class="line"><span class="comment">## 关闭feign的熔断</span></span><br><span class="line"><span class="string">feign.hystrix.enabled=false</span></span><br><span class="line"><span class="comment">## 用于禁用Hystrix的超时时间</span></span><br><span class="line"><span class="string">hystrix.command.default.execution.timeout.enabled=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 对所有操作请求都进行重试</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=true</span></span><br><span class="line"><span class="comment">## 切换实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=2</span></span><br><span class="line"><span class="comment">## 对当前实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=1</span></span><br></pre></td></tr></table></figure>
-<p>最后问题是8000端口无法访问？？但注册中心正常启动且服务提供端也可以正常启动  改成8080端口之后可以访问，重启电脑之后8000端口也可以访问，初步判断是端口占用的问题，但Eureka注册和服务器调用注册等的端口是如何工作的要再了解一下。</p>
-<p>项目正常运行之后 通过netstat -anp tcp命令查看端口使用情况发现启用了五个127.0.0.1.8000 所以Eureka注册中心启动的时候究竟启动了几个怎么启动的需要看下。</p>
+</ul>
+<h5 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h5><blockquote>
+<p>隔离级别定义了一个事务可能受其他并发事务影响的程度。</p>
+</blockquote>
+<ul>
+<li><p>并发事务引起的问题</p>
+<p>| 脏读           | 发生在一个事务读取了另一个事务改写但尚未提交的数据时，如果改写在之后被回滚，那么第一个事务获取的数据就是无效的。 |<br>| ————– | ———————————————————— |<br>| <strong>不可重复读</strong> | <strong>不可重复读发生在一个事务执行相同的查询两次或者两次以上，但每次都得到不同的数据。这通常是因为另一个并发事务在两次查询期间进行了更新。</strong> |<br>| <strong>幻读</strong>       | <strong>发生在一个事务读取了几行数据，接着另一个并发事务插入了一些数据时，在随后的查询中，第一个事务就会发现多了一些原本不存在的记录。</strong> |</p>
+<ul>
+<li>不可重复读重点是修改，同样的条件读取过得数据再次读取的时候发现值不一样了。</li>
+<li>幻读的重点是新增和删除，同样的条件第一次和第二次读出来的记录数不一样。</li>
+<li>对于前者，只需要锁住满足条件的记录；对于后者，要锁住满足条件及其相近的记录。</li>
+</ul>
 </li>
-<li><p>设置FeignClient中的fallback不起作用，发现是没有打开feign对hystrix的支持。在配置文件中加入如下配置。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  hystrix:</span></span><br><span class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<li><p>隔离级别</p>
+<p>| 隔离级别                   | 含义                                                         |<br>| ————————– | ———————————————————— |<br>| ISOLATION_DEFAULT          | 后端数据库默认的隔离级别。大多数默认Read committed，MySQL 默认Repeatable read |<br>| ISOLATION_READ_UNCOMMITTED | 最低的隔离级别，允许读取尚未提交的数据变更，脏读、幻读、不可重复读。 |<br>| ISOLATION_READ_COMMITTED   | 允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生。 |<br>| ISOLATION_REPEATABLE_READ  | 对同一字段的多次读取结果是一致的，除非数据是被本身事务所修改，可以阻止脏读和不可重复读，但幻读还是有可能发生， |<br>| ISOLATION_SERIALIZABLE     | 最高的隔离级别，完全服从 ACID的隔离级别，确保阻止脏读、不可重复读和幻读，也是最慢的事务隔离级别 |</p>
 </li>
-</ol>
+</ul>
+<h5 id="只读"><a href="#只读" class="headerlink" title="只读"></a>只读</h5><blockquote>
+<p>是否为只读事务，如果事务只对后端的数据库进行该操作，数据库可以利用事务的只读特性来进行一些特定的优化。</p>
+</blockquote>
+<h5 id="事务超时"><a href="#事务超时" class="headerlink" title="事务超时"></a>事务超时</h5><blockquote>
+<p>事务不能运行太长时间，因为事务可能对数据库锁定，所以长时间的事务会不必要的占用数据库资源。实物超时就是指，事务在一定时间内没有执行完毕，就会自动回滚，而不是一直等待它结束。</p>
+</blockquote>
 
       
     </div>
@@ -357,8 +377,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/11/Java并发容器和框架/" rel="next" title="Java并发容器和框架">
-                <i class="fa fa-chevron-left"></i> Java并发容器和框架
+              <a href="/2019/08/06/自定义注解/" rel="next" title="自定义注解">
+                <i class="fa fa-chevron-left"></i> 自定义注解
               </a>
             
           </div>
@@ -366,10 +386,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/05/熔断、限流和降级/" rel="prev" title="熔断、限流和降级">
-                熔断、限流和降级 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -421,8 +437,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -473,6 +498,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#事务"><span class="nav-number">1.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事务属性"><span class="nav-number">1.1.</span> <span class="nav-text">事务属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#传播行为"><span class="nav-number">1.1.1.</span> <span class="nav-text">传播行为</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#隔离级别"><span class="nav-number">1.1.2.</span> <span class="nav-text">隔离级别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#只读"><span class="nav-number">1.1.3.</span> <span class="nav-text">只读</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务超时"><span class="nav-number">1.1.4.</span> <span class="nav-text">事务超时</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
