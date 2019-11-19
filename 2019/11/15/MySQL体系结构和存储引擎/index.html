@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="实习学习总结,">
+  <meta name="keywords" content="MySQL,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="Oracle和MySQL Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。  SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。  关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。  MySQL是单进程多线程，Oracle是多进程(Windows下也是">
-<meta name="keywords" content="实习学习总结">
+<meta name="description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Oracle和MySQL">
-<meta property="og:url" content="http://yoursite.com/2019/08/20/Oracle和Mysql/index.html">
+<meta property="og:title" content="MySQL体系结构和存储引擎">
+<meta property="og:url" content="http://yoursite.com/2019/11/15/MySQL体系结构和存储引擎/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="Oracle和MySQL Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。  SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。  关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。  MySQL是单进程多线程，Oracle是多进程(Windows下也是">
+<meta property="og:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-10T03:26:29.267Z">
+<meta property="og:updated_time" content="2019-11-19T12:58:16.166Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Oracle和MySQL">
-<meta name="twitter:description" content="Oracle和MySQL Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。  SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。  关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。  MySQL是单进程多线程，Oracle是多进程(Windows下也是">
+<meta name="twitter:title" content="MySQL体系结构和存储引擎">
+<meta name="twitter:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/20/Oracle和Mysql/">
+  <link rel="canonical" href="http://yoursite.com/2019/11/15/MySQL体系结构和存储引擎/">
 
 
 
 
 
-  <title>Oracle和MySQL | Saikikky</title>
+  <title>MySQL体系结构和存储引擎 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/Oracle和Mysql/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/15/MySQL体系结构和存储引擎/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Oracle和MySQL</h1>
+          <h1 class="post-title" itemprop="name headline">MySQL体系结构和存储引擎</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T08:59:05+08:00">
-                2019-08-20
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-15T10:29:02+08:00">
+                2019-11-15
               </time>
             
 
@@ -309,43 +309,17 @@
       
 
       
-        <h3 id="Oracle和MySQL"><a href="#Oracle和MySQL" class="headerlink" title="Oracle和MySQL"></a>Oracle和MySQL</h3><ul>
-<li><p>Oracle是大型数据库而MySQL是中小型数据库，Oracle不开源价格昂贵，Mysql开源。</p>
-</li>
-<li><p>SQL语法不同，MySQL比较灵活而Oracle比较严格，比如单引号使用，分页的处理以及主键的自动增长。</p>
-</li>
-<li><p>关于事务，MySQL默认对事务不支持，但innodb存储引擎支持，Oracle对事务完全支持。</p>
-</li>
-<li><p>MySQL是单进程多线程，Oracle是多进程(Windows下也是单进程)，在Windows操作系统下只能使用一个用户，或者是在不同的用户之间做切换，但在Linux下，是多用户或者相同用户可以同时连接操作系统。</p>
-</li>
-<li><p>数据库和实例以及用户之间的关系。</p>
-<p>MySQL的实例是用户登陆时系统分配给用户的，而用户必须是先在MySQL中创建好，然后登陆用户mysql -u username -p。instance&gt;database</p>
-<p>Oracle的实例是在创建数据库的时候就默认创建好的，而用户基于数据库实例，实例之间可以没有关系所以其中的用户也不尽相同，登陆不同的实例相当于登陆了不同的数据库。</p>
-<p>instance=database</p>
-</li>
-<li><p>SQL语法</p>
-<ul>
-<li><p>建表时，Oracle不支持在建表的同时增加字段注释，需要单独加注释</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建表</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> predict_data <span class="keyword">as</span>  (</span><br><span class="line">  <span class="keyword">id</span>             <span class="built_in">integer</span>       <span class="keyword">NOT</span> <span class="literal">NULL</span>,    </span><br><span class="line">  uid            varchar2(<span class="number">80</span>),</span><br><span class="line">  <span class="keyword">mid</span>            varchar2(<span class="number">80</span>),</span><br><span class="line">  <span class="built_in">time</span>           <span class="built_in">date</span>        ,</span><br><span class="line">  <span class="keyword">content</span>        varchar2(<span class="number">300</span>),</span><br><span class="line">  <span class="keyword">constraint</span> predict_data primary <span class="keyword">key</span> (<span class="keyword">id</span>)</span><br><span class="line">);</span><br><span class="line"><span class="comment">#字段注释</span></span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">table</span> predict_data <span class="keyword">is</span> <span class="string">'预测表'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.id <span class="keyword">is</span> <span class="string">'主键'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.uid <span class="keyword">is</span> <span class="string">'用户名'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.mid <span class="keyword">is</span> <span class="string">'博文id'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.time <span class="keyword">is</span> <span class="string">'发文时间'</span>;</span><br><span class="line"><span class="keyword">comment</span> <span class="keyword">on</span> <span class="keyword">column</span> predict_data.content <span class="keyword">is</span> <span class="string">'发文内容'</span>;</span><br></pre></td></tr></table></figure>
-<p>MySQL可以同时增加字段注释</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> predict_data (</span><br><span class="line">  <span class="keyword">id</span>               <span class="built_in">int</span>                <span class="keyword">NOT</span> <span class="literal">NULL</span>     <span class="keyword">COMMENT</span> <span class="string">'主键'</span>, </span><br><span class="line">  uid               <span class="built_in">varchar</span>(<span class="number">80</span>)      <span class="keyword">NOT</span> <span class="literal">NULL</span>     <span class="keyword">COMMENT</span> <span class="string">'用户标记'</span>,</span><br><span class="line">  <span class="keyword">mid</span>               <span class="built_in">varchar</span>(<span class="number">80</span>)      <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'博文标记'</span>    ,</span><br><span class="line">  <span class="built_in">time</span>              datetime          <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'发博时间'</span>    ,</span><br><span class="line">  <span class="keyword">content</span>        <span class="built_in">varchar</span>(<span class="number">300</span>)   <span class="keyword">DEFAULT</span> <span class="literal">NULL</span> <span class="keyword">COMMENT</span>    <span class="string">'博文内容'</span>    ,</span><br><span class="line">  CONSTRAINTpredict_data PRIMARY <span class="keyword">KEY</span> (<span class="keyword">id</span>),</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=gbk <span class="keyword">COLLATE</span>=gbk_bin;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>自动增长的数据类型处理</p>
-<p>MySQL有自动增长的数据类型，插入记录时不用操作此字段，会自动获得数据值。Oracle没有自动增长的数据类型，需要建立一个自动增长的序列号，插入记录时要把序列号的下一个赋值给该字段。</p>
-</li>
-<li><p>单引号的处理</p>
-<p>MySQL中可以用双引号包含字符串，Oracle只能用单引号包起字符串。在插入和修改字符串之前必须要做单引号的替换：把所有出现的一个单引号替换成两个单引号。</p>
-</li>
-<li><p>分页</p>
-<p>MySQL中用LIMIT开始位置，记录个数，Oracle中每个结果集只有一个ROWNUM字段标明它的位置。</p>
-</li>
+        <h3 id="MySQL体系结构"><a href="#MySQL体系结构" class="headerlink" title="MySQL体系结构"></a>MySQL体系结构</h3><p><strong>数据库</strong> : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。</p>
+<p><strong>数据库实例</strong> : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控制都是在数据库实例下进行的。</p>
+<p><strong>MySQL数据库区别于其他数据库的一个很重要的特点就是插件式的表存储引擎</strong></p>
+<p><strong><em>存储引擎是基于表的，而不是数据库</em></strong>  </p>
+<h5 id="InnoDB和MyISAM"><a href="#InnoDB和MyISAM" class="headerlink" title="InnoDB和MyISAM"></a>InnoDB和MyISAM</h5><ul>
+<li>InnoDB存储引擎支持事务，面向在线事务处理的应用，其特点是行锁设计、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁。对于表中数据的存储，InnoDB存储引擎采用了聚集(cluster)的方式，每张表的存储都是按照主键的顺序进行存放，如果没有显式的在表定义时指定主键，InnDB存储引擎回为每一行生成一个6字节的ROWID，并以此作为主键。</li>
+<li>MyISAM存储引擎不支持事务、表锁设计，支持全文索引。MyISAM存储引擎的另一个特点是它的缓冲池只缓存索引文件，而不缓存数据文件，数据文件的缓存交给操作系统本身完成。</li>
 </ul>
-</li>
-<li><p>索引</p>
-<p>索引是关系数据库中用于存放每一条记录的一种对象，主要目的是加快数据的读取速度和完整性检查。建立索引是一项技术性要求高的工作，一般在数据库设计阶段与数据库结构一道考虑，应用系统的性能与索引的合理直接有关。</p>
-<p>Oracle和MySQL的常用索引结构基本都是B树。</p>
-</li>
-</ul>
+<blockquote>
+<p>InnoDB索引文件相当于是整个数据文件，MyISAM索引文件仅仅只是索引文件。</p>
+</blockquote>
 
       
     </div>
@@ -363,7 +337,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/实习学习总结/" rel="tag"># 实习学习总结</a>
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
           
         </div>
       
@@ -376,8 +350,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/15/MySQL索引/" rel="next" title="MySQL索引">
-                <i class="fa fa-chevron-left"></i> MySQL索引
+              <a href="/2019/08/22/Redis简介/" rel="next" title="Redis 简介">
+                <i class="fa fa-chevron-left"></i> Redis 简介
               </a>
             
           </div>
@@ -385,10 +359,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/22/Redis简介/" rel="prev" title="Redis 简介">
-                Redis 简介 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -511,7 +481,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Oracle和MySQL"><span class="nav-number">1.</span> <span class="nav-text">Oracle和MySQL</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.0.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a></li></ol></li></ol></div>
             
 
           </div>
