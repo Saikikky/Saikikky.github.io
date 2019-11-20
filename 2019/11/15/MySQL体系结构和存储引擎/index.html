@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-19T12:58:16.166Z">
+<meta property="og:updated_time" content="2019-11-20T02:29:49.157Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL体系结构和存储引擎">
 <meta name="twitter:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
@@ -313,14 +313,15 @@
 <p><strong>数据库实例</strong> : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控制都是在数据库实例下进行的。</p>
 <p><strong>MySQL数据库区别于其他数据库的一个很重要的特点就是插件式的表存储引擎</strong></p>
 <p><strong><em>存储引擎是基于表的，而不是数据库</em></strong>  </p>
-<h5 id="InnoDB和MyISAM"><a href="#InnoDB和MyISAM" class="headerlink" title="InnoDB和MyISAM"></a>InnoDB和MyISAM</h5><ul>
-<li>InnoDB存储引擎支持事务，面向在线事务处理的应用，其特点是行锁设计、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁。对于表中数据的存储，InnoDB存储引擎采用了聚集(cluster)的方式，每张表的存储都是按照主键的顺序进行存放，如果没有显式的在表定义时指定主键，InnDB存储引擎回为每一行生成一个6字节的ROWID，并以此作为主键。</li>
+<h4 id="InnoDB和MyISAM"><a href="#InnoDB和MyISAM" class="headerlink" title="InnoDB和MyISAM"></a>InnoDB和MyISAM</h4><ul>
+<li>InnoDB存储引擎支持事务，面向在线事务处理的应用，其特点是行锁设计、支持MVCC、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁，同时被设计用来最有效地利用以及使用内存和CPU。对于表中数据的存储，InnoDB存储引擎采用了聚集(cluster)的方式，每张表的存储都是按照主键的顺序进行存放，如果没有显式的在表定义时指定主键，InnDB存储引擎回为每一行生成一个6字节的ROWID，并以此作为主键。</li>
 <li>MyISAM存储引擎不支持事务、表锁设计，支持全文索引。MyISAM存储引擎的另一个特点是它的缓冲池只缓存索引文件，而不缓存数据文件，数据文件的缓存交给操作系统本身完成。</li>
 </ul>
 <blockquote>
 <p>InnoDB索引文件相当于是整个数据文件，MyISAM索引文件仅仅只是索引文件。</p>
 </blockquote>
-
+<p>+++</p>
+<h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3>
       
     </div>
     
@@ -481,7 +482,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.0.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB存储引擎"><span class="nav-number">2.</span> <span class="nav-text">InnoDB存储引擎</span></a></li></ol></div>
             
 
           </div>

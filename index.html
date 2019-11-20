@@ -313,14 +313,15 @@
 <p><strong>数据库实例</strong> : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控制都是在数据库实例下进行的。</p>
 <p><strong>MySQL数据库区别于其他数据库的一个很重要的特点就是插件式的表存储引擎</strong></p>
 <p><strong><em>存储引擎是基于表的，而不是数据库</em></strong>  </p>
-<h5 id="InnoDB和MyISAM"><a href="#InnoDB和MyISAM" class="headerlink" title="InnoDB和MyISAM"></a>InnoDB和MyISAM</h5><ul>
-<li>InnoDB存储引擎支持事务，面向在线事务处理的应用，其特点是行锁设计、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁。对于表中数据的存储，InnoDB存储引擎采用了聚集(cluster)的方式，每张表的存储都是按照主键的顺序进行存放，如果没有显式的在表定义时指定主键，InnDB存储引擎回为每一行生成一个6字节的ROWID，并以此作为主键。</li>
+<h4 id="InnoDB和MyISAM"><a href="#InnoDB和MyISAM" class="headerlink" title="InnoDB和MyISAM"></a>InnoDB和MyISAM</h4><ul>
+<li>InnoDB存储引擎支持事务，面向在线事务处理的应用，其特点是行锁设计、支持MVCC、支持外键，支持类似Oracle的非锁定读，即默认读取操作不会产生锁，同时被设计用来最有效地利用以及使用内存和CPU。对于表中数据的存储，InnoDB存储引擎采用了聚集(cluster)的方式，每张表的存储都是按照主键的顺序进行存放，如果没有显式的在表定义时指定主键，InnDB存储引擎回为每一行生成一个6字节的ROWID，并以此作为主键。</li>
 <li>MyISAM存储引擎不支持事务、表锁设计，支持全文索引。MyISAM存储引擎的另一个特点是它的缓冲池只缓存索引文件，而不缓存数据文件，数据文件的缓存交给操作系统本身完成。</li>
 </ul>
 <blockquote>
 <p>InnoDB索引文件相当于是整个数据文件，MyISAM索引文件仅仅只是索引文件。</p>
 </blockquote>
-
+<p>+++</p>
+<h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3>
           
         
       
@@ -458,9 +459,9 @@
 <li>丰富的特性等。</li>
 </ul>
 <h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><p>客户端基本语法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> redis-cli</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> redis-cli</span><br></pre></td></tr></table></figure>
 <p>PING用来检测redis服务是否启动，若启动会出现PONG。</p>
-<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">例如</span></span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span><span class="bash">其中runoobkey是一个键</span></span><br></pre></td></tr></table></figure>
+<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>例如</span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span>其中runoobkey是一个键</span><br></pre></td></tr></table></figure>
 
           
         
