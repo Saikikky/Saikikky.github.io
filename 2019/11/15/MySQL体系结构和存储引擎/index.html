@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-11-20T02:29:49.157Z">
+<meta property="og:updated_time" content="2019-11-22T07:02:01.752Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL体系结构和存储引擎">
 <meta name="twitter:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
@@ -321,7 +321,21 @@
 <p>InnoDB索引文件相当于是整个数据文件，MyISAM索引文件仅仅只是索引文件。</p>
 </blockquote>
 <p>+++</p>
-<h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3>
+<h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3><h4 id="Checkpoint技术"><a href="#Checkpoint技术" class="headerlink" title="Checkpoint技术"></a>Checkpoint技术</h4><p>InnoDB的内存结构中存在缓冲池，缓冲池的设计目的是为了协调CPU速度和磁盘速度，所以页的操作首先是在缓冲池中完成的，也就是说，如果有更新操作之后，页是脏的，即缓冲池中的页的版本要比磁盘中的新，Checkpoint机制将脏页刷新回磁盘。</p>
+<p>Checkpoint目的：缩短数据库的恢复时间；缓冲池不够用时，将脏页刷新到磁盘；重做日志不可用时，刷新脏页。</p>
+<blockquote>
+<p><strong>如果在从缓冲池将页的新版本刷新到磁盘时发生了宕机，那么数据就不能恢复了</strong></p>
+<p>为了避免数据丢失，当前事务数据库采用Write Ahead Log策略，当事务提交时，先写重做日志，再修改页。当发生宕机导致数据丢失，可以根据重做日志完成数据恢复。这也是事务ACID中D(持久性)的要求。</p>
+</blockquote>
+<ul>
+<li><p>Sharp Checkpoint</p>
+<p>发生在数据库关闭时将所有的脏页都刷新回磁盘</p>
+</li>
+<li><p>Fuzzy Checkpoint</p>
+<p>运行时，即引擎内部使用，只刷新部分脏页回磁盘。</p>
+</li>
+</ul>
+
       
     </div>
     
@@ -482,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB存储引擎"><span class="nav-number">2.</span> <span class="nav-text">InnoDB存储引擎</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB存储引擎"><span class="nav-number">2.</span> <span class="nav-text">InnoDB存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Checkpoint技术"><span class="nav-number">2.1.</span> <span class="nav-text">Checkpoint技术</span></a></li></ol></li></ol></div>
             
 
           </div>
