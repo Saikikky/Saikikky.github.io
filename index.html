@@ -321,20 +321,55 @@
 <p>InnoDB索引文件相当于是整个数据文件，MyISAM索引文件仅仅只是索引文件。</p>
 </blockquote>
 <p>+++</p>
-<h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3><h4 id="Checkpoint技术"><a href="#Checkpoint技术" class="headerlink" title="Checkpoint技术"></a>Checkpoint技术</h4><p>InnoDB的内存结构中存在缓冲池，缓冲池的设计目的是为了协调CPU速度和磁盘速度，所以页的操作首先是在缓冲池中完成的，也就是说，如果有更新操作之后，页是脏的，即缓冲池中的页的版本要比磁盘中的新，Checkpoint机制将脏页刷新回磁盘。</p>
+<h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3><blockquote>
+<p>在InnoDB存储引擎中，主键是行唯一的标识符，在应用程序中行记录的插入</p>
+</blockquote>
+<h4 id="Checkpoint技术"><a href="#Checkpoint技术" class="headerlink" title="Checkpoint技术"></a>Checkpoint技术</h4><p>InnoDB的内存结构中存在缓冲池，缓冲池的设计目的是为了协调CPU速度和磁盘速度，所以页的操作首先是在缓冲池中完成的，也就是说，如果有更新操作之后，页是脏的，即缓冲池中的页的版本要比磁盘中的新，Checkpoint机制将脏页刷新回磁盘。</p>
 <p>Checkpoint目的：缩短数据库的恢复时间；缓冲池不够用时，将脏页刷新到磁盘；重做日志不可用时，刷新脏页。</p>
+<ul>
+<li>数据库只需对Checkpoint后的重做日志进行恢复，因为Checkpoint之前的页都已经刷新回磁盘。</li>
+<li>缓冲池不够用时，LRU算法溢出最近最少使用的页，若为脏页，需要强制执行Checkpoint，将脏页刷回磁盘。</li>
+<li>重做日志被重用的部分是指这些重做日志已经不再需要，当数据库发生宕机时，数据库恢复操作不需要这部分的重做日志，这部分就可以被覆盖重用。如果还需要使用就需要强制Checkpoint。</li>
+</ul>
 <blockquote>
 <p><strong>如果在从缓冲池将页的新版本刷新到磁盘时发生了宕机，那么数据就不能恢复了</strong></p>
 <p>为了避免数据丢失，当前事务数据库采用Write Ahead Log策略，当事务提交时，先写重做日志，再修改页。当发生宕机导致数据丢失，可以根据重做日志完成数据恢复。这也是事务ACID中D(持久性)的要求。</p>
 </blockquote>
 <ul>
 <li><p>Sharp Checkpoint</p>
-<p>发生在数据库关闭时将所有的脏页都刷新回磁盘</p>
+<p>发生在数据库关闭时将所有的脏页都刷新回磁盘。(默认)</p>
 </li>
 <li><p>Fuzzy Checkpoint</p>
 <p>运行时，即引擎内部使用，只刷新部分脏页回磁盘。</p>
 </li>
 </ul>
+<h4 id="Master-Thread工作方式"><a href="#Master-Thread工作方式" class="headerlink" title="Master Thread工作方式"></a>Master Thread工作方式</h4><p>InnoDB存储引擎的主要工作是在一个单独的后台线程Master Thread中完成的，具有最高的线程优先级别。 </p>
+<p>关于每10s和每1s的操作等。具体见书</p>
+<h3 id="InnoDB关键特性"><a href="#InnoDB关键特性" class="headerlink" title="InnoDB关键特性"></a>InnoDB关键特性</h3><h4 id="插入缓冲-Insert-Buffer-：性能提升"><a href="#插入缓冲-Insert-Buffer-：性能提升" class="headerlink" title="插入缓冲(Insert Buffer)：性能提升"></a>插入缓冲(Insert Buffer)：性能提升</h4><blockquote>
+<p>Insert Buffer和数据页一样，也是物理页的一个组成部分。应用程序中行记录的插入顺序是按照主键递增的顺序进行插入的。(主键索引是顺序的，不需要磁盘的随机读取)</p>
+</blockquote>
+<p>对于非聚簇索引的插入或更新操作，不是每一次直接插入到索引页中，而是先判断插入的非聚集索引页是否在缓冲池中，若在，直接插入，若不在，先放入到一个Insert Buffer对象中，此时起到欺骗的效果，看似数据库这个非聚簇的索引已经插入到叶子节点中，而实际却没有，只是存放在另一个位置，然后再以一定的频率和情况进行Insert Buffer和辅助索引叶子节点的merge操作，这时通常能将多个插入合并到一个操作中，因为在一个索引页中，这就大大提高了对于非聚集索引插入的性能。</p>
+<p>Insert Buffer的使用需要同时满足两个条件：</p>
+<ul>
+<li>索引是辅助索引</li>
+<li>索引不是唯一的</li>
+</ul>
+<p>满足以上两个条件时，InnoDB存储引擎会使用Insert Buffer，这样就能提高插入操作的性能了。</p>
+<p><strong>例外情况</strong> ：当应用程序大量的插入操作且都涉及到不唯一的非聚集索引时，也就是使用了Insert Buffer，若此时数据库发生宕机，大量的Insert Buffer还没有合并到实际的非聚簇索引中，这个情况下的数据库恢复可能需要很长时间。</p>
+<p>辅助索引不能是唯一的，因为在插入缓冲时，数据库并不去查找索引页来判断插入的记录的唯一性，如果去查查哦肯定又会有离散读取的情况发生，从而导致Insert Buffer失去了意义。</p>
+<p>Insert Buffer存在一个问题，在写密集的情况下，插入缓冲会占用过多的缓冲池内存(innodb_buffer_pool)，默认最大可以占用到1/2的缓冲池内存，修改IBUF_POOL_SIZE_PER_MAX_SIZE就可以对插入缓冲的大小进行控制，比如将IBUF_POOL_SIZE_PER_MAX_SIZE改为3，则表示最大只能使用1/3的缓冲池内存。</p>
+<h5 id="Change-Buffer-Insert-Buffer升级版"><a href="#Change-Buffer-Insert-Buffer升级版" class="headerlink" title="Change Buffer  (Insert Buffer升级版)"></a>Change Buffer  (Insert Buffer升级版)</h5><blockquote>
+<p>适用对象依然是非唯一的辅助索引。</p>
+</blockquote>
+<p>InnoDB存储引擎可以对DML操作——Insert、Delete、Update都进行缓冲，分别是Insert Buffer、Delete Buffer、Purge Buffer。对一条记录进行Update操作可能分成两个过程：将记录标记为删除；再真正的将记录删除。Delete Buffer对应Update操作的第一个过程，Purge Buffer对应Update操作的第二个过程。</p>
+<h5 id="Insert-Buffer的内部实现"><a href="#Insert-Buffer的内部实现" class="headerlink" title="Insert Buffer的内部实现"></a>Insert Buffer的内部实现</h5><p>Insert Buffer的数据结构是一棵B+树，现在的MySQL版本中，全局只有一棵Insert Buffer B+树，负责对所有的表的辅助索引进行Insert Buffer。而这棵B+存放在共享表空间中，即ibdata1中。因此试图通过独立表空间ibd文件恢复表中数据时，往往会导致CHECK TABLE失败。因为表的辅助索引中的数据可能还在Insert Buffer中美也就是共享空间中，所以通过ibd文件进行恢复之后，还需要进行REPAIR TABLE操作来重建表上所有的辅助索引。</p>
+<h5 id="Merge-Insert-Buffer"><a href="#Merge-Insert-Buffer" class="headerlink" title="Merge Insert Buffer"></a>Merge Insert Buffer</h5><p>可能发生在以下几种情况：</p>
+<blockquote>
+<p>辅助索引页被读取到缓冲池时；</p>
+<p>Insert Buffer Bitmap页追踪到改辅助索引页已无可用空间时，</p>
+</blockquote>
+<h4 id="两次写-Double-Write-：数据页的可靠性"><a href="#两次写-Double-Write-：数据页的可靠性" class="headerlink" title="两次写(Double Write)：数据页的可靠性"></a>两次写(Double Write)：数据页的可靠性</h4><p>发生写失效的情况，比如部分写失效，16KB的页只写了前4KB就宕机。重做日志中记录的是对页的物理操作，如偏移量800，写‘aaa’记录，也就是说如果这个页本身已经发生了损坏，再对其重做是没有意义的。所以在应用重做日志之前，用户需要一个页的副本，当写入失效发生时，先通过页的副本还原该页，再进行重做，这就是doublewrite。</p>
+<h4 id="自适应哈希索引-Adaptive-Hash-Index"><a href="#自适应哈希索引-Adaptive-Hash-Index" class="headerlink" title="自适应哈希索引(Adaptive Hash Index)"></a>自适应哈希索引(Adaptive Hash Index)</h4><h4 id="异步IO-Async-IO"><a href="#异步IO-Async-IO" class="headerlink" title="异步IO(Async IO)"></a>异步IO(Async IO)</h4><h4 id="刷新邻接表-Flush-Neighbor-Page"><a href="#刷新邻接表-Flush-Neighbor-Page" class="headerlink" title="刷新邻接表(Flush Neighbor Page)"></a>刷新邻接表(Flush Neighbor Page)</h4><p>​            </p>
 
           
         
@@ -890,7 +925,7 @@
 </blockquote>
 <ul>
 <li>在聚簇索引中，数据会被按照顺序整理排序，所以使用 where 进行范围查询时，会大大加快速度，但非聚簇索引不会对数据进行排序。</li>
-<li>聚簇索引将主键组织到一颗B+树上，行数据储存在叶子节点上，在查询主键时，可以直接通过B+树的检索算法找到对应的叶节点，找到行数据；但是在对非主键数据进行查找的时候，需要第一步现在辅助索引中找到主键，再用主键执行一遍 B+ 树的搜索算法找到行数据</li>
+<li>聚簇索引将主键组织到一颗B+树上，行数据储存在叶子节点上，在查询主键时，可以直接通过B+树的检索算法找到对应的叶节点，找到行数据；但是在对非主键数据进行查找的时候，需要第一步先在辅助索引中找到主键，再用主键执行一遍 B+ 树的搜索算法找到行数据</li>
 </ul>
 <p>在 innodb 中聚簇索引就是表，不需要像 myisam 那样建立独立的行存储。</p>
 <p>myisam 会将数据按照插入的顺序存储在磁盘上，创建索引时二级索引的叶子节点包含行号和主键或者索引列，会按照索引列排序。</p>
