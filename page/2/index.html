@@ -238,6 +238,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/29/搭建Spring Cloud Demo中遇到的问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/29/搭建Spring Cloud Demo中遇到的问题/" itemprop="url">搭建Spring Cloud Demo中遇到的问题</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-29T08:59:05+08:00">
+                2019-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>SpringCloud无法引入@EnableFeignClients问题**</p>
+<p>问题描述：</p>
+<p>SpringBoot版本为2.1.6.RELEASE，Spring Cloud版本为Greenwich.SR2，在启动类上加@EnableFeignClients时，提示找不到响应的包，已经导入feign的依赖。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入feign--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-feign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>版本不兼容问题，修改SpringBoot版本为1.5.13.RELEASE，Spring Cloude版本为Edgware.SR4后导入成功。(公司pom文件显示用的是1.5.11.RELEASE版本的SpringBoot和Edgware.RELEASE版本的Spring Cloud)</p>
+</li>
+<li><p><strong>服务消费者无法调用服务提供者的方法</strong></p>
+<p>问题描述：</p>
+<p>Eureka注册中心启动正常，服务提供者和服务调用者都成功注册到注册中心，其中注册中心端口号为8000，提供者端口号为9000，调用者端口号为9001。全部成功启动之后，直接调用服务提供者提供的方法可以成功访问，但通过调用者9001端口访问服务显示feign.RetryableException: Read timed out executing GET <a href="http://spring-cloud-producer/hello?name=s]" target="_blank" rel="noopener">http://spring-cloud-producer/hello?name=s]</a> with root cause错误，百度发现是超时问题修改了各种熔断 ribbon和feign配置都不起作用。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同一实例最大重试次数，不包括首次调用。默认值为0</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=0</span></span><br><span class="line"><span class="comment"># 同一个微服务其他实例的最大重试次数，不包括第一次调用的实例。默认值为1</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=0</span></span><br><span class="line"><span class="comment"># 是否所有操作（GET、POST等）都允许重试。默认值为false</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=false</span></span><br><span class="line"><span class="comment">## 设置连接超时时间</span></span><br><span class="line"><span class="string">ribbon.ConnectTimeout=60000</span></span><br><span class="line"><span class="comment">## 设置读取超时时间</span></span><br><span class="line"><span class="string">ribbon.ReadTimeout=60000</span></span><br><span class="line"><span class="comment">## 关闭feign的熔断</span></span><br><span class="line"><span class="string">feign.hystrix.enabled=false</span></span><br><span class="line"><span class="comment">## 用于禁用Hystrix的超时时间</span></span><br><span class="line"><span class="string">hystrix.command.default.execution.timeout.enabled=false</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 对所有操作请求都进行重试</span></span><br><span class="line"><span class="string">ribbon.OkToRetryOnAllOperations=true</span></span><br><span class="line"><span class="comment">## 切换实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetriesNextServer=2</span></span><br><span class="line"><span class="comment">## 对当前实例的重试次数</span></span><br><span class="line"><span class="string">ribbon.MaxAutoRetries=1</span></span><br></pre></td></tr></table></figure>
+<p>最后问题是8000端口无法访问？？但注册中心正常启动且服务提供端也可以正常启动  改成8080端口之后可以访问，重启电脑之后8000端口也可以访问，初步判断是端口占用的问题，但Eureka注册和服务器调用注册等的端口是如何工作的要再了解一下。</p>
+<p>项目正常运行之后 通过netstat -anp tcp命令查看端口使用情况发现启用了五个127.0.0.1.8000 所以Eureka注册中心启动的时候究竟启动了几个怎么启动的需要看下。</p>
+</li>
+<li><p>设置FeignClient中的fallback不起作用，发现是没有打开feign对hystrix的支持。在配置文件中加入如下配置。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line"><span class="attr">  hystrix:</span></span><br><span class="line"><span class="attr">    enabled:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/22/Spring Cloud/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1825,7 +1962,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
