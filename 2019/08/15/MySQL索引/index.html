@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-08T12:05:09.689Z">
+<meta property="og:updated_time" content="2020-01-08T12:39:35.715Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL索引">
 <meta name="twitter:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
@@ -443,7 +443,11 @@
 <li><p>若所选索引列区分度不大，即前缀重复率太高，则在查询的时候，会变成全范围查询。</p>
 </li>
 </ul>
-<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><ul>
+<h4 id="聚簇索引和非聚簇索引"><a href="#聚簇索引和非聚簇索引" class="headerlink" title="聚簇索引和非聚簇索引"></a>聚簇索引和非聚簇索引</h4><blockquote>
+<p>聚簇索引文件中的每一个搜索码值都对应一个索引值(密集索引)</p>
+<p>非聚簇索引文件只为索引码的某些值建立索引项(稀疏索引)</p>
+</blockquote>
+<ul>
 <li>myisam对应非聚簇索引，mysql对应聚簇索引</li>
 </ul>
 <blockquote>
