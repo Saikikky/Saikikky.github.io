@@ -1749,6 +1749,16 @@
 </ul>
 <p><strong>byName</strong> 通过参数名 自动装配，如果一个bean的name 和另外一个bean的 property 相同，就自动装配。<br><strong>byType</strong> 通过参数的数据类型自动自动装配，如果一个bean的数据类型和另外一个bean的property属性的数据类型兼容，就自动装配。</p>
 <p>@Required注解检查 但他只检查属性是否已经设置而不会测试属性是否非空</p>
+<h2 id="8-如何定位并优化慢查询Sql"><a href="#8-如何定位并优化慢查询Sql" class="headerlink" title="8. 如何定位并优化慢查询Sql"></a>8. 如何定位并优化慢查询Sql</h2><ul>
+<li><p>根据慢日志定位慢查询sql</p>
+</li>
+<li><p>使用explain等工具分析sql</p>
+<p>type:index/all 可能需要优化</p>
+<p>extra: using file sort/using temporary(临时表)可能需要优化</p>
+</li>
+<li><p>修改sql或者尽量让sql走索引</p>
+</li>
+</ul>
 
           
         
