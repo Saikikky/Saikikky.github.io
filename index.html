@@ -1047,7 +1047,16 @@
 <li>asc或desc指定升序或降序的索引值存储</li>
 </ul>
 <p>基本上所有的索引都有三种创建方式：直接用语句创建索引，修改表结构创建索引和创建表的时候直接指定，一般情况下主键索引会直接指定。</p>
-<h4 id="索引实现"><a href="#索引实现" class="headerlink" title="索引实现"></a>索引实现</h4><ul>
+<h4 id="索引实现"><a href="#索引实现" class="headerlink" title="索引实现"></a>索引实现</h4><blockquote>
+<p>为什么不用Hash索引？</p>
+<ul>
+<li>只能满足等值查询，不能使用范围查询。</li>
+<li>无法被用来避免数据的排序操作。哈希索引是利用哈希值排序的，这个排序跟真实数据的排序是不一样的，无法利用索引排序。</li>
+<li>不能利用部分索引键查询。哈希索引的联合查询是对合并之后的数据的值的哈希值进行索引。</li>
+<li>不能避免表扫描。不同的键值可能会有相同的哈希值。</li>
+</ul>
+</blockquote>
+<ul>
 <li><p>MySQL索引的实现在存储引擎层而不是服务器层。</p>
 </li>
 <li><p>MySQL 索引底层实现是 B+Tree，B+Tree 对索引列顺序存储，很适合查找范围数据。</p>
@@ -2156,7 +2165,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
