@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-08T12:02:48.861Z">
+<meta property="og:updated_time" content="2020-01-08T12:05:09.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL索引">
 <meta name="twitter:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
@@ -366,6 +366,7 @@
 <li>无法被用来避免数据的排序操作。哈希索引是利用哈希值排序的，这个排序跟真实数据的排序是不一样的，无法利用索引排序。</li>
 <li>不能利用部分索引键查询。哈希索引的联合查询是对合并之后的数据的值的哈希值进行索引。</li>
 <li>不能避免表扫描。不同的键值可能会有相同的哈希值。</li>
+<li>大量Hash值冲突时并不一定会比B树效率高。</li>
 </ul>
 </blockquote>
 <ul>
