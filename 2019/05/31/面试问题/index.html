@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-01-08T13:05:06.037Z">
+<meta property="og:updated_time" content="2020-02-04T08:42:21.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试问题">
 <meta name="twitter:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
@@ -476,11 +476,12 @@
 </li>
 <li><p>使用explain等工具分析sql</p>
 <p>type:index/all 可能需要优化</p>
-<p>extra: using file sort/using temporary(临时表)可能需要优化</p>
+<p>extra: using filesort/using temporary(临时表常用于order by和group by)可能需要优化 表示根本不能使用索引，效率会受到极大影响。</p>
 </li>
 <li><p>修改sql或者尽量让sql走索引</p>
 </li>
 </ul>
+<h2 id="9-最左匹配原则"><a href="#9-最左匹配原则" class="headerlink" title="9. 最左匹配原则"></a>9. 最左匹配原则</h2><p>​        建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮助你优化成索引可以识别的形式，但必须遵循最左匹配原则。最左匹配原则的成因是第二个的查找是在第一个的基础上进行的。如果没有第一个的查找锁定就找不到合适的数据。</p>
 
       
     </div>
@@ -646,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于static静态"><span class="nav-number">1.</span> <span class="nav-text">1. 关于static静态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-值传递和引用传递"><span class="nav-number">2.</span> <span class="nav-text">2. 值传递和引用传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">3.</span> <span class="nav-text">3. equals和hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Hashtable和HashMap"><span class="nav-number">4.</span> <span class="nav-text">4.Hashtable和HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的死循环问题-在并发条件下"><span class="nav-number">4.1.</span> <span class="nav-text">HashMap的死循环问题(在并发条件下)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concurrentHashMap"><span class="nav-number">4.2.</span> <span class="nav-text">concurrentHashMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-synchronized关键字"><span class="nav-number">5.</span> <span class="nav-text">5.synchronized关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引"><span class="nav-number">6.</span> <span class="nav-text">6.索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Autowired"><span class="nav-number">7.</span> <span class="nav-text">7.@Autowired</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-如何定位并优化慢查询Sql"><span class="nav-number">8.</span> <span class="nav-text">8. 如何定位并优化慢查询Sql</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于static静态"><span class="nav-number">1.</span> <span class="nav-text">1. 关于static静态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-值传递和引用传递"><span class="nav-number">2.</span> <span class="nav-text">2. 值传递和引用传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">3.</span> <span class="nav-text">3. equals和hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Hashtable和HashMap"><span class="nav-number">4.</span> <span class="nav-text">4.Hashtable和HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的死循环问题-在并发条件下"><span class="nav-number">4.1.</span> <span class="nav-text">HashMap的死循环问题(在并发条件下)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concurrentHashMap"><span class="nav-number">4.2.</span> <span class="nav-text">concurrentHashMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-synchronized关键字"><span class="nav-number">5.</span> <span class="nav-text">5.synchronized关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引"><span class="nav-number">6.</span> <span class="nav-text">6.索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Autowired"><span class="nav-number">7.</span> <span class="nav-text">7.@Autowired</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-如何定位并优化慢查询Sql"><span class="nav-number">8.</span> <span class="nav-text">8. 如何定位并优化慢查询Sql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-最左匹配原则"><span class="nav-number">9.</span> <span class="nav-text">9. 最左匹配原则</span></a></li></ol></div>
             
 
           </div>

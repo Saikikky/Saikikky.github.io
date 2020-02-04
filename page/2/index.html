@@ -1754,11 +1754,12 @@
 </li>
 <li><p>使用explain等工具分析sql</p>
 <p>type:index/all 可能需要优化</p>
-<p>extra: using file sort/using temporary(临时表)可能需要优化</p>
+<p>extra: using filesort/using temporary(临时表常用于order by和group by)可能需要优化 表示根本不能使用索引，效率会受到极大影响。</p>
 </li>
 <li><p>修改sql或者尽量让sql走索引</p>
 </li>
 </ul>
+<h2 id="9-最左匹配原则"><a href="#9-最左匹配原则" class="headerlink" title="9. 最左匹配原则"></a>9. 最左匹配原则</h2><p>​        建立(a,b,c)索引可以任意顺序，mysql的查询优化器会帮助你优化成索引可以识别的形式，但必须遵循最左匹配原则。最左匹配原则的成因是第二个的查找是在第一个的基础上进行的。如果没有第一个的查找锁定就找不到合适的数据。</p>
 
           
         
