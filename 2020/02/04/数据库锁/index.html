@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Java基础,">
+  <meta name="keywords" content="MySQL,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="Java位运算Java支持的位运算符   符号 含义 描述     &amp;amp; 按位与 都1则1   \  按位或 都0则0   ~ 按位非    ^ 按位异或 异1同0   &amp;lt;&amp;lt; 左移 *2 符号位不变，低位补0   &amp;gt;&amp;gt; 右移 /2 符号位不变   &amp;lt;&amp;lt;&amp;lt; 无符号右移 低位溢出，高位补0    以下四种可以得到int表示的最大整数  -1&amp;gt;&amp;gt">
-<meta name="keywords" content="Java基础">
+<meta name="description" content="1.MyISAM和InnoDB关于锁的区别MyISAM：默认用的是表级锁，不支持行级锁。表级锁和索引无关  myIsam下，进行select操作时，会自动加上一个表级的读锁，增删改会自动加上一个表级的写锁。  当读锁未被释放时，如果有其他操作要进行写操作，会被阻碍直至所有的读锁都被释放。  当写锁未释放时，读操作也会被阻碍直至所有的写锁都被释放。  当写操作未释放时，写操作也会被阻碍直至所有的写锁">
+<meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java位运算">
-<meta property="og:url" content="http://yoursite.com/2019/12/17/Java位运算/index.html">
+<meta property="og:title" content="数据库锁">
+<meta property="og:url" content="http://yoursite.com/2020/02/04/数据库锁/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="Java位运算Java支持的位运算符   符号 含义 描述     &amp;amp; 按位与 都1则1   \  按位或 都0则0   ~ 按位非    ^ 按位异或 异1同0   &amp;lt;&amp;lt; 左移 *2 符号位不变，低位补0   &amp;gt;&amp;gt; 右移 /2 符号位不变   &amp;lt;&amp;lt;&amp;lt; 无符号右移 低位溢出，高位补0    以下四种可以得到int表示的最大整数  -1&amp;gt;&amp;gt">
+<meta property="og:description" content="1.MyISAM和InnoDB关于锁的区别MyISAM：默认用的是表级锁，不支持行级锁。表级锁和索引无关  myIsam下，进行select操作时，会自动加上一个表级的读锁，增删改会自动加上一个表级的写锁。  当读锁未被释放时，如果有其他操作要进行写操作，会被阻碍直至所有的读锁都被释放。  当写锁未释放时，读操作也会被阻碍直至所有的写锁都被释放。  当写操作未释放时，写操作也会被阻碍直至所有的写锁">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-12-18T03:32:29.084Z">
+<meta property="og:updated_time" content="2020-02-06T07:38:32.835Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java位运算">
-<meta name="twitter:description" content="Java位运算Java支持的位运算符   符号 含义 描述     &amp;amp; 按位与 都1则1   \  按位或 都0则0   ~ 按位非    ^ 按位异或 异1同0   &amp;lt;&amp;lt; 左移 *2 符号位不变，低位补0   &amp;gt;&amp;gt; 右移 /2 符号位不变   &amp;lt;&amp;lt;&amp;lt; 无符号右移 低位溢出，高位补0    以下四种可以得到int表示的最大整数  -1&amp;gt;&amp;gt">
+<meta name="twitter:title" content="数据库锁">
+<meta name="twitter:description" content="1.MyISAM和InnoDB关于锁的区别MyISAM：默认用的是表级锁，不支持行级锁。表级锁和索引无关  myIsam下，进行select操作时，会自动加上一个表级的读锁，增删改会自动加上一个表级的写锁。  当读锁未被释放时，如果有其他操作要进行写操作，会被阻碍直至所有的读锁都被释放。  当写锁未释放时，读操作也会被阻碍直至所有的写锁都被释放。  当写操作未释放时，写操作也会被阻碍直至所有的写锁">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/17/Java位运算/">
+  <link rel="canonical" href="http://yoursite.com/2020/02/04/数据库锁/">
 
 
 
 
 
-  <title>Java位运算 | Saikikky</title>
+  <title>数据库锁 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/17/Java位运算/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/04/数据库锁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java位运算</h1>
+          <h1 class="post-title" itemprop="name headline">数据库锁</h1>
         
 
         <div class="post-meta">
@@ -271,8 +271,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-17T19:27:46+08:00">
-                2019-12-17
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-04T17:06:49+08:00">
+                2020-02-04
               </time>
             
 
@@ -309,85 +309,49 @@
       
 
       
-        <h3 id="Java位运算"><a href="#Java位运算" class="headerlink" title="Java位运算"></a>Java位运算</h3><h4 id="Java支持的位运算符"><a href="#Java支持的位运算符" class="headerlink" title="Java支持的位运算符"></a>Java支持的位运算符</h4><table>
-<thead>
-<tr>
-<th>符号</th>
-<th>含义</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>&amp;</td>
-<td>按位与</td>
-<td>都1则1</td>
-</tr>
-<tr>
-<td>\</td>
-<td></td>
-<td>按位或</td>
-<td>都0则0</td>
-</tr>
-<tr>
-<td>~</td>
-<td>按位非</td>
-<td></td>
-</tr>
-<tr>
-<td>^</td>
-<td>按位异或</td>
-<td>异1同0</td>
-</tr>
-<tr>
-<td>&lt;&lt;</td>
-<td>左移</td>
-<td>*2 符号位不变，低位补0</td>
-</tr>
-<tr>
-<td>&gt;&gt;</td>
-<td>右移</td>
-<td>/2 符号位不变</td>
-</tr>
-<tr>
-<td>&lt;&lt;&lt;</td>
-<td>无符号右移</td>
-<td>低位溢出，高位补0</td>
-</tr>
-</tbody>
-</table>
-<p>以下四种可以得到int表示的最大整数</p>
+        <h2 id="1-MyISAM和InnoDB关于锁的区别"><a href="#1-MyISAM和InnoDB关于锁的区别" class="headerlink" title="1.MyISAM和InnoDB关于锁的区别"></a>1.MyISAM和InnoDB关于锁的区别</h2><h3 id="MyISAM：默认用的是表级锁，不支持行级锁。"><a href="#MyISAM：默认用的是表级锁，不支持行级锁。" class="headerlink" title="MyISAM：默认用的是表级锁，不支持行级锁。"></a>MyISAM：默认用的是表级锁，不支持行级锁。</h3><p><strong>表级锁和索引无关</strong></p>
+<blockquote>
+<p>myIsam下，进行select操作时，会自动加上一个表级的读锁，增删改会自动加上一个表级的写锁。</p>
 <ul>
-<li>-1&gt;&gt;&gt;1</li>
-<li>~(1&lt;&lt;31)</li>
-<li>(1&lt;&lt;-1)-1</li>
-<li>~(1&lt;&lt;-1)</li>
-</ul>
-<p>获得最大int整数</p>
-<ul>
-<li>1&lt;&lt;31</li>
-<li>1&lt;&lt;-1</li>
-</ul>
-<h4 id="常见使用"><a href="#常见使用" class="headerlink" title="常见使用"></a>常见使用</h4><ul>
-<li><p>m*2^n</p>
-<p>例如：2^3 = 1&lt;&lt;3</p>
-<p>3*2^3 = 3&lt;&lt;3 </p>
+<li><p>当读锁未被释放时，如果有其他操作要进行写操作，会被阻碍直至所有的读锁都被释放。</p>
 </li>
-<li><p>判断奇偶性</p>
-<p>n&amp;1 == 1?”奇数”:”偶数”</p>
-<p>偶数最低位是 0，奇数最低位是1，1的前31位是0，1&amp;0和0&amp;0都是0，有区别的是最低位的1。</p>
+<li><p>当写锁未释放时，读操作也会被阻碍直至所有的写锁都被释放。</p>
 </li>
-<li><p>不用临时变量交换两个数</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[] reverse(<span class="keyword">int</span>[] num) &#123;</span><br><span class="line">  <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> j = nums.length - <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">while</span> (j &gt; i) &#123;</span><br><span class="line">    nums[i] = nums[i]^nums[j];</span><br><span class="line">    nums[j] = nums[j]^nums[i];</span><br><span class="line">    nums[i] = nums[i]^nums[j];</span><br><span class="line">    j--;</span><br><span class="line">    i++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> nums;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">int a = 3, b = 4;</span></span><br><span class="line"><span class="comment">a = a^b;</span></span><br><span class="line"><span class="comment">b = b^a; // b = b^(a^b)--&gt;b=a</span></span><br><span class="line"><span class="comment">a = a^b; // a = (a^b)^(b^(a^b))--&gt;a=b</span></span><br><span class="line"><span class="comment">**/</span></span><br></pre></td></tr></table></figure>
-<p>异或0具有保持的特点，异或1具有翻转的特点，那么0^a使用异或0具有保持的特点，最终结果就是a</p>
-<ul>
-<li>a^a=0</li>
-<li>a^b=b^a</li>
-<li>a^b^c=a^(b^c)=(a^b)^c</li>
-<li>d=a^b^c ==&gt; a=d^b^c</li>
-<li>a^b^a=b</li>
+<li><p>当写操作未释放时，写操作也会被阻碍直至所有的写锁都被释放。</p>
+</li>
+</ul>
+<p><strong>读锁也叫共享锁，写锁也叫排他锁</strong></p>
+<p><strong>手动加写锁</strong>：select语句后加上for update即将读锁变为排他锁，其他读操作也被阻碍直至排他锁释放。</p>
+</blockquote>
+<h3 id="InnoDB：默认的是行级锁，也支持表级锁。-支持事务"><a href="#InnoDB：默认的是行级锁，也支持表级锁。-支持事务" class="headerlink" title="InnoDB：默认的是行级锁，也支持表级锁。(支持事务)"></a>InnoDB：默认的是行级锁，也支持表级锁。(支持事务)</h3><p><strong>除了用id、主键索引以外，只要索引涉及到的行都会被上共享锁或者排他锁。</strong></p>
+<p><strong>在没有涉及到索引时，innodb用的是表级锁</strong> </p>
+<p>默认事务是自动提交的，所以就会看起来并未加锁。</p>
+<blockquote>
+<p>InnoDB是二段锁，即在一个事务操作中，分为加锁阶段和解锁阶段，且所有的加锁操作在解锁操作之前。默认行级锁，只对一行数据上锁，针对不同行数据时不会有冲突。</p>
+<p><strong>非阻塞select</strong>：InnoDB对select操作会有一个改进，会导致针对同一数据的select和update操作都可以成功。即没有对select上读锁。</p>
+<p><strong>手动加读锁</strong>：select语句后加上lock in share mode就是加上共享锁。</p>
+<p><strong>解锁</strong>：在一个事务中，只有在commit或者rollback时，才是解锁阶段。</p>
+</blockquote>
+<p>除此之外，InnoDB还支持表级的<strong>意向锁</strong>，意向锁是一种<strong><em>不与行级锁冲突表级锁</em></strong>，意向锁分为意向共享锁IS(事务有意向对表中的某些行加<strong>共享锁</strong>)和意向排他锁IX(事务有意向对表中的某些行加<strong>排他锁</strong>)。<strong>意向锁是由数据引擎自己维护的，用户无法手动操作意向锁</strong>，在为数据行加共享 / 排他锁之前，InooDB 会先获取该数据行所在在数据表的对应意向锁。在进行标级别操作时，不用一行一行去轮询是否存在行级锁，直接查询意向锁就ok。意向锁与表级锁时互斥的，意向锁和意向锁是兼容的。意向锁在保证并发性的前提下，实现了<code>行锁和表锁共存</code>且<code>满足事务隔离性</code>的要求。</p>
+<h2 id="MyISAM和InnoDB适合的场景"><a href="#MyISAM和InnoDB适合的场景" class="headerlink" title="MyISAM和InnoDB适合的场景"></a>MyISAM和InnoDB适合的场景</h2><ul>
+<li>MyISAM<ul>
+<li>频繁执行全表count语句。(专门用一个变量保存了全表数据行数，InnoDB则没有需要每次重复操作)</li>
+<li>查询频繁，增删改比较少(存储碎片比较多，即使在尾部插入)。</li>
+<li>没有事务。</li>
 </ul>
 </li>
+<li>InnoDB<ul>
+<li>数据增删改查比较频繁。</li>
+<li>可靠性要求比较高，要求支持事务。</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据库的锁分类"><a href="#数据库的锁分类" class="headerlink" title="数据库的锁分类"></a>数据库的锁分类</h2><ul>
+<li>按照锁的粒度划分：表级锁、行级锁、页级锁(相邻逻辑块)</li>
+<li>按照锁的级别划分：共享锁、排他锁</li>
+<li>按照加锁方式划分：自动锁、显式锁(语句加锁)</li>
+<li>按操作划分：DML锁(对数据进行操作上的锁..增删改查)、DDL锁(对表结构进行变更)</li>
+<li>按照使用方式划分：乐观锁(版本号、时间戳)、悲观锁</li>
 </ul>
 
       
@@ -406,7 +370,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java基础/" rel="tag"># Java基础</a>
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
           
         </div>
       
@@ -419,8 +383,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/11/15/MySQL体系结构和存储引擎/" rel="next" title="MySQL体系结构和存储引擎">
-                <i class="fa fa-chevron-left"></i> MySQL体系结构和存储引擎
+              <a href="/2019/12/17/Java位运算/" rel="next" title="Java位运算">
+                <i class="fa fa-chevron-left"></i> Java位运算
               </a>
             
           </div>
@@ -428,10 +392,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2020/02/04/数据库锁/" rel="prev" title="数据库锁">
-                数据库锁 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -554,7 +514,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java位运算"><span class="nav-number">1.</span> <span class="nav-text">Java位运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java支持的位运算符"><span class="nav-number">1.1.</span> <span class="nav-text">Java支持的位运算符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见使用"><span class="nav-number">1.2.</span> <span class="nav-text">常见使用</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MyISAM和InnoDB关于锁的区别"><span class="nav-number">1.</span> <span class="nav-text">1.MyISAM和InnoDB关于锁的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM：默认用的是表级锁，不支持行级锁。"><span class="nav-number">1.1.</span> <span class="nav-text">MyISAM：默认用的是表级锁，不支持行级锁。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB：默认的是行级锁，也支持表级锁。-支持事务"><span class="nav-number">1.2.</span> <span class="nav-text">InnoDB：默认的是行级锁，也支持表级锁。(支持事务)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyISAM和InnoDB适合的场景"><span class="nav-number">2.</span> <span class="nav-text">MyISAM和InnoDB适合的场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库的锁分类"><span class="nav-number">3.</span> <span class="nav-text">数据库的锁分类</span></a></li></ol></div>
             
 
           </div>
