@@ -1583,12 +1583,35 @@
       
         
           
-            <ul>
-<li><p>现有学生表student(s_id, name)和借书表book(b_id, s_id)</p>
-<p>要查找没有借书记录的学生信息</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">where</span> s_id <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> s_id <span class="keyword">from</span> book);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">left</span> <span class="keyword">join</span> book <span class="keyword">on</span> student.s_id=book.s_id <span class="keyword">where</span> book.s_id=<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> book <span class="keyword">where</span> (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">as</span> <span class="keyword">num</span> <span class="keyword">from</span> student <span class="keyword">where</span> student.s_id=book.s_id) = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+            <h3 id="常见语法"><a href="#常见语法" class="headerlink" title="常见语法"></a>常见语法</h3><h4 id="1-group-by"><a href="#1-group-by" class="headerlink" title="1.group by"></a>1.group by</h4><ul>
+<li>满足“select子句中的列名必须为分组列或列函数。即要么是group by的列或者带有sum、count、max等函数的列且该条件只针对同一张表成立。(可以加入没有在group by里的其他表的列)</li>
+<li>列函数对于group by子句定义的每个组各返回一个结果。</li>
+</ul>
+<h4 id="2-having"><a href="#2-having" class="headerlink" title="2.having"></a>2.having</h4><ul>
+<li>通常与group by子句一起使用</li>
+<li>where过滤行，having过滤组</li>
+<li>出现在同一个sql的顺序：where&gt;group by&gt;having<ul>
+<li>如果没有group by子句，having子句就跟where子句一样</li>
+</ul>
 </li>
 </ul>
+<blockquote>
+<p><strong>查询平均成绩大于60分的同学的学号和平均成绩</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; select student_id,avg(score) from score group by student_id having avg(score)&gt;60</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>查询没有学全所有课的学生的学号、姓名</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; select stu.student_id,stu.name from student stu, score s </span><br><span class="line">&gt; where stu.student_id = s.student_id</span><br><span class="line">&gt; group by stu.student_id</span><br><span class="line">&gt; having count(*) &lt; (select count(*) from course)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>+++</p>
+<ul>
+<li><p>现有学生表student(s_id, name)和借书表book(b_id, s_id)</p>
+<p>要查找没有借书记录的学生信息</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">where</span> s_id <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> s_id <span class="keyword">from</span> book);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">left</span> <span class="keyword">join</span> book <span class="keyword">on</span> student.s_id=book.s_id <span class="keyword">where</span> book.s_id=<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> book <span class="keyword">where</span> (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">as</span> <span class="keyword">num</span> <span class="keyword">from</span> student <span class="keyword">where</span> student.s_id=book.s_id) = <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>SQL Count(*)、group by、Having的联合使用</p>
 <p>COUNT(*)  函数返回在给定的选择中被选的行数。</p>
