@@ -86,18 +86,20 @@
 
 
 
-<meta name="description" content="Redis简介是一个高性能的key-value数据库。有以下三个特点：  支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。  不仅仅支持简单的key-value类型的数据，同时还提供list、set、zset、hash等数据结构的存储。 zset是set的一个升级版本，在set的基础上增加了一格顺序属性，这一属性在添加元素的同时可以指定，每次指定后，zset会自动">
+<meta name="description" content="缓存中间件 主流应用的架构图，其中熔断是指当存储层宕掉之后启动熔断机制，默认请求缓存层并不管有没有结果直接返回的过程。   Memcache: 代码层次类似Hash 支持简单数据类型 不支持数据持久化存储(宕机之后无法保存数据) 不支持主从 不支持分片 (将大数据分布到多个物理节点的分区)  Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从(mysql也是) 支持分片  对数据存储要求比">
 <meta name="keywords" content="实习学习总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 简介">
+<meta property="og:title" content="Redis">
 <meta property="og:url" content="http://yoursite.com/2019/08/22/Redis简介/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="Redis简介是一个高性能的key-value数据库。有以下三个特点：  支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。  不仅仅支持简单的key-value类型的数据，同时还提供list、set、zset、hash等数据结构的存储。 zset是set的一个升级版本，在set的基础上增加了一格顺序属性，这一属性在添加元素的同时可以指定，每次指定后，zset会自动">
+<meta property="og:description" content="缓存中间件 主流应用的架构图，其中熔断是指当存储层宕掉之后启动熔断机制，默认请求缓存层并不管有没有结果直接返回的过程。   Memcache: 代码层次类似Hash 支持简单数据类型 不支持数据持久化存储(宕机之后无法保存数据) 不支持主从 不支持分片 (将大数据分布到多个物理节点的分区)  Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从(mysql也是) 支持分片  对数据存储要求比">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-10-14T12:39:59.412Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/22/Redis简介/image/image-20200207145117717.png">
+<meta property="og:updated_time" content="2020-02-07T07:00:16.100Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis 简介">
-<meta name="twitter:description" content="Redis简介是一个高性能的key-value数据库。有以下三个特点：  支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。  不仅仅支持简单的key-value类型的数据，同时还提供list、set、zset、hash等数据结构的存储。 zset是set的一个升级版本，在set的基础上增加了一格顺序属性，这一属性在添加元素的同时可以指定，每次指定后，zset会自动">
+<meta name="twitter:title" content="Redis">
+<meta name="twitter:description" content="缓存中间件 主流应用的架构图，其中熔断是指当存储层宕掉之后启动熔断机制，默认请求缓存层并不管有没有结果直接返回的过程。   Memcache: 代码层次类似Hash 支持简单数据类型 不支持数据持久化存储(宕机之后无法保存数据) 不支持主从 不支持分片 (将大数据分布到多个物理节点的分区)  Redis 数据类型丰富 支持数据磁盘持久化存储 支持主从(mysql也是) 支持分片  对数据存储要求比">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/22/Redis简介/image/image-20200207145117717.png">
 
 
 
@@ -133,7 +135,7 @@
 
 
 
-  <title>Redis 简介 | Saikikky</title>
+  <title>Redis | Saikikky</title>
   
 
 
@@ -259,7 +261,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis 简介</h1>
+          <h1 class="post-title" itemprop="name headline">Redis</h1>
         
 
         <div class="post-meta">
@@ -309,7 +311,24 @@
       
 
       
-        <h3 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h3><p>是一个高性能的key-value数据库。有以下三个特点：</p>
+        <h3 id="缓存中间件"><a href="#缓存中间件" class="headerlink" title="缓存中间件"></a>缓存中间件</h3><ul>
+<li>主流应用的架构图，其中熔断是指当存储层宕掉之后启动熔断机制，默认请求缓存层并不管有没有结果直接返回的过程。</li>
+</ul>
+<p><img src="image/image-20200207145117717.png" alt="image-20200207145117717"></p>
+<h4 id="Memcache-代码层次类似Hash"><a href="#Memcache-代码层次类似Hash" class="headerlink" title="Memcache: 代码层次类似Hash"></a>Memcache: 代码层次类似Hash</h4><ul>
+<li>支持简单数据类型</li>
+<li>不支持数据持久化存储(宕机之后无法保存数据)</li>
+<li>不支持主从</li>
+<li>不支持分片 (将大数据分布到多个物理节点的分区)</li>
+</ul>
+<h4 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h4><ul>
+<li>数据类型丰富</li>
+<li>支持数据磁盘持久化存储</li>
+<li>支持主从(mysql也是)</li>
+<li>支持分片</li>
+</ul>
+<p>对数据存储要求比较高的情况下用Redis，而</p>
+<h3 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h3><p>是一个高性能的key-value数据库。有以下三个特点：</p>
 <ul>
 <li><p>支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。</p>
 </li>
@@ -450,7 +469,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -463,7 +482,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
@@ -496,7 +515,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis简介"><span class="nav-number">1.</span> <span class="nav-text">Redis简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis优势"><span class="nav-number">1.1.</span> <span class="nav-text">Redis优势</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis命令"><span class="nav-number">2.</span> <span class="nav-text">Redis命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis键命令"><span class="nav-number">2.1.</span> <span class="nav-text">Redis键命令</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存中间件"><span class="nav-number">1.</span> <span class="nav-text">缓存中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Memcache-代码层次类似Hash"><span class="nav-number">1.1.</span> <span class="nav-text">Memcache: 代码层次类似Hash</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis"><span class="nav-number">1.2.</span> <span class="nav-text">Redis</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis简介"><span class="nav-number">2.</span> <span class="nav-text">Redis简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis优势"><span class="nav-number">2.1.</span> <span class="nav-text">Redis优势</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis命令"><span class="nav-number">3.</span> <span class="nav-text">Redis命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Redis键命令"><span class="nav-number">3.1.</span> <span class="nav-text">Redis键命令</span></a></li></ol></li></ol></div>
             
 
           </div>
