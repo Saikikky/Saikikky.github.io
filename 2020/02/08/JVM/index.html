@@ -99,7 +99,8 @@
 <meta property="og:image" content="http://yoursite.com/2020/02/08/JVM/image/image-20200209224952010.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/08/JVM/image/image-20200209230058567.png">
 <meta property="og:image" content="http://yoursite.com/2020/02/08/JVM/image/image-20200208150045204.png">
-<meta property="og:updated_time" content="2020-02-09T15:16:20.387Z">
+<meta property="og:image" content="http://yoursite.com/2020/02/08/JVM/image/image-20200210161708850.png">
+<meta property="og:updated_time" content="2020-02-10T09:08:52.753Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM">
 <meta name="twitter:description" content="1.Java内存结构=JVM内存结构 程序计数器 当前线程所执行的字节码行号指示器(逻辑) 改变计数器的值来选取下一条需要执行的字节码指令 和线程是一对一的私有关系 对Java方法计数(记录的是正在执行的虚拟机字节码指令的地址)；Native方法，则为Undefined 不会发生内存泄漏  Java虚拟机栈虚拟机栈描述的是Java方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧用于存储局部">
@@ -432,7 +433,140 @@
 </ul>
 <p>对于一些需要执行静态方法的比如数据库驱动加载<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code></p>
 <p>在SpringIOC中，在资源加载器获取要读入的资源时，在读取一些bean文件时，如果是以class path的方式加载，就需要使用ClassLoader.loadClass方法加载，跟SpringIOC的lazy loading(延迟加载)有关，SpringIOC为了加快初始化速度，大量使用延时加载，classLoader不需要执行类中的初始化步骤也不需要链接，可以加快加载速度，而初始化工作等到最后要使用到类的时候再去做。</p>
-
+<h2 id="4-GC"><a href="#4-GC" class="headerlink" title="4.GC"></a>4.GC</h2><h3 id="判断对象是否为垃圾的算法"><a href="#判断对象是否为垃圾的算法" class="headerlink" title="判断对象是否为垃圾的算法"></a>判断对象是否为垃圾的算法</h3><h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><ul>
+<li>通过判断对象的引用数量来决定对象是否可以被回收</li>
+<li>每个对象实例都有一个引用计数器，被引用则+1，完成引用则-1</li>
+<li>任何引用计数为0的对象实例可以被当作垃圾收集</li>
+</ul>
+<blockquote>
+<p>优点：执行效率高，程序执行受影响较小</p>
+<p>缺点：无法检测出循环引用的情况，导致内存泄漏</p>
+</blockquote>
+<h4 id="可达性分析算法-用的比较多"><a href="#可达性分析算法-用的比较多" class="headerlink" title="可达性分析算法(用的比较多)"></a>可达性分析算法(用的比较多)</h4><blockquote>
+<p>算法基本思想是：通过一系列的成为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，搜索所走过的路径称为引用链，当一个对象道GC Roots没有任何引用链相连，即从GC Roots到这个对象不可达，则证明此对对象是不可用的。就可以被判定为是可以被回收的对象。</p>
+</blockquote>
+<p><strong>Java中可作为GC Roots的对象包括一下几种</strong></p>
+<ul>
+<li>虚拟机栈(栈帧中的本地变量表)中引用的对象</li>
+<li>方法区中类静态属性引用的对象</li>
+<li>方法区中常量引用的对象</li>
+<li>本地方法栈中JNI(即一般说的Native方法)引用的对象</li>
+<li>活跃线程的引用对象</li>
+</ul>
+<h3 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3><h4 id="标记-清除算法"><a href="#标记-清除算法" class="headerlink" title="标记-清除算法"></a>标记-清除算法</h4><blockquote>
+<p>由于碎片问题用的较少</p>
+</blockquote>
+<h4 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h4><blockquote>
+<p>适用于存活率低的区域(新生代)</p>
+</blockquote>
+<h4 id="标记-整理算法"><a href="#标记-整理算法" class="headerlink" title="标记-整理算法"></a>标记-整理算法</h4><blockquote>
+<p>适用于存活率高的区域(老年代)</p>
+</blockquote>
+<h4 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h4><ul>
+<li><p>Minor GC</p>
+<blockquote>
+<p>发生在新生代，通常会使用复制算法</p>
+</blockquote>
+<p>新生代：尽可能快速地收集掉那些生命周期短的对象</p>
+<p>Eden区：survivor区(from)：survivor区(to)=8:1:1</p>
+<p>​        每次使用Eden区和其中一块survivor区，回收时，讲Eden和Survivor中还存活着的对象一次性复制到另一个Survivor空间上，最后清理掉Eden和刚才用过的survivor空间。当survivor空间不够用时，需要依赖其他内存(老年代)进行分配担保。</p>
+<p><strong><em>Eden空间不足会触发Minor GC</em></strong></p>
+</li>
+<li><p>Full GC</p>
+<blockquote>
+<p>老年代的GC通常会伴随着新生代的GC。标记清除和标记整理算法</p>
+</blockquote>
+<p><strong>新生代的对象可以晋升到老年代</strong></p>
+<ul>
+<li>经历一定Minor次数依然存活的对象(默认15次)</li>
+<li>survivor区中存放不下的对象</li>
+<li>新生成的大对象</li>
+</ul>
+<p>老年代：存放生命周期较长的对象</p>
+<p>Full GC比Minor GC慢，但执行频率低</p>
+<p><strong><em>老年代空间不足，JDK1.7以前永久代空间不足，Minor GC晋升到老年代的平均大小大于老年代的剩余空间，调用System.gc()会触发Full GC</em></strong></p>
+</li>
+<li><p>Stop The World</p>
+<ul>
+<li>JVM由于要执行GC而停止了应用程序的执行</li>
+<li>任何一种GC算法都会发生</li>
+<li>多数GC优化通过减少Stop The World发生的时间来提高程序性能</li>
+</ul>
+</li>
+<li><p>safepoint 安全点</p>
+<blockquote>
+<p>程序执行时并非在所有地方都能停顿下来开始GC，只有在到达安全点时才能暂停</p>
+</blockquote>
+<ul>
+<li>分析过程中对象引用关系不会发生变化的点</li>
+<li>产生safepoint的地方：方法调用、循环跳转、异常跳转等</li>
+<li>安全点数量要适中</li>
+</ul>
+</li>
+</ul>
+<h3 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h3><h4 id="Serial收集器-XX-UseSerialGC-复制算法"><a href="#Serial收集器-XX-UseSerialGC-复制算法" class="headerlink" title="Serial收集器(-XX:+UseSerialGC, 复制算法)"></a>Serial收集器(-XX:+UseSerialGC, 复制算法)</h4><ul>
+<li>单线程收集，进行垃圾收集时，必须暂停所有工作线程</li>
+<li>简单高效，Client模式下默认的年轻代收集器(JVM运行模式分为Server和Client)</li>
+</ul>
+<h4 id="ParNew收集器-XX-UseParNewGC-复制算法"><a href="#ParNew收集器-XX-UseParNewGC-复制算法" class="headerlink" title="ParNew收集器(-XX:+UseParNewGC,复制算法)"></a>ParNew收集器(-XX:+UseParNewGC,复制算法)</h4><ul>
+<li>多线程收集，其余的行为、特点和Serial收集器一样</li>
+<li>单核执行效率不如Serial，在多核下执行才有优势</li>
+</ul>
+<h4 id="Parallel-Scavenge收集器-XX-UseParallelGC-复制算法"><a href="#Parallel-Scavenge收集器-XX-UseParallelGC-复制算法" class="headerlink" title="Parallel Scavenge收集器(-XX:+UseParallelGC,复制算法)"></a>Parallel Scavenge收集器(-XX:+UseParallelGC,复制算法)</h4><blockquote>
+<p>吞吐量=运行用户代码时间/(运行用户代码时间+垃圾收集时间)</p>
+</blockquote>
+<ul>
+<li>比起关注用户线程停顿时间，更关注系统的吞吐量</li>
+<li>在多核下执行才有优势，Server模式下默认的年轻代收集器</li>
+</ul>
+<h4 id="Serial-Old收集器-XX-UseSerialOldGC-标记-整理算法"><a href="#Serial-Old收集器-XX-UseSerialOldGC-标记-整理算法" class="headerlink" title="Serial Old收集器(-XX:+UseSerialOldGC,标记-整理算法)"></a>Serial Old收集器(-XX:+UseSerialOldGC,标记-整理算法)</h4><ul>
+<li>单线程收集，进行垃圾收集时，必须暂停所有工作线程</li>
+<li>简单高效，Client模式下默认的老年代收集器</li>
+</ul>
+<h4 id="Parallel-Old收集器-XX-UseParallelOldGC-标记-整理算法"><a href="#Parallel-Old收集器-XX-UseParallelOldGC-标记-整理算法" class="headerlink" title="Parallel Old收集器(-XX:+UseParallelOldGC,标记-整理算法)"></a>Parallel Old收集器(-XX:+UseParallelOldGC,标记-整理算法)</h4><ul>
+<li>多线程，吞吐量优先</li>
+</ul>
+<h4 id="CMS收集器-XX-UseConcMarkSweepGC-标记-清除算法"><a href="#CMS收集器-XX-UseConcMarkSweepGC-标记-清除算法" class="headerlink" title="CMS收集器(-XX:+UseConcMarkSweepGC,标记-清除算法)"></a>CMS收集器(-XX:+UseConcMarkSweepGC,标记-清除算法)</h4><ul>
+<li>初始标记：Stop The World，仅仅只标记一下GC Roots能直接关联到的对象，速度很快。</li>
+<li>并发标记：并发追溯标记，程序不会停顿。进行GC Roots Tracing</li>
+<li>并发预清理：查找执行并发标记阶段从年轻代晋升到老年代的对象，减少下一阶段工作量(书中没有这一阶段)</li>
+<li>重新标记：Stop The World，暂停虚拟机，扫描CMS堆中的剩余对象。为了修正并发标记期间因用户程序运作而导致标记产生变动的那一部分对象的标记记录。这个阶段的停顿时间会比初始标记阶段时间稍微长一些，但远比并发标记的时间短。</li>
+<li>并发清除：清理垃圾对象，程序不会停顿</li>
+<li>并发重置：重置CMS收集器的数据结构(书中没有这一阶段)</li>
+</ul>
+<h4 id="G1收集器-XX-UseG1GC-复制-标记-整理算法"><a href="#G1收集器-XX-UseG1GC-复制-标记-整理算法" class="headerlink" title="G1收集器(-XX:+UseG1GC,复制+标记-整理算法)"></a>G1收集器(-XX:+UseG1GC,复制+标记-整理算法)</h4><ul>
+<li>并行和并发</li>
+<li>分代收集</li>
+<li>空间整合</li>
+<li>可预测的停顿</li>
+</ul>
+<h3 id="finalize-方法——————————————待定"><a href="#finalize-方法——————————————待定" class="headerlink" title="finalize()方法——————————————待定"></a>finalize()方法——————————————待定</h3><h3 id="Java中的强引用、软引用、弱引用、虚引用"><a href="#Java中的强引用、软引用、弱引用、虚引用" class="headerlink" title="Java中的强引用、软引用、弱引用、虚引用"></a>Java中的强引用、软引用、弱引用、虚引用</h3><h4 id="强引用-Strong-Reference"><a href="#强引用-Strong-Reference" class="headerlink" title="强引用(Strong Reference)"></a>强引用(Strong Reference)</h4><ul>
+<li>最普遍的引用：Object obj = new Object()</li>
+<li>抛出OutOfMemoryError终止程序也不会回收具有强引用的对象</li>
+<li>通过将对象设置为null来弱化引用，使其被回收</li>
+</ul>
+<h4 id="软引用-Soft-Reference"><a href="#软引用-Soft-Reference" class="headerlink" title="软引用(Soft Reference)"></a>软引用(Soft Reference)</h4><ul>
+<li>对象处在有用但非必须的状态</li>
+<li>只有当内存空间不足时，GC会回收该引用的对象的内存</li>
+<li>可以用来实现高速缓存</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">"abc"</span>); <span class="comment">// 强引用</span></span><br><span class="line">SoftReference&lt;String&gt; softRef = <span class="keyword">new</span> SoftReference&lt;String&gt;(str); <span class="comment">// 软引用</span></span><br></pre></td></tr></table></figure>
+<h4 id="弱引用-Weak-Reference"><a href="#弱引用-Weak-Reference" class="headerlink" title="弱引用(Weak Reference)"></a>弱引用(Weak Reference)</h4><ul>
+<li>非必须的对象，比软引用更弱一些</li>
+<li>GC时会被回收</li>
+<li>被回收的概率也不大，因为GC线程优先级比较低</li>
+<li>适用于引用偶尔被使用且不影响垃圾回收的对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">"abc"</span>); <span class="comment">// 强引用</span></span><br><span class="line">WeakReference&lt;String&gt; weakRef = <span class="keyword">new</span> WeakReference&lt;String&gt;(str); <span class="comment">// 弱引用</span></span><br></pre></td></tr></table></figure>
+<h4 id="虚引用-PhantomReference"><a href="#虚引用-PhantomReference" class="headerlink" title="虚引用(PhantomReference)"></a>虚引用(PhantomReference)</h4><ul>
+<li>不会决定对象的生命周期</li>
+<li>任何时候都可能被垃圾收集器回收</li>
+<li>跟踪对象被垃圾收集器回收的活动，起哨兵的作用</li>
+<li>必须和引用队列ReferenceQueue联合使用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">"abc"</span>); <span class="comment">// 强引用</span></span><br><span class="line">ReferenceQueue queue = <span class="keyword">new</span> ReferenceQueue();</span><br><span class="line">PhantomReference ref = <span class="keyword">new</span> PhantomReference(str, queue);</span><br></pre></td></tr></table></figure>
+<p><img src="image/image-20200210161708850.png" alt="image-20200210161708850"></p>
+<h4 id="引用队列-ReferenceQueue-——————-待定"><a href="#引用队列-ReferenceQueue-——————-待定" class="headerlink" title="引用队列(ReferenceQueue)—————— 待定"></a>引用队列(ReferenceQueue)—————— 待定</h4>
       
     </div>
     
@@ -593,7 +727,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java内存结构-JVM内存结构"><span class="nav-number">1.</span> <span class="nav-text">1.Java内存结构=JVM内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java堆-Heap"><span class="nav-number">1.4.</span> <span class="nav-text">Java堆(Heap)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.5.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">1.6.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-JVM调优"><span class="nav-number">2.</span> <span class="nav-text">2.JVM调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM三大调优参数-Xms-Xmx-Xss"><span class="nav-number">2.1.</span> <span class="nav-text">JVM三大调优参数-Xms -Xmx -Xss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java内存中的堆和栈的区别——内存分配策略"><span class="nav-number">2.2.</span> <span class="nav-text">Java内存中的堆和栈的区别——内存分配策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-JVM如何加载-class文件"><span class="nav-number">3.</span> <span class="nav-text">3.JVM如何加载.class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM架构"><span class="nav-number">3.1.</span> <span class="nav-text">JVM架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类从编译到执行的过程"><span class="nav-number">3.2.</span> <span class="nav-text">类从编译到执行的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader"><span class="nav-number">3.3.</span> <span class="nav-text">ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader的种类"><span class="nav-number">3.3.1.</span> <span class="nav-text">ClassLoader的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#双亲委派"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">双亲委派</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的加载方式"><span class="nav-number">3.4.</span> <span class="nav-text">类的加载方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类的加载过程-Class对象的生成过程用以区分"><span class="nav-number">3.4.1.</span> <span class="nav-text">类的加载过程(Class对象的生成过程用以区分)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#加载"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#验证"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#准备"><span class="nav-number">3.4.1.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解析"><span class="nav-number">3.4.1.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化"><span class="nav-number">3.4.1.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loadClass和forName的区别"><span class="nav-number">3.4.2.</span> <span class="nav-text">loadClass和forName的区别</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Java内存结构-JVM内存结构"><span class="nav-number">1.</span> <span class="nav-text">1.Java内存结构=JVM内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器"><span class="nav-number">1.1.</span> <span class="nav-text">程序计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java虚拟机栈"><span class="nav-number">1.2.</span> <span class="nav-text">Java虚拟机栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地方法栈"><span class="nav-number">1.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java堆-Heap"><span class="nav-number">1.4.</span> <span class="nav-text">Java堆(Heap)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法区"><span class="nav-number">1.5.</span> <span class="nav-text">方法区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时常量池"><span class="nav-number">1.6.</span> <span class="nav-text">运行时常量池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-JVM调优"><span class="nav-number">2.</span> <span class="nav-text">2.JVM调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM三大调优参数-Xms-Xmx-Xss"><span class="nav-number">2.1.</span> <span class="nav-text">JVM三大调优参数-Xms -Xmx -Xss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java内存中的堆和栈的区别——内存分配策略"><span class="nav-number">2.2.</span> <span class="nav-text">Java内存中的堆和栈的区别——内存分配策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-JVM如何加载-class文件"><span class="nav-number">3.</span> <span class="nav-text">3.JVM如何加载.class文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM架构"><span class="nav-number">3.1.</span> <span class="nav-text">JVM架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类从编译到执行的过程"><span class="nav-number">3.2.</span> <span class="nav-text">类从编译到执行的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ClassLoader"><span class="nav-number">3.3.</span> <span class="nav-text">ClassLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ClassLoader的种类"><span class="nav-number">3.3.1.</span> <span class="nav-text">ClassLoader的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#双亲委派"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">双亲委派</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类的加载方式"><span class="nav-number">3.4.</span> <span class="nav-text">类的加载方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#类的加载过程-Class对象的生成过程用以区分"><span class="nav-number">3.4.1.</span> <span class="nav-text">类的加载过程(Class对象的生成过程用以区分)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#加载"><span class="nav-number">3.4.1.1.</span> <span class="nav-text">加载</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#验证"><span class="nav-number">3.4.1.2.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#准备"><span class="nav-number">3.4.1.3.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解析"><span class="nav-number">3.4.1.4.</span> <span class="nav-text">解析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#初始化"><span class="nav-number">3.4.1.5.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#loadClass和forName的区别"><span class="nav-number">3.4.2.</span> <span class="nav-text">loadClass和forName的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-GC"><span class="nav-number">4.</span> <span class="nav-text">4.GC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断对象是否为垃圾的算法"><span class="nav-number">4.1.</span> <span class="nav-text">判断对象是否为垃圾的算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#引用计数算法"><span class="nav-number">4.1.1.</span> <span class="nav-text">引用计数算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可达性分析算法-用的比较多"><span class="nav-number">4.1.2.</span> <span class="nav-text">可达性分析算法(用的比较多)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集算法"><span class="nav-number">4.2.</span> <span class="nav-text">垃圾收集算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-清除算法"><span class="nav-number">4.2.1.</span> <span class="nav-text">标记-清除算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复制算法"><span class="nav-number">4.2.2.</span> <span class="nav-text">复制算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#标记-整理算法"><span class="nav-number">4.2.3.</span> <span class="nav-text">标记-整理算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分代收集算法"><span class="nav-number">4.2.4.</span> <span class="nav-text">分代收集算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#垃圾收集器"><span class="nav-number">4.3.</span> <span class="nav-text">垃圾收集器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Serial收集器-XX-UseSerialGC-复制算法"><span class="nav-number">4.3.1.</span> <span class="nav-text">Serial收集器(-XX:+UseSerialGC, 复制算法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ParNew收集器-XX-UseParNewGC-复制算法"><span class="nav-number">4.3.2.</span> <span class="nav-text">ParNew收集器(-XX:+UseParNewGC,复制算法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-Scavenge收集器-XX-UseParallelGC-复制算法"><span class="nav-number">4.3.3.</span> <span class="nav-text">Parallel Scavenge收集器(-XX:+UseParallelGC,复制算法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Serial-Old收集器-XX-UseSerialOldGC-标记-整理算法"><span class="nav-number">4.3.4.</span> <span class="nav-text">Serial Old收集器(-XX:+UseSerialOldGC,标记-整理算法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-Old收集器-XX-UseParallelOldGC-标记-整理算法"><span class="nav-number">4.3.5.</span> <span class="nav-text">Parallel Old收集器(-XX:+UseParallelOldGC,标记-整理算法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMS收集器-XX-UseConcMarkSweepGC-标记-清除算法"><span class="nav-number">4.3.6.</span> <span class="nav-text">CMS收集器(-XX:+UseConcMarkSweepGC,标记-清除算法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#G1收集器-XX-UseG1GC-复制-标记-整理算法"><span class="nav-number">4.3.7.</span> <span class="nav-text">G1收集器(-XX:+UseG1GC,复制+标记-整理算法)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#finalize-方法——————————————待定"><span class="nav-number">4.4.</span> <span class="nav-text">finalize()方法——————————————待定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java中的强引用、软引用、弱引用、虚引用"><span class="nav-number">4.5.</span> <span class="nav-text">Java中的强引用、软引用、弱引用、虚引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#强引用-Strong-Reference"><span class="nav-number">4.5.1.</span> <span class="nav-text">强引用(Strong Reference)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软引用-Soft-Reference"><span class="nav-number">4.5.2.</span> <span class="nav-text">软引用(Soft Reference)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#弱引用-Weak-Reference"><span class="nav-number">4.5.3.</span> <span class="nav-text">弱引用(Weak Reference)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚引用-PhantomReference"><span class="nav-number">4.5.4.</span> <span class="nav-text">虚引用(PhantomReference)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#引用队列-ReferenceQueue-——————-待定"><span class="nav-number">4.5.5.</span> <span class="nav-text">引用队列(ReferenceQueue)—————— 待定</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
