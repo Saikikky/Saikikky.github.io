@@ -517,6 +517,34 @@
 <p><img src="image/image-20200208153421212.png" alt="image-20200208153421212"></p>
 <p><img src="image/image-20200208153438385.png" alt="image-20200208153438385"></p>
 <p><img src="image/image-20200208153447972.png" alt="image-20200208153447972"></p>
+<h2 id="12-Thread中的start和run方法的区别"><a href="#12-Thread中的start和run方法的区别" class="headerlink" title="12.Thread中的start和run方法的区别"></a>12.Thread中的start和run方法的区别</h2><ul>
+<li>调用start()方法会创建一个新的子线程并启动</li>
+<li>run()方法只是Thread的一个普通方法的调用，运行的依旧是主线程main</li>
+</ul>
+<h2 id="13-Thread和Runnable是什么关系"><a href="#13-Thread和Runnable是什么关系" class="headerlink" title="13.Thread和Runnable是什么关系"></a>13.Thread和Runnable是什么关系</h2><ul>
+<li>Thread是实现了Runnable接口的类，使得run支持多线程，Runnable接口实现多线程讲Runnable传入Thread作为参数调用</li>
+<li>因类的单一继承原则，推荐多使用Runnable接口</li>
+</ul>
+<h2 id="14-sleep-和wait-区别-yield-中断线程"><a href="#14-sleep-和wait-区别-yield-中断线程" class="headerlink" title="14.sleep()和wait()区别 yield() 中断线程"></a>14.sleep()和wait()区别 yield() 中断线程</h2><ul>
+<li>sleep是Thread类的方法，wait是Object类中定义的方法</li>
+<li>sleep方法可以在任何地方使用</li>
+<li>wait方法只能在synchronized方法或者synchronized块中使用</li>
+<li><strong>Thread.sleep只会让出CPU，不会导致锁行为的改变</strong></li>
+<li><strong>Object.wait不仅让出CPU，还会释放已经占有的同步资源锁</strong></li>
+</ul>
+<blockquote>
+<p>当调用yield()函数时，会给线程调度器一个当前线程愿意让出CPU使用的暗示，但是线程调度器可能会忽略这个暗示，对锁不会造成影响。</p>
+</blockquote>
+<p><strong>中断线程</strong></p>
+<ul>
+<li>stop()停止线程  <strong>弃用</strong>  太暴力且stop的时候不知道线程运行情况</li>
+<li>suspend()和resume()方法 <strong>弃用</strong></li>
+<li>interrupt() 通知线程应该中断了<ul>
+<li>如果线程处于被阻塞状态(sleep wait join等)，线程会立即退出被阻塞状态，并抛出InterruptedException异常。</li>
+<li>如果线程处于正常活动状态，会将该线程的中断标志设置为true。被设置中断标志的线程将继续正常运行，不受影响。</li>
+</ul>
+</li>
+</ul>
 
           
         
