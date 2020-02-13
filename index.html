@@ -309,7 +309,7 @@
       
         
           
-            <h2 id="1-Java内存结构-JVM内存结构"><a href="#1-Java内存结构-JVM内存结构" class="headerlink" title="1.Java内存结构=JVM内存结构"></a>1.Java内存结构=JVM内存结构</h2><p><img src="image/image-20200209144208631.png" alt="image-20200209144208631"></p>
+            <h2 id="1-Java内存结构-JVM内存结构"><a href="#1-Java内存结构-JVM内存结构" class="headerlink" title="1.Java内存结构=JVM内存结构"></a>1.Java内存结构=JVM内存结构</h2><p><img src="/2020/02/08/JVM/image-20200209144208631.png" alt="image-20200209144208631"></p>
 <h3 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h3><ul>
 <li>当前线程所执行的字节码行号指示器(逻辑)</li>
 <li>改变计数器的值来选取下一条需要执行的字节码指令</li>
@@ -322,7 +322,7 @@
 <li><p>局部变量表：包含方法执行过程中的所有变量</p>
 </li>
 <li><p>操作数栈(在执行字节码指令过程中会用到)：入栈、出栈、复制、交换、产生消费变量</p>
-<p><img src="image/image-20200209152519336.png" alt="image-20200209152519336"></p>
+<p><img src="/2020/02/08/JVM/image-20200209152519336.png" alt="image-20200209152519336"></p>
 </li>
 </ul>
 <h3 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h3><ul>
@@ -343,7 +343,7 @@
 <li>永久代会给GC带来不必要的复杂性</li>
 </ul>
 <h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><p>### </p>
-<h2 id="2-JVM调优"><a href="#2-JVM调优" class="headerlink" title="2.JVM调优"></a>2.JVM调优</h2><h3 id="JVM三大调优参数-Xms-Xmx-Xss"><a href="#JVM三大调优参数-Xms-Xmx-Xss" class="headerlink" title="JVM三大调优参数-Xms -Xmx -Xss"></a>JVM三大调优参数-Xms -Xmx -Xss</h3><p><img src="image/image-20200209224952010.png" alt="image-20200209224952010"></p>
+<h2 id="2-JVM调优"><a href="#2-JVM调优" class="headerlink" title="2.JVM调优"></a>2.JVM调优</h2><h3 id="JVM三大调优参数-Xms-Xmx-Xss"><a href="#JVM三大调优参数-Xms-Xmx-Xss" class="headerlink" title="JVM三大调优参数-Xms -Xmx -Xss"></a>JVM三大调优参数-Xms -Xmx -Xss</h3><p><img src="/2020/02/08/JVM/image-20200209224952010.png" alt="image-20200209224952010"></p>
 <ul>
 <li>-Xss：规定了每个线程虚拟机栈(堆栈)的大小 256k足够 会影响此进程中并发线程数的大小</li>
 <li>-Xms：堆的初始值</li>
@@ -355,7 +355,7 @@
 <li>堆式存储：编译时或运行时模块入口都无法确定，动态分配</li>
 </ul>
 <p>联系：引用对象、数组时，栈里定义变量保存堆中目标的首地址</p>
-<p><img src="image/image-20200209230058567.png" alt="image-20200209230058567"></p>
+<p><img src="/2020/02/08/JVM/image-20200209230058567.png" alt="image-20200209230058567"></p>
 <p>区别：</p>
 <ol>
 <li>管理方式：栈自动释放，堆需要GC</li>
@@ -364,7 +364,7 @@
 <li>分配方式：栈支持静态和动态分配，而堆是动态分配</li>
 <li>效率：栈的效率比堆(双向链表)高</li>
 </ol>
-<h2 id="3-JVM如何加载-class文件"><a href="#3-JVM如何加载-class文件" class="headerlink" title="3.JVM如何加载.class文件"></a>3.JVM如何加载.class文件</h2><h3 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h3><p><img src="image/image-20200208150045204.png" alt="image-20200208150045204"></p>
+<h2 id="3-JVM如何加载-class文件"><a href="#3-JVM如何加载-class文件" class="headerlink" title="3.JVM如何加载.class文件"></a>3.JVM如何加载.class文件</h2><h3 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h3><p><img src="/2020/02/08/JVM/image-20200208150045204.png" alt="image-20200208150045204"></p>
 <p>JVM主要分为四个部分：Class Loader、Runtime Data Area、Execution Engine、Native Interface</p>
 <p>Class Loader：依据特定格式，加载class文件到内存。</p>
 <p>Execution Engine：对命令进行解析(class文件的字节码)，并提交给操作系统去执行。</p>
@@ -558,7 +558,7 @@
 <li>必须和引用队列ReferenceQueue联合使用</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String str = <span class="keyword">new</span> String(<span class="string">"abc"</span>); <span class="comment">// 强引用</span></span><br><span class="line">ReferenceQueue queue = <span class="keyword">new</span> ReferenceQueue();</span><br><span class="line">PhantomReference ref = <span class="keyword">new</span> PhantomReference(str, queue);</span><br></pre></td></tr></table></figure>
-<p><img src="image/image-20200210161708850.png" alt="image-20200210161708850"></p>
+<p><img src="/2020/02/08/JVM/image-20200210161708850.png" alt="image-20200210161708850"></p>
 <h4 id="引用队列-ReferenceQueue-——————-待定"><a href="#引用队列-ReferenceQueue-——————-待定" class="headerlink" title="引用队列(ReferenceQueue)—————— 待定"></a>引用队列(ReferenceQueue)—————— 待定</h4>
           
         
@@ -1101,7 +1101,7 @@
 </blockquote>
 <h4 id="两次写-Double-Write-：数据页的可靠性"><a href="#两次写-Double-Write-：数据页的可靠性" class="headerlink" title="两次写(Double Write)：数据页的可靠性"></a>两次写(Double Write)：数据页的可靠性</h4><p>发生写失效的情况，比如部分写失效，16KB的页只写了前4KB就宕机。重做日志中记录的是对页的物理操作，如偏移量800，写‘aaa’记录，也就是说如果这个页本身已经发生了损坏，再对其重做是没有意义的。所以在应用重做日志之前，用户需要一个页的副本，当写入失效发生时，先通过页的副本还原该页，再进行重做，这就是doublewrite。</p>
 <p>doublewrite分为两部分，一部分是内存中的doublewrite buffer，大小2M，另一部分是磁盘上共享表空间的连续128个页，大小也是2M。对缓冲池脏页进行刷新时，先用memcpy函数将脏页复制到内存的doublewrite buffer，然后由doublewrite buffer再分为两次，每次1MB顺序写入共享表空间的物理磁盘上，然后马上调用fsync函数，同步磁盘。doublewrite页(共享表空间的页)是连续的，所以这是一个顺序的过程，并没有很大的开销。若操作系统在将页写入磁盘的过程中发生了崩溃，在恢复过程中，InnoDB存储引擎可以从共享表空间中的doublewrite中找到该页的一个副本，复制到表空间文件再应用重做日志。完成共享表空间相关的写入后，再将doublewrite buffer中的页写入各个表空间文件中，而此时的写入则是离散的，因为各个表空间可能在磁盘的不同位置。</p>
-<p><img src="/Users/saikikky/Documents/专业学习/Blog/source/_posts/image/1.jpeg" alt="1"></p>
+<p><img src="/2019/11/15/MySQL体系结构和存储引擎/1.jpeg" alt="1"></p>
 <h4 id="自适应哈希索引-Adaptive-Hash-Index"><a href="#自适应哈希索引-Adaptive-Hash-Index" class="headerlink" title="自适应哈希索引(Adaptive Hash Index)"></a>自适应哈希索引(Adaptive Hash Index)</h4><p>哈希查询的一般时间复杂度是O(1)，而生产环境下的B+树的查找次数一般为3～4次。自适应哈希索引是InnoDB的一个特殊功能，当InnoDB发现某些索引使用十分频繁的时候，它会在内存中基于B-Tree索引上再创建一个哈希索引，建立速度很快，而且不需要对整张表构造哈希索引。这样可以让B-Tree索引也具有哈希索引的一些优点，比如快速的哈希查找。自适应和希索引是一个完全自动的内部行为，用户无法控制或者配置，会自动根据访问的频率和模式来自动地为某些热点页建立哈希索引。但是有必要的话可以关闭该功能。当InnoDB存储引擎在对表上各索引页的查询进行监控时，观察到建立哈希索引可以带来速度提升时，则建立索引，称为AHI。</p>
 <p>AHI有一个要求，即对这个页的连续访问模式必须是一样的。例如对于(a, b)这样的联合索引页，其访问模式可以时以下两种情况：</p>
 <ul>
@@ -1235,7 +1235,7 @@
             <h3 id="缓存中间件"><a href="#缓存中间件" class="headerlink" title="缓存中间件"></a>缓存中间件</h3><ul>
 <li>主流应用的架构图，其中熔断是指当存储层宕掉之后启动熔断机制，默认请求缓存层并不管有没有结果直接返回的过程。</li>
 </ul>
-<p><img src="image/image-20200207145117717.png" alt="image-20200207145117717"></p>
+<p><img src="/2019/08/22/Redis简介/image-20200207145117717.png" alt="image-20200207145117717"></p>
 <h4 id="Memcache-代码层次类似Hash"><a href="#Memcache-代码层次类似Hash" class="headerlink" title="Memcache: 代码层次类似Hash"></a>Memcache: 代码层次类似Hash</h4><ul>
 <li>支持简单数据类型</li>
 <li>不支持数据持久化存储(宕机之后无法保存数据)</li>

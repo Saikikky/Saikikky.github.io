@@ -393,8 +393,56 @@
 <p>并发问题：</p>
 <p><strong>若当前线程此时获得entry节点，但是被线程中断无法继续执行，此时线程二进入transfer函数，并把函数顺利执行，此时新表中的某个位置有了节点，之后线程一获得执行权继续执行，因为并发transfer，所以两者都是扩容的同一个链表，当线程一执行到e.next = new table[i] 的时候，由于线程二之前数据迁移的原因导致此时new table[i] 上就有ertry存在，所以线程一执行的时候，会将next节点，设置为自己，导致自己互相使用next引用对方，因此产生链表，导致死循环。</strong>(这个过程还需要再看看图和代码执行顺序)</p>
 <h3 id="concurrentHashMap"><a href="#concurrentHashMap" class="headerlink" title="concurrentHashMap"></a>concurrentHashMap</h3><p><strong>concurrentHashMap不支持key和value 值为null的原因</strong>：ConcurrentHashmap和Hashtable都是支持并发的，这样会有一个问题，当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射。HashMap是非并发的，可以通过contains(key)来做这个判断。而支持并发的Map在调用m.contains（key）和m.get(key),m可能已经不同了。</p>
-<h2 id="5-synchronized关键字"><a href="#5-synchronized关键字" class="headerlink" title="5.synchronized关键字"></a>5.synchronized关键字</h2><ul>
-<li><p>修饰方法</p>
+<h2 id="5-synchronized关键字"><a href="#5-synchronized关键字" class="headerlink" title="5.synchronized关键字"></a>5.synchronized关键字</h2><blockquote>
+<ol>
+<li><strong>互斥锁的特性</strong><ul>
+<li>互斥性：同一时间只允许一个线程持有某个对象锁，也称为操作的原子性</li>
+<li>可见性：必须保证在锁被释放之前，对共享变量所做的修改，对于随后获得该锁的另一个线程是可见的，即获得最新共享变量的值。</li>
+</ul>
+</li>
+</ol>
+<p><strong><em>synchronized满足互斥锁的特性，锁的不是代码而是对象。</em></strong></p>
+<ol start="2">
+<li><p><strong>重入</strong></p>
+<p>当一个线程试图操作一个由其他线程持有的对象锁的临界资源时，将会处于阻塞状态，但<strong>当一个线程再次请求自己持有的临界资源的时候，就属于重入，请求会成功</strong>。</p>
+</li>
+<li><p><strong>synchronized的四种状态</strong></p>
+<p>锁膨胀方向：无锁 —&gt; 偏向锁 —&gt; 轻量级锁 —&gt; 重量级锁</p>
+<ul>
+<li><p>偏向锁：减少同一线程获取锁的代价。 不适合用于锁竞争比较激烈的多线程场合。</p>
+<ul>
+<li>大多数情况下，锁不存在多线程竞争，总是由同一线程多次获得。</li>
+</ul>
+<blockquote>
+<p>如果一个线程获得了锁，那么锁就进入偏向模式，当该线程再次请求锁时，无需再做任何同步操作，只需检查Mark Word的锁标记为偏向锁等，就可以省去大量有关锁申请的操作。不需要进行CAS进行加锁解锁。</p>
+</blockquote>
+</li>
+<li><p>轻量级锁：由偏向锁升级而来，偏向锁运行在一个线程进入同步块的情况下，当第二个线程加入锁征用的时候，偏向锁就会升级为轻量级锁。 </p>
+<ul>
+<li>适应于线程交替执行同步块的情况。</li>
+<li>若存在同一时间访问同一个锁的情况，就会导致轻量级锁膨胀称为重量级锁。</li>
+</ul>
+</li>
+<li><p>重量级锁</p>
+<ul>
+<li>适用于追求吞吐量、同步块或者同步方法执行时间较长的场景。</li>
+<li>缺点：线程阻塞，响应时间缓慢，在多线程下，频繁的获取释放锁，会带来巨大的性能消耗。</li>
+<li>优点：线程竞争不是用自旋，不会消耗CPU。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2019/05/31/面试问题/image-20200213153607949.png" alt="image-20200213153607949"></p>
+</li>
+<li><p><strong>锁的内存语义</strong></p>
+<ul>
+<li>在线程释放锁时，Java内存模型会把该线程对应的本地内存中的共享变量刷新到主内存中。</li>
+<li>当线程获取锁时，Java内存模型会把该线程对应的本地内存置为无效，从而使得被监视器保护的临界区代码必须从主内存中读取共享变量。</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+<ul>
+<li><p>修饰方法 <strong>对象锁</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">// todo</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>跟下面的修饰代码块的代码是等价的。</p>
 <p>Synchronized关键字不能被继承，如果在父类中的某个方法使用了synchronized关键字，而在子类中覆盖了这个方法，在子类中的这个方法默认情况下并不是同步的，而必须显式地在子类的这个方法中加上synchronized关键字才可以。当然，还可以在子类方法中调用父类中相应的方法，这样虽然子类中的方法不是同步的，但子类调用了父类的同步方法，因此，子类的方法也就相当于同步了。</p>
@@ -403,7 +451,7 @@
 <li>构造方法不能使用synchronized关键字，但可以使用synchronized代码块来进行同步。 </li>
 </ul>
 </li>
-<li><p>修饰代码块</p>
+<li><p>修饰代码块 <strong>对象锁</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">synchronized</span>(<span class="keyword">this</span>) &#123;</span><br><span class="line">      <span class="comment">// todo</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>一个线程访问一个对象中的synchronized(this)同步代码块时，其他试图访问该对象的线程将被阻塞</li>
@@ -413,15 +461,16 @@
 <li><p>指定给某个对象加锁</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">(SomeObject obj)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">//obj 锁定的对象</span></span><br><span class="line">   <span class="keyword">synchronized</span>(obj)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// todo</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>修饰一个静态方法</p>
+<li><p>修饰一个静态方法 <strong>类锁</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="comment">// todo</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>静态方法是属于类的而不属于对象的。同样的，synchronized修饰的静态方法锁定的是这个类的所有对象。</p>
 </li>
-<li><p>修饰类 与修饰静态方法类似，给整个类加锁</p>
+<li><p>修饰类 与修饰静态方法类似，给整个类加锁 <strong>类锁</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span> </span>&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">synchronized</span>(ClassName.class) &#123;</span><br><span class="line">         <span class="comment">// todo</span></span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p><strong>无论synchronized关键字加在方法上还是对象上，如果它作用的对象是非静态的，则它取得的锁是对象；如果synchronized作用的对象是一个静态方法或一个类，则它取得的锁是对类，该类所有的对象同一把锁。 </strong></p>
+<p><strong><em>同一个类的不同对象的对象锁之间互不干扰，同一个类的不同对象使用类锁将会是同步的，对象锁和类锁互不干扰</em></strong></p>
 <p><strong>synchronized methods(){} 与synchronized（this）{}之间没有什么区别，只是synchronized methods(){} 便于阅读理解，而synchronized（this）{}可以更精确的控制冲突限制访问区域，有时候表现更高效率。</strong></p>
 <h2 id="6-索引"><a href="#6-索引" class="headerlink" title="6.索引"></a>6.索引</h2><ul>
 <li><p>优点</p>
@@ -514,9 +563,9 @@
 </ul>
 <h2 id="11-Java反射"><a href="#11-Java反射" class="headerlink" title="11.Java反射"></a>11.Java反射</h2><p>​        Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为Java语言的反射机制。(将Java类中的各种成分映射成对象)</p>
 <p>e.g.:</p>
-<p><img src="image/image-20200208153421212.png" alt="image-20200208153421212"></p>
-<p><img src="image/image-20200208153438385.png" alt="image-20200208153438385"></p>
-<p><img src="image/image-20200208153447972.png" alt="image-20200208153447972"></p>
+<p><img src="/2019/05/31/面试问题/image-20200208153421212.png" alt="image-20200208153421212"></p>
+<p><img src="/2019/05/31/面试问题/image-20200208153438385.png" alt="image-20200208153438385"></p>
+<p><img src="/2019/05/31/面试问题/image-20200208153447972.png" alt="image-20200208153447972"></p>
 <h2 id="12-Thread中的start和run方法的区别"><a href="#12-Thread中的start和run方法的区别" class="headerlink" title="12.Thread中的start和run方法的区别"></a>12.Thread中的start和run方法的区别</h2><ul>
 <li>调用start()方法会创建一个新的子线程并启动</li>
 <li>run()方法只是Thread的一个普通方法的调用，运行的依旧是主线程main</li>
@@ -542,6 +591,21 @@
 <li>interrupt() 通知线程应该中断了<ul>
 <li>如果线程处于被阻塞状态(sleep wait join等)，线程会立即退出被阻塞状态，并抛出InterruptedException异常。</li>
 <li>如果线程处于正常活动状态，会将该线程的中断标志设置为true。被设置中断标志的线程将继续正常运行，不受影响。</li>
+</ul>
+</li>
+</ul>
+<h2 id="15-自旋锁和自适应自旋锁"><a href="#15-自旋锁和自适应自旋锁" class="headerlink" title="15.自旋锁和自适应自旋锁"></a>15.自旋锁和自适应自旋锁</h2><ul>
+<li><p>自旋锁</p>
+<ul>
+<li>许多情况下，共享数据的锁定状态持续时间短，切换线程不值得。(挂起放弃CPU等)</li>
+<li>通过让线程执行忙循环等待锁的释放，不让出CPU</li>
+<li>缺点：若锁被其他线程长时间占用，会带来许多性能上的开销，会占用CPU时间片。</li>
+</ul>
+</li>
+<li><p>自适应自旋锁</p>
+<ul>
+<li>自旋的次数不再固定</li>
+<li>由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定。如果在同一个锁对象上自旋等待刚刚成功获取过锁并且持有锁的线程正在运行中，会认为该锁自旋获取锁的可能性很大，会自动增加等待时间。相反如果很少成功，后续可能会在该资源上放弃自旋，以免浪费资源。</li>
 </ul>
 </li>
 </ul>

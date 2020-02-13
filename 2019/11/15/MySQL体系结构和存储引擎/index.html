@@ -94,12 +94,12 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/Users/saikikky/Documents/专业学习/Blog/source/_posts/image/1.jpeg">
-<meta property="og:updated_time" content="2019-12-10T06:42:23.218Z">
+<meta property="og:image" content="http://yoursite.com/2019/11/15/MySQL体系结构和存储引擎/1.jpeg">
+<meta property="og:updated_time" content="2020-02-13T07:58:18.816Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL体系结构和存储引擎">
 <meta name="twitter:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
-<meta name="twitter:image" content="http://yoursite.com/Users/saikikky/Documents/专业学习/Blog/source/_posts/image/1.jpeg">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/15/MySQL体系结构和存储引擎/1.jpeg">
 
 
 
@@ -372,7 +372,7 @@
 </blockquote>
 <h4 id="两次写-Double-Write-：数据页的可靠性"><a href="#两次写-Double-Write-：数据页的可靠性" class="headerlink" title="两次写(Double Write)：数据页的可靠性"></a>两次写(Double Write)：数据页的可靠性</h4><p>发生写失效的情况，比如部分写失效，16KB的页只写了前4KB就宕机。重做日志中记录的是对页的物理操作，如偏移量800，写‘aaa’记录，也就是说如果这个页本身已经发生了损坏，再对其重做是没有意义的。所以在应用重做日志之前，用户需要一个页的副本，当写入失效发生时，先通过页的副本还原该页，再进行重做，这就是doublewrite。</p>
 <p>doublewrite分为两部分，一部分是内存中的doublewrite buffer，大小2M，另一部分是磁盘上共享表空间的连续128个页，大小也是2M。对缓冲池脏页进行刷新时，先用memcpy函数将脏页复制到内存的doublewrite buffer，然后由doublewrite buffer再分为两次，每次1MB顺序写入共享表空间的物理磁盘上，然后马上调用fsync函数，同步磁盘。doublewrite页(共享表空间的页)是连续的，所以这是一个顺序的过程，并没有很大的开销。若操作系统在将页写入磁盘的过程中发生了崩溃，在恢复过程中，InnoDB存储引擎可以从共享表空间中的doublewrite中找到该页的一个副本，复制到表空间文件再应用重做日志。完成共享表空间相关的写入后，再将doublewrite buffer中的页写入各个表空间文件中，而此时的写入则是离散的，因为各个表空间可能在磁盘的不同位置。</p>
-<p><img src="/Users/saikikky/Documents/专业学习/Blog/source/_posts/image/1.jpeg" alt="1"></p>
+<p><img src="/2019/11/15/MySQL体系结构和存储引擎/1.jpeg" alt="1"></p>
 <h4 id="自适应哈希索引-Adaptive-Hash-Index"><a href="#自适应哈希索引-Adaptive-Hash-Index" class="headerlink" title="自适应哈希索引(Adaptive Hash Index)"></a>自适应哈希索引(Adaptive Hash Index)</h4><p>哈希查询的一般时间复杂度是O(1)，而生产环境下的B+树的查找次数一般为3～4次。自适应哈希索引是InnoDB的一个特殊功能，当InnoDB发现某些索引使用十分频繁的时候，它会在内存中基于B-Tree索引上再创建一个哈希索引，建立速度很快，而且不需要对整张表构造哈希索引。这样可以让B-Tree索引也具有哈希索引的一些优点，比如快速的哈希查找。自适应和希索引是一个完全自动的内部行为，用户无法控制或者配置，会自动根据访问的频率和模式来自动地为某些热点页建立哈希索引。但是有必要的话可以关闭该功能。当InnoDB存储引擎在对表上各索引页的查询进行监控时，观察到建立哈希索引可以带来速度提升时，则建立索引，称为AHI。</p>
 <p>AHI有一个要求，即对这个页的连续访问模式必须是一样的。例如对于(a, b)这样的联合索引页，其访问模式可以时以下两种情况：</p>
 <ul>
