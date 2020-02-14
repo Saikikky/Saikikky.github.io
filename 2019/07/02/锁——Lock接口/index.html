@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Java基础,">
+  <meta name="keywords" content="Java并发,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
-<meta name="keywords" content="Java基础">
+<meta name="description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
+<meta name="keywords" content="Java并发">
 <meta property="og:type" content="article">
-<meta property="og:title" content="并发编程">
-<meta property="og:url" content="http://yoursite.com/2019/07/02/并发编程/index.html">
+<meta property="og:title" content="锁——Lock接口">
+<meta property="og:url" content="http://yoursite.com/2019/07/02/锁——Lock接口/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
+<meta property="og:description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-02T11:44:42.773Z">
+<meta property="og:updated_time" content="2020-02-13T15:24:10.823Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="并发编程">
-<meta name="twitter:description" content="suspend()、resume()、stop()​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。 线程通信 vol">
+<meta name="twitter:title" content="锁——Lock接口">
+<meta name="twitter:description" content="Lock接口比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。 Lock接口的使用方式 123456Lock lock = new ReentrantLock();lock.lock();">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/02/并发编程/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/02/锁——Lock接口/">
 
 
 
 
 
-  <title>并发编程 | Saikikky</title>
+  <title>锁——Lock接口 | Saikikky</title>
   
 
 
@@ -242,7 +242,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/并发编程/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/锁——Lock接口/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Saikikky Wang">
@@ -259,7 +259,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">并发编程</h1>
+          <h1 class="post-title" itemprop="name headline">锁——Lock接口</h1>
         
 
         <div class="post-meta">
@@ -271,7 +271,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T17:12:37+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T20:48:03+08:00">
                 2019-07-02
               </time>
             
@@ -309,21 +309,48 @@
       
 
       
-        <h3 id="suspend-、resume-、stop"><a href="#suspend-、resume-、stop" class="headerlink" title="suspend()、resume()、stop()"></a>suspend()、resume()、stop()</h3><p>​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。</p>
-<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><ul>
-<li><p>volatile和synchronized关键字</p>
-</li>
-<li><p>等待/通知机制（wait、notify、notifyAll）</p>
-</li>
-<li><p>管道输入/输出流</p>
-<p>管道输入/输出流和普通的文件输入/输出流或者网络输入/输出流不同之处在于，它主要用于线程之间的数据传输，而传输的媒介为内存。</p>
-</li>
-<li><p>Thread.join()</p>
-</li>
-<li><p>ThreadLocal</p>
-<p>即线程变量，是一个以ThreadLocal对象为键、任意对象为值的存储结构。这个结构被附带在线程上，也就是说一个线程可以根据一个ThreadLocal对象查询到绑定在这个线程上的一个值。可以通过set(T)方法来设置一个值，在当前线程下再通过get()方法获取到原先设置的值。</p>
+        <h2 id="Lock接口"><a href="#Lock接口" class="headerlink" title="Lock接口"></a>Lock接口</h2><p>比synchronized关键字多了锁获取与释放的可操作性、可中断的获取锁以及超时获取锁等。获取到锁的线程能够响应中断，当获取到锁的线程被中断时，中断异常将会被抛出，同时锁会被释放。超时获取锁，在指定的截止时间之前获取锁，如果截止时间到了仍旧无法获取锁，则返回。</p>
+<p>Lock接口的使用方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">lock.lock();</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">  lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在finally块中释放锁，目的是保证在获取到锁之后，最终能够被释放。</p>
+<h3 id="队列同步器AbstractQueuedSynchronizer"><a href="#队列同步器AbstractQueuedSynchronizer" class="headerlink" title="队列同步器AbstractQueuedSynchronizer"></a>队列同步器AbstractQueuedSynchronizer</h3><p>Lock接口的实现基本都是通过聚合了一个同步器的子类来完成线程访问控制的。</p>
+<p>同步器用来构建锁或者其他同步组件的基础框架，使用一个int成员变量表示同步状态，通过<strong>内置的FIFO队列</strong>来完成资源获取线程的排队工作。</p>
+<p>同步器主要使用方式是继承，子类被推荐定义为自动义同步组件的静态内部类，同步器自身并没有实现任何同步接口，它仅仅是定义了若干同步状态获取和释放的方法来供自定义组件使用，同步器既可以支持独占式地获取同步状态也可以支持共享式地获取同步状态，这样就可以方便实现不同类型的同步组件。(ReentrantLock、ReentrantReadWriteLock和CountDownLatch等)</p>
+<ul>
+<li><p>同步器与锁</p>
+<p>锁是面向使用者的，它定义了使用者与锁交互的接口(比如可以允许两个线程并行访问)，隐藏了实现细节；同步器面向的是锁的实现者，简化锁的实现方式，屏蔽同步状态管理、线程的排队、等待和唤醒灯底层的操作。说白了，同步器就是实现锁的关键，利用同步器实现锁的语义。</p>
 </li>
 </ul>
+<p>同步器的设计基于模板方法模式，使用者继承同步器并重写制定的方法，随后将同步器组合在自定义同步组件的实现中，并调用同步器提供的模版方法，而这些模版方法将会调用使用者重写的方法。</p>
+<ul>
+<li><p>独占式锁</p>
+<p>在获取同步状态时，同步器维护一个同步队列，获取状态失败的线程都会被加入到队列中并在队列中进行自旋；移出队列(或停止自旋)的条件是前驱节点为头节点且成功获取了同步状态。在释放同步状态时，同步器调用tryRelease(int arg)方法释放同步状态，然后唤醒头节点的后继节点。</p>
+</li>
+<li><p>共享式同步锁</p>
+<p>支持多个线程同时共享资源(读锁)，写锁为独占式访问。</p>
+</li>
+<li><p>独占式超时获取同步状态</p>
+<p>流程与独占式锁类似，在未获取到同步状态时，会使当前线程等待nanosTimeout纳秒，如果当前线程在nanosTimeout纳秒内没有获取到同步状态，将会从等待逻辑中自动返回。(抛出中断异常)</p>
+</li>
+</ul>
+<h3 id="重入锁ReentrantLock"><a href="#重入锁ReentrantLock" class="headerlink" title="重入锁ReentrantLock"></a>重入锁ReentrantLock</h3><p>支持重进入的锁，表示该锁能够支持一个线程对资源的重复加锁，此外，还支持获取锁时的公平和非公平性选择。(公平锁就是在绝对时间上，先对锁进行获取的请求一定先被满足，赋于等待时间最长的线程)(synchronized关键字隐式的支持重进入，比如一个synchronized修饰的递归方法，在方法执行时，执行线程在获取了锁之后仍能连续多次的获得该锁)</p>
+<p>ReentrantLock将锁对象化</p>
+<ul>
+<li>判断是否有线程，或者某个特定线程，在排队等待获取锁。</li>
+<li>带超时的获取锁的尝试</li>
+<li>感知有没有成功获取到锁</li>
+</ul>
+<p><strong>重复获得多少次锁，释放的时候就要释放多少次，同步状态值</strong></p>
+<p><strong>ReentrantLock和synchronized的区别</strong></p>
+<ul>
+<li>synchronized是关键字，ReentrantLock是类</li>
+<li>ReentrantLock可以对获取锁的等待时间进行设置，避免死锁</li>
+<li>ReentrantLock可以获取锁的各种信息</li>
+<li>ReentrantLock可以灵活的实现多路通知</li>
+<li>机制：ReentrantLock调用unsafe类的park()方法，sync操作Mark Word</li>
+</ul>
+<h3 id="读写锁ReentrantReadWriteLock"><a href="#读写锁ReentrantReadWriteLock" class="headerlink" title="读写锁ReentrantReadWriteLock"></a>读写锁ReentrantReadWriteLock</h3><p>读写锁在同一时刻可以允许多个读线程访问，不是排他锁。但是在写线程访问时，所有的读线程和其他线程均被阻塞。读写锁维护了一堆锁，一个读锁和一个写锁。</p>
+<p><strong><em>遵循获取写锁、获取读锁再释放写锁的次序，写锁能够降级为读锁</em></strong></p>
 
       
     </div>
@@ -341,7 +368,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Java基础/" rel="tag"># Java基础</a>
+            <a href="/tags/Java并发/" rel="tag"># Java并发</a>
           
         </div>
       
@@ -354,8 +381,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/13/锁的升级和对比/" rel="next" title="锁的升级和对比">
-                <i class="fa fa-chevron-left"></i> 锁的升级和对比
+              <a href="/2019/07/02/并发编程/" rel="next" title="并发编程">
+                <i class="fa fa-chevron-left"></i> 并发编程
               </a>
             
           </div>
@@ -364,8 +391,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/02/锁——Lock接口/" rel="prev" title="锁——Lock接口">
-                锁——Lock接口 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/09/Condition/" rel="prev" title="Condition">
+                Condition <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -489,7 +516,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#suspend-、resume-、stop"><span class="nav-number">1.</span> <span class="nav-text">suspend()、resume()、stop()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程通信"><span class="nav-number">2.</span> <span class="nav-text">线程通信</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Lock接口"><span class="nav-number">1.</span> <span class="nav-text">Lock接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#队列同步器AbstractQueuedSynchronizer"><span class="nav-number">1.1.</span> <span class="nav-text">队列同步器AbstractQueuedSynchronizer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重入锁ReentrantLock"><span class="nav-number">1.2.</span> <span class="nav-text">重入锁ReentrantLock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写锁ReentrantReadWriteLock"><span class="nav-number">1.3.</span> <span class="nav-text">读写锁ReentrantReadWriteLock</span></a></li></ol></li></ol></div>
             
 
           </div>
