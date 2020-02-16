@@ -105,7 +105,13 @@
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200750389.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200805978.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200826231.png">
-<meta property="og:updated_time" content="2020-02-16T06:33:28.057Z">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216144330358.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216145209857.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216145754682.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216145951291.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216150205088.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216150551790.png">
+<meta property="og:updated_time" content="2020-02-16T07:07:18.500Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="PS：集合简介 ConcurrentHashMap早期​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，">
@@ -396,6 +402,36 @@
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214200750389.png" alt="image-20200214200750389"></p>
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214200805978.png" alt="image-20200214200805978"></p>
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214200826231.png" alt="image-20200214200826231"></p>
+<h3 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h3><h4 id="闭锁-CountDownLatch"><a href="#闭锁-CountDownLatch" class="headerlink" title="闭锁 CountDownLatch"></a>闭锁 CountDownLatch</h4><blockquote>
+<p>让主线程等待一组事件发生后继续执行</p>
+</blockquote>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216144330358.png" alt="image-20200216144330358"></p>
+<h4 id="栅栏-CyclicBarrier"><a href="#栅栏-CyclicBarrier" class="headerlink" title="栅栏 CyclicBarrier"></a>栅栏 CyclicBarrier</h4><blockquote>
+<p>阻塞当前线程，等待其他线程</p>
+<ul>
+<li>等待其他线程且会阻碍当前线程，所有线程必须同时到达栅栏位置后，才能继续执行</li>
+<li>所有线程到达栅栏处，可以触发执行另外一个预先设置的线程</li>
+</ul>
+</blockquote>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216145209857.png" alt="image-20200216145209857"></p>
+<h4 id="信号量-Semaphore"><a href="#信号量-Semaphore" class="headerlink" title="信号量 Semaphore"></a>信号量 Semaphore</h4><blockquote>
+<p>控制某个资源可被同时访问的线程个数</p>
+</blockquote>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216145754682.png" alt="image-20200216145754682"></p>
+<h4 id="交换器-Exchanger"><a href="#交换器-Exchanger" class="headerlink" title="交换器 Exchanger"></a>交换器 Exchanger</h4><blockquote>
+<p>两个线程到达同步点后，相互交换数据</p>
+</blockquote>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216145951291.png" alt="image-20200216145951291"></p>
+<h3 id="BlockingQueue-阻塞队列"><a href="#BlockingQueue-阻塞队列" class="headerlink" title="BlockingQueue(阻塞队列)"></a>BlockingQueue(阻塞队列)</h3><blockquote>
+<p>提供可阻塞的入队和出队操作</p>
+<p>主要用于生产者消费者模式，在多线程场景时生产者线程在队列尾部添加元素，而消费者线程则在队列头部消费元素，通过这种方法能够达到将任务的生产和消费进行隔离的目的</p>
+</blockquote>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216150205088.png" alt="image-20200216150205088"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216150551790.png" alt="image-20200216150551790"></p>
+<blockquote>
+<p>有界指的是容量是有限的，初始化时指定，指定后不可改变</p>
+<p>无界实际是Integer.MAX_VALUE的容量</p>
+</blockquote>
 
       
     </div>
@@ -561,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.1.</span> <span class="nav-text">Executors</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.1.</span> <span class="nav-text">Executors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发工具类"><span class="nav-number">5.</span> <span class="nav-text">并发工具类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#闭锁-CountDownLatch"><span class="nav-number">5.1.</span> <span class="nav-text">闭锁 CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栅栏-CyclicBarrier"><span class="nav-number">5.2.</span> <span class="nav-text">栅栏 CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量-Semaphore"><span class="nav-number">5.3.</span> <span class="nav-text">信号量 Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交换器-Exchanger"><span class="nav-number">5.4.</span> <span class="nav-text">交换器 Exchanger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue-阻塞队列"><span class="nav-number">6.</span> <span class="nav-text">BlockingQueue(阻塞队列)</span></a></li></ol></div>
             
 
           </div>
