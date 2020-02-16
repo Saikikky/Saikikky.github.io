@@ -238,6 +238,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/JavaIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/16/JavaIO/" itemprop="url">JavaIO</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-16T15:25:43+08:00">
+                2020-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="BIO、NIO、AIO"><a href="#BIO、NIO、AIO" class="headerlink" title="BIO、NIO、AIO"></a>BIO、NIO、AIO</h3><h4 id="Block-IO-同步阻塞-：InputStream、OutputStream，Reader、Writer"><a href="#Block-IO-同步阻塞-：InputStream、OutputStream，Reader、Writer" class="headerlink" title="Block-IO(同步阻塞)：InputStream、OutputStream，Reader、Writer"></a>Block-IO(同步阻塞)：InputStream、OutputStream，Reader、Writer</h4><blockquote>
+<p>一个连接一个线程，客户端有连接请求时，服务端就需要启动一个线程进行处理等待操作系统返回结果</p>
+<p>IO执行的两个阶段都被阻塞，效率存在瓶颈</p>
+</blockquote>
+<h4 id="NonBlock-IO：构建多路复用的、同步非阻塞的IO操作"><a href="#NonBlock-IO：构建多路复用的、同步非阻塞的IO操作" class="headerlink" title="NonBlock-IO：构建多路复用的、同步非阻塞的IO操作"></a>NonBlock-IO：构建多路复用的、同步非阻塞的IO操作</h4><p><img src="/2020/02/16/JavaIO/image-20200216153414459.png" alt="image-20200216153414459"> </p>
+<blockquote>
+<p>NIO核心</p>
+<ul>
+<li><p>Channels 有点像流 数据可以从Channels读到Buffers中 基本上是从Channels开始的</p>
+</li>
+<li><p>Buffers 也可以从Buffers读到Channels中</p>
+</li>
+<li><p>Selectors 允许单线程处理多个Channel</p>
+<ul>
+<li>IO多路复用：调用系统级别的select、poll、epoll</li>
+</ul>
+<p><img src="/2020/02/16/JavaIO/image-20200216153935987.png" alt="image-20200216153935987"></p>
+</li>
+</ul>
+</blockquote>
+<p>可以了解一下</p>
+<p><img src="/2020/02/16/JavaIO/image-20200216154153942.png" alt="image-20200216154153942"></p>
+<p><img src="/2020/02/16/JavaIO/image-20200216154354388.png" alt="image-20200216154354388"></p>
+<p><img src="/2020/02/16/JavaIO/image-20200216154406876.png" alt="image-20200216154406876"></p>
+<h4 id="Asynchronous-IO：基于事件和回调机制-异步非阻塞"><a href="#Asynchronous-IO：基于事件和回调机制-异步非阻塞" class="headerlink" title="Asynchronous IO：基于事件和回调机制(异步非阻塞)"></a>Asynchronous IO：基于事件和回调机制(异步非阻塞)</h4><p><img src="/2020/02/16/JavaIO/image-20200216154630614.png" alt="image-20200216154630614"></p>
+<p><img src="/2020/02/16/JavaIO/image-20200216154740408.png" alt="image-20200216154740408"></p>
+<p><img src="/2020/02/16/JavaIO/image-20200216160629759.png" alt="image-20200216160629759"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/15/Java异常体系/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1422,9 +1568,9 @@
 <li>丰富的特性等。</li>
 </ul>
 <h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><p>客户端基本语法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> redis-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> redis-cli</span></span><br></pre></td></tr></table></figure>
 <p>PING用来检测redis服务是否启动，若启动会出现PONG。</p>
-<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>例如</span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span>其中runoobkey是一个键</span><br></pre></td></tr></table></figure>
+<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">例如</span></span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span><span class="bash">其中runoobkey是一个键</span></span><br></pre></td></tr></table></figure>
 
           
         
@@ -2171,163 +2317,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/事务/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Saikikky Wang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Saikikky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/10/事务/" itemprop="url">事务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-10T08:59:05+08:00">
-                2019-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h4><p>传播行为、隔离规则、回滚规则、事务超时和是否只读？</p>
-<h5 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h5><blockquote>
-<p>当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。</p>
-</blockquote>
-<ul>
-<li>Spring 中定义了七种传播行为<ul>
-<li>PROPAGATION_REQUIRED 表示当前方法必须运行在事务中，如果当前事务存在，方法将会在该事务中运行。否则，会启动一个新的事务。</li>
-<li>PROPAGATION_SUPPORTS 表示当前方法不需要事务上下文，但是如果存在当前事务的话，那么该方法会在这个事务中运行。</li>
-<li>PROPAGATION_MANDATORY 表示方法必须在事务中运行，如果当前事务不存在，抛出异常。</li>
-<li>PROPAGATION_REQUIRED_NEW 表示当前方法必须运行在它自己的事务中。一个新的事务将被启动。如果存在当前事务，在该方法执行期间，当前事务会被挂起。</li>
-<li>PROPAGATION_NOT_SUPPORTED 表示该方法不应该运行在事务中。如果存在当前事务，在方法运行期间，当前事务将被挂起。</li>
-<li>PROPAGATION_NEVER 表示当前方法不应该运行在事务上下文中。如果当前正有一个事务在运行，则会抛出异常。</li>
-<li>PROPAGATION_NESTED 表示如果当前已经存在一个事务，那么该方法将会在嵌套事务中运行。嵌套的事务可以独立于当前事务进行单独地提交或回滚。如果当前事务不存在，那么其行为与PROPAGATION_REQUIRED一样。注意各厂商对这种传播行为的支持是有所差异的。可以参考资源管理器的文档来确认它们是否支持嵌套事务</li>
-</ul>
-</li>
-</ul>
-<h5 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h5><blockquote>
-<p>隔离级别定义了一个事务可能受其他并发事务影响的程度。</p>
-</blockquote>
-<ul>
-<li><p>并发事务引起的问题</p>
-<p>| 脏读           | 发生在一个事务读取了另一个事务改写但尚未提交的数据时，如果改写在之后被回滚，那么第一个事务获取的数据就是无效的。 |<br>| ————– | ———————————————————— |<br>| <strong>不可重复读</strong> | <strong>不可重复读发生在一个事务执行相同的查询两次或者两次以上，但每次都得到不同的数据。这通常是因为另一个并发事务在两次查询期间进行了更新。</strong> |<br>| <strong>幻读</strong>       | <strong>发生在一个事务读取了几行数据，接着另一个并发事务插入了一些数据时，在随后的查询中，第一个事务就会发现多了一些原本不存在的记录。</strong> |</p>
-<ul>
-<li>不可重复读重点是修改，同样的条件读取过得数据再次读取的时候发现值不一样了。</li>
-<li>幻读的重点是新增和删除，同样的条件第一次和第二次读出来的记录数不一样。</li>
-<li>对于前者，只需要锁住满足条件的记录；对于后者，要锁住满足条件及其相近的记录。</li>
-</ul>
-</li>
-<li><p>隔离级别</p>
-<p>| 隔离级别                   | 含义                                                         |<br>| ————————– | ———————————————————— |<br>| ISOLATION_DEFAULT          | 后端数据库默认的隔离级别。大多数默认Read committed，MySQL 默认Repeatable read |<br>| ISOLATION_READ_UNCOMMITTED | 最低的隔离级别，允许读取尚未提交的数据变更，脏读、幻读、不可重复读。 |<br>| ISOLATION_READ_COMMITTED   | 允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生。 |<br>| ISOLATION_REPEATABLE_READ  | 对同一字段的多次读取结果是一致的，除非数据是被本身事务所修改，可以阻止脏读和不可重复读，但幻读还是有可能发生， |<br>| ISOLATION_SERIALIZABLE     | 最高的隔离级别，完全服从 ACID的隔离级别，确保阻止脏读、不可重复读和幻读，也是最慢的事务隔离级别 |</p>
-</li>
-</ul>
-<h5 id="只读"><a href="#只读" class="headerlink" title="只读"></a>只读</h5><blockquote>
-<p>是否为只读事务，如果事务只对后端的数据库进行该操作，数据库可以利用事务的只读特性来进行一些特定的优化。</p>
-</blockquote>
-<h5 id="事务超时"><a href="#事务超时" class="headerlink" title="事务超时"></a>事务超时</h5><blockquote>
-<p>事务不能运行太长时间，因为事务可能对数据库锁定，所以长时间的事务会不必要的占用数据库资源。实物超时就是指，事务在一定时间内没有执行完毕，就会自动回滚，而不是一直等待它结束。</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2378,7 +2367,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

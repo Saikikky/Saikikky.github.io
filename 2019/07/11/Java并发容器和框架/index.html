@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216145951291.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216150205088.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216150551790.png">
-<meta property="og:updated_time" content="2020-02-16T07:07:18.500Z">
+<meta property="og:updated_time" content="2020-02-16T08:11:42.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="PS：集合简介 ConcurrentHashMap早期​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，">
@@ -402,7 +402,7 @@
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214200750389.png" alt="image-20200214200750389"></p>
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214200805978.png" alt="image-20200214200805978"></p>
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214200826231.png" alt="image-20200214200826231"></p>
-<h3 id="并发工具类"><a href="#并发工具类" class="headerlink" title="并发工具类"></a>并发工具类</h3><h4 id="闭锁-CountDownLatch"><a href="#闭锁-CountDownLatch" class="headerlink" title="闭锁 CountDownLatch"></a>闭锁 CountDownLatch</h4><blockquote>
+<h3 id="并发工具类-同步器"><a href="#并发工具类-同步器" class="headerlink" title="并发工具类(同步器)"></a>并发工具类(同步器)</h3><h4 id="闭锁-CountDownLatch"><a href="#闭锁-CountDownLatch" class="headerlink" title="闭锁 CountDownLatch"></a>闭锁 CountDownLatch</h4><blockquote>
 <p>让主线程等待一组事件发生后继续执行</p>
 </blockquote>
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200216144330358.png" alt="image-20200216144330358"></p>
@@ -551,7 +551,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -597,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.1.</span> <span class="nav-text">Executors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发工具类"><span class="nav-number">5.</span> <span class="nav-text">并发工具类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#闭锁-CountDownLatch"><span class="nav-number">5.1.</span> <span class="nav-text">闭锁 CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栅栏-CyclicBarrier"><span class="nav-number">5.2.</span> <span class="nav-text">栅栏 CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量-Semaphore"><span class="nav-number">5.3.</span> <span class="nav-text">信号量 Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交换器-Exchanger"><span class="nav-number">5.4.</span> <span class="nav-text">交换器 Exchanger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue-阻塞队列"><span class="nav-number">6.</span> <span class="nav-text">BlockingQueue(阻塞队列)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.1.</span> <span class="nav-text">Executors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发工具类-同步器"><span class="nav-number">5.</span> <span class="nav-text">并发工具类(同步器)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#闭锁-CountDownLatch"><span class="nav-number">5.1.</span> <span class="nav-text">闭锁 CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栅栏-CyclicBarrier"><span class="nav-number">5.2.</span> <span class="nav-text">栅栏 CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量-Semaphore"><span class="nav-number">5.3.</span> <span class="nav-text">信号量 Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交换器-Exchanger"><span class="nav-number">5.4.</span> <span class="nav-text">交换器 Exchanger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue-阻塞队列"><span class="nav-number">6.</span> <span class="nav-text">BlockingQueue(阻塞队列)</span></a></li></ol></div>
             
 
           </div>
