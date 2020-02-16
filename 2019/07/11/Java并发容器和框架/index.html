@@ -86,18 +86,30 @@
 
 
 
-<meta name="description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
+<meta name="description" content="PS：集合简介 ConcurrentHashMap早期​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，">
 <meta name="keywords" content="Java并发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java并发容器和框架">
 <meta property="og:url" content="http://yoursite.com/2019/07/11/Java并发容器和框架/index.html">
 <meta property="og:site_name" content="Saikikky">
-<meta property="og:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
+<meta property="og:description" content="PS：集合简介 ConcurrentHashMap早期​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-23T08:59:42.253Z">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216131838438.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216143128511.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216143320301.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214183653425.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214192225674.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214195102454.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200556486.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200613999.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200750389.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200805978.png">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200214200826231.png">
+<meta property="og:updated_time" content="2020-02-16T06:33:28.057Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
-<meta name="twitter:description" content="ConcurrentHashMapConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的">
+<meta name="twitter:description" content="PS：集合简介 ConcurrentHashMap早期​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，">
+<meta name="twitter:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216131838438.png">
 
 
 
@@ -309,11 +321,12 @@
       
 
       
-        <h3 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h3><pre><code>ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的元素，每个Segment守护着一个HashEntry数组里的元素，当对HashEntry数组的数据进行修改时，必须首先获得与它对应的Segment锁。
-</code></pre><ul>
+        <h3 id="PS：集合简介"><a href="#PS：集合简介" class="headerlink" title="PS：集合简介"></a>PS：集合简介</h3><p><img src="/2019/07/11/Java并发容器和框架/image-20200216131838438.png" alt="image-20200216131838438"></p>
+<h3 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h3><h4 id="早期"><a href="#早期" class="headerlink" title="早期"></a>早期</h4><p>​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，每个HashEntry是一个链表结构的元素，每个Segment守护着一个HashEntry数组里的元素，当对HashEntry数组的数据进行修改时，必须首先获得与它对应的Segment锁。</p>
+<ul>
 <li>初始化</li>
 </ul>
-<p>segments数组的长度ssize是通过concurrencyLevel计算得出的，为了能通过按位与的散列算法来定位segments数组的索引，必须保证segments数组的长度是2的N次方，所以必须计算出一个大于或等于从currencyLevel的最小的2的N次方来作为segments数组的长度。(concurrencyLevel的最大值是65535，这意味着segments数组的长度最大为65536，对应的二进制是16位)。</p>
+<p>segments数组的长度size是通过concurrencyLevel计算得出的，为了能通过按位与的散列算法来定位segments数组的索引，必须保证segments数组的长度是2的N次方，所以必须计算出一个大于或等于从currencyLevel的最小的2的N次方来作为segments数组的长度。(concurrencyLevel的最大值是65535，这意味着segments数组的长度最大为65536，对应的二进制是16位)。</p>
 <ul>
 <li>定位Segment</li>
 </ul>
@@ -339,7 +352,10 @@
 <p>如何判断在统计的时候容器是否发生了变化？使用modCount变量，在put、remove和clean方法里操作元素前都会将变量modCount进行加1，那么在统计size前后比较modCount是否发生变化，从而得知容器的大小是否发生变化。</p>
 </li>
 </ul>
-<hr>
+<h4 id="现在"><a href="#现在" class="headerlink" title="现在"></a>现在</h4><p>当前的ConcurrentHashMap：CAS+synchronized使锁更细化</p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216143128511.png" alt="image-20200216143128511"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200216143320301.png" alt="image-20200216143320301"></p>
+<p>+++</p>
 <h3 id="线程安全的队列"><a href="#线程安全的队列" class="headerlink" title="线程安全的队列"></a>线程安全的队列</h3><ul>
 <li><p>阻塞算法：队列可以用一个锁(入队出队一个锁)或者两个锁(入队和出队用不同的锁)</p>
 </li>
@@ -356,8 +372,30 @@
 <p><strong>实现原理</strong></p>
 <p>使用通知模式实现，就是当生产者往满的队列里添加元素时会阻塞住生产者，当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。</p>
 <hr>
-<h3 id="Fork-Join框架"><a href="#Fork-Join框架" class="headerlink" title="Fork/Join框架"></a>Fork/Join框架</h3><p>Fork/Join框架是Java7提供的一个用于并行执行任务的框架，是一个把大任务分割成若干个小任务，最终汇总每个小任务结果后得到大任务结果的框架。Fork就是把一个大任务切分为若干子任务并行的执行，Join就是合并这些子任务的执行结果，最后得到这个大任务的结果。</p>
-<h4 id="工作窃取算法"><a href="#工作窃取算法" class="headerlink" title="工作窃取算法"></a>工作窃取算法</h4><p>某个线程从其他队列里窃取任务来执行。将一个大任务分成互不依赖的子任务，为了减少线程间的竞争，把这些子任务分别放到不同的队列里，并为每个队列创建一个单独的线程来执行队列里的任务，线程和队列一一对应。但有的线程会把自己的任务先干完，而其他线程对应的队列里还有任务等待处理，就去其他线程的队伍里窃取一个任务来执行，这时他们会访问同一个队列，所以为了减少窃取任务线程和被窃取任务线程之间的竞争，通常会使用双端队列，被窃取的任务线程永远从双端队列的头部拿任务执行，而窃取任务的线程永远从双端队列的尾部拿任务执行。</p>
+<h3 id="Java线程池"><a href="#Java线程池" class="headerlink" title="Java线程池"></a>Java线程池</h3><ul>
+<li>利用Executors创建不同的线程池满足不同的场景需求</li>
+</ul>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214183653425.png" alt="image-20200214183653425"></p>
+<ul>
+<li>使用线程池的好处：<ul>
+<li>降低资源消耗</li>
+<li>提高线程的可管理性</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<p>####Fork/Join框架 (Executors的某种具体实现)</p>
+<p>Fork/Join框架是Java7提供的一个用于并行执行任务的框架，是一个把大任务分割成若干个小任务，最终汇总每个小任务结果后得到大任务结果的框架。Fork就是把一个大任务切分为若干子任务并行的执行，Join就是合并这些子任务的执行结果，最后得到这个大任务的结果。</p>
+<p>#####工作窃取算法</p>
+<p>某个线程从其他队列里窃取任务来执行。将一个大任务分成互不依赖的子任务，为了减少线程间的竞争，把这些子任务分别放到不同的队列里，并为每个队列创建一个单独的线程来执行队列里的任务，线程和队列一一对应。但有的线程会把自己的任务先干完，而其他线程对应的队列里还有任务等待处理，就去其他线程的队伍里窃取一个任务来执行，这时他们会访问同一个队列，所以为了减少窃取任务线程和被窃取任务线程之间的竞争，通常会使用双端队列，被窃取的任务线程永远从双端队列的头部拿任务执行，而窃取任务的线程永远从双端队列的尾部拿任务执行。</p>
+<h4 id="Executors"><a href="#Executors" class="headerlink" title="Executors"></a>Executors</h4><p>Excutor的框架是一个根据一组执行策略调用、调度、执行和控制异步任务的框架，目的是将任务提交和任务如何运行分离开来的机制。</p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214192225674.png" alt="image-20200214192225674"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214195102454.png" alt="image-20200214195102454"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214200556486.png" alt="image-20200214200556486"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214200613999.png" alt="image-20200214200613999"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214200750389.png" alt="image-20200214200750389"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214200805978.png" alt="image-20200214200805978"></p>
+<p><img src="/2019/07/11/Java并发容器和框架/image-20200214200826231.png" alt="image-20200214200826231"></p>
 
       
     </div>
@@ -477,7 +515,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -523,7 +561,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">1.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">2.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">2.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork-Join框架"><span class="nav-number">3.</span> <span class="nav-text">Fork/Join框架</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#工作窃取算法"><span class="nav-number">3.1.</span> <span class="nav-text">工作窃取算法</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.1.</span> <span class="nav-text">Executors</span></a></li></ol></li></ol></div>
             
 
           </div>

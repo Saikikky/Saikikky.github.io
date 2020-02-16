@@ -238,6 +238,190 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/03/常见SQL语句/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/03/常见SQL语句/" itemprop="url">常见SQL语句</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-03T08:59:05+08:00">
+                2019-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="常见语法"><a href="#常见语法" class="headerlink" title="常见语法"></a>常见语法</h3><h4 id="1-group-by"><a href="#1-group-by" class="headerlink" title="1.group by"></a>1.group by</h4><ul>
+<li>满足“select子句中的列名必须为分组列或列函数。即要么是group by的列或者带有sum、count、max等函数的列且该条件只针对同一张表成立。(可以加入没有在group by里的其他表的列)</li>
+<li>列函数对于group by子句定义的每个组各返回一个结果。</li>
+</ul>
+<h4 id="2-having"><a href="#2-having" class="headerlink" title="2.having"></a>2.having</h4><ul>
+<li>通常与group by子句一起使用</li>
+<li>where过滤行，having过滤组</li>
+<li>出现在同一个sql的顺序：where&gt;group by&gt;having<ul>
+<li>如果没有group by子句，having子句就跟where子句一样</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>查询平均成绩大于60分的同学的学号和平均成绩</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; select student_id,avg(score) from score group by student_id having avg(score)&gt;60</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+<p><strong>查询没有学全所有课的学生的学号、姓名</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; select stu.student_id,stu.name from student stu, score s </span><br><span class="line">&gt; where stu.student_id = s.student_id</span><br><span class="line">&gt; group by stu.student_id</span><br><span class="line">&gt; having count(*) &lt; (select count(*) from course)</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<blockquote>
+</blockquote>
+<p>+++</p>
+<ul>
+<li><p>现有学生表student(s_id, name)和借书表book(b_id, s_id)</p>
+<p>要查找没有借书记录的学生信息</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">where</span> s_id <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> s_id <span class="keyword">from</span> book);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> s_id <span class="keyword">from</span> student <span class="keyword">left</span> <span class="keyword">join</span> book <span class="keyword">on</span> student.s_id=book.s_id <span class="keyword">where</span> book.s_id=<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> book <span class="keyword">where</span> (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">as</span> <span class="keyword">num</span> <span class="keyword">from</span> student <span class="keyword">where</span> student.s_id=book.s_id) = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>SQL Count(*)、group by、Having的联合使用</p>
+<p>COUNT(*)  函数返回在给定的选择中被选的行数。</p>
+<p>语法：SELECT  COUNT（*） FROM  table 返回总记录数</p>
+<p>表app_category与表category关联。且表间关系是一对多，即同一个app_category_id 对应多个category-id,现在我需要统计出每一个category_id在app_category表中出现的次数那么该如何实现呢？</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> category_id, <span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="keyword">count</span> <span class="keyword">from</span> app_category <span class="keyword">group</span> <span class="keyword">by</span> category_id;</span><br></pre></td></tr></table></figure>
+<p>查询只有count的值大于2的时候 以id分组统计，查询分组后数量大于2的id和数量。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> category_id ,<span class="keyword">COUNT</span>(*) <span class="keyword">AS</span> <span class="keyword">count</span> <span class="keyword">FROM</span> app_category <span class="keyword">GROUP</span> <span class="keyword">BY</span> category_id <span class="keyword">HAVING</span> <span class="keyword">count</span>(category_id) &gt;<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>CARD 借书卡：          CNO 卡号，NAME 姓名，CLASS 班级</p>
+<p>BOOKS 图书：           BNO 书号，BNAME 书名,AUTHOR 作者，PRICE 单价，QUANTITY 库存册数</p>
+<p>BORROW 借书记录：  CNO 借书卡号，BNO 书号，RDATE 还书日期</p>
+<p>找出借书超过5本的读者,输出借书卡号及所借图书册数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> CNO,借图书册数=<span class="keyword">COUNT</span>(*)</span><br><span class="line"><span class="keyword">FROM</span> BORROW</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> CNO</span><br><span class="line"><span class="keyword">HAVING</span> <span class="keyword">COUNT</span>(*)&gt;<span class="number">5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>like通配符</p>
+<p>| 通配符 |                             说明                             |<br>| :—-: | :———————————————————-: |<br>|   _    |                      <strong>与任意字符匹配</strong>                      |<br>|   %    |                <strong>与包含一个或多个字符串匹配</strong>                |<br>|   []   | <strong>与特定范围</strong>(例如[a-d]或特定集例如[abcdef])中的任意字符串匹配<strong> |<br>|  [^]   | </strong>与特定范围（例如，[[^^a-f]]）或特定集（例如，[[^^abcdef]]）之外的任意单字符匹配。** |</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">查询id为100开头的学生信息</span><br><span class="line"><span class="keyword">Select</span> * fromStudent <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> ‘<span class="number">100</span>%’;</span><br><span class="line"></span><br><span class="line">查询id为99结尾的学生信息</span><br><span class="line"><span class="keyword">Select</span> * <span class="keyword">from</span> Student <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> ‘%<span class="number">99</span>’;</span><br><span class="line"></span><br><span class="line">查询id包含11在中间的学校信息</span><br><span class="line"><span class="keyword">Select</span>* <span class="keyword">from</span> Student <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">like</span> %<span class="number">11</span>%;</span><br><span class="line"></span><br><span class="line">• WHERE name LIKE '_qiu' 可以找到所有三个字母的、以 qiu'结尾的名字（例如，xiaoqiu、daqiu）。 </span><br><span class="line">• WHERE name LIKE '% qiu'可以找到姓以qiu'结尾的所有员工。 </span><br><span class="line">• WHERE name LIKE '% qiu' %' 可以找到姓中任意位置包括qiu'的所有员工。 </span><br><span class="line">• WHERE name LIKE '[X] qiu'可以找到三个字母的、以qiu'结尾并以 X 开始的名字（即仅有 Xiaoqiu 和 Tim） </span><br><span class="line">• WHERE name LIKE x[^x]%' 可以找到以 x开始的、后面的（第二个）字母不为 x 的所有姓。</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>max函数</p>
+<p>查询现有图书中价格最高的图书，输出书名及作者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> BNO,BNAME,AUTHOR <span class="keyword">FROM</span> BOOKS</span><br><span class="line"><span class="keyword">WHERE</span> PRICE=(</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">MAX</span>(PRICE) <span class="keyword">FROM</span> BOOKS)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>查询当前借了”计算方法”但没有借”计算方法习题集”的读者，输出其借书卡号，并按卡号降序排序输出</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> a.CNO</span><br><span class="line"><span class="keyword">FROM</span> BORROW a,BOOKS b</span><br><span class="line"><span class="keyword">WHERE</span> a.BNO=b.BNO <span class="keyword">AND</span> b.BNAME=N‘计算方法‘</span><br><span class="line">    <span class="keyword">AND</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>(</span><br><span class="line">        <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> BORROW aa,BOOKS bb</span><br><span class="line">        <span class="keyword">WHERE</span> aa.BNO=bb.BNO</span><br><span class="line">            <span class="keyword">AND</span> bb.BNAME=N‘计算方法习题集‘</span><br><span class="line">            <span class="keyword">AND</span> aa.CNO=a.CNO)</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> a.CNO <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将”C01”班同学所借图书的还期都延长一周</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> b <span class="keyword">SET</span> RDATE=<span class="keyword">DATEADD</span>(<span class="keyword">Day</span>,<span class="number">7</span>,b.RDATE)</span><br><span class="line"><span class="keyword">FROM</span> CARD a,BORROW b</span><br><span class="line"><span class="keyword">WHERE</span> a.CNO=b.CNO</span><br><span class="line">    <span class="keyword">AND</span> a.CLASS=N‘C01‘</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从BOOKS表中删除当前无人借阅的图书记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> A <span class="keyword">FROM</span> BOOKS a</span><br><span class="line"><span class="keyword">WHERE</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>(</span><br><span class="line">    <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> BORROW</span><br><span class="line">    <span class="keyword">WHERE</span> BNO=a.BNO)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/31/面试问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -351,7 +535,8 @@
 <p>反过来覆盖hashCode并不一定要覆盖equals方法。</p>
 </li>
 </ul>
-<h2 id="4-Hashtable和HashMap"><a href="#4-Hashtable和HashMap" class="headerlink" title="4.Hashtable和HashMap"></a>4.Hashtable和HashMap</h2><ul>
+<h2 id="4-Hashtable和HashMap-延迟创建"><a href="#4-Hashtable和HashMap-延迟创建" class="headerlink" title="4.Hashtable和HashMap(延迟创建)"></a>4.Hashtable和HashMap(延迟创建)</h2><p><img src="/2019/05/31/面试问题/image-20200216143532802.png" alt="image-20200216143532802"></p>
+<ul>
 <li><p>继承和实现方法不同</p>
 <ul>
 <li>HashMap和Hashtable都实现了Map、Cloneable、java.io.Serializable接口</li>
@@ -363,8 +548,9 @@
 <p>为什么Hashtable是线程安全的，它的remove,put，get做成了同步方法，保证了Hashtable的线程安全性。</p>
 </li>
 <li><p>HashMap的key、value都可以为null，Hashtable的key、value都不可以为null。</p>
-<p> 当HashMap的key为null时，HashMap会将其固定的插入table[0]位置(即HashMap散列表的第一个位置)；而且table[0]处只会容纳一个key为null的值，当有多个key为null的值插入的时候，table[0]会保留最后插入的value。</p>
+<p>当HashMap的key为null时，HashMap会将其固定的插入table[0]位置(即HashMap散列表的第一个位置)；而且table[0]处只会容纳一个key为null的值，当有多个key为null的值插入的时候，table[0]会保留最后插入的value。</p>
 <p>put()方法实现：首先hash(key)得到key的hashcode()，hashmap根据获得的hashcode找到要插入的位置所在的链，在这个链里面放的都是hashcode相同的Entry键值对，在找到这个链之后，会通过equals()方法判断是否已经存在要插入的键值对，而这个equals比较的其实就是key。它用来存放key-value这样的一个键值对，返回值是key在Map中存放的旧value，如果之前不存在则返回null。HashMap的put方法是这样实现的。</p>
+<p><img src="/2019/05/31/面试问题/image-20200216133948650.png" alt="image-20200216133948650"></p>
 </li>
 <li><p>容量的初始值和扩容方式不同</p>
 <ul>
@@ -393,6 +579,8 @@
 <p>并发问题：</p>
 <p><strong>若当前线程此时获得entry节点，但是被线程中断无法继续执行，此时线程二进入transfer函数，并把函数顺利执行，此时新表中的某个位置有了节点，之后线程一获得执行权继续执行，因为并发transfer，所以两者都是扩容的同一个链表，当线程一执行到e.next = new table[i] 的时候，由于线程二之前数据迁移的原因导致此时new table[i] 上就有ertry存在，所以线程一执行的时候，会将next节点，设置为自己，导致自己互相使用next引用对方，因此产生链表，导致死循环。</strong>(这个过程还需要再看看图和代码执行顺序)</p>
 <h3 id="concurrentHashMap"><a href="#concurrentHashMap" class="headerlink" title="concurrentHashMap"></a>concurrentHashMap</h3><p><strong>concurrentHashMap不支持key和value 值为null的原因</strong>：ConcurrentHashmap和Hashtable都是支持并发的，这样会有一个问题，当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射。HashMap是非并发的，可以通过contains(key)来做这个判断。而支持并发的Map在调用m.contains（key）和m.get(key),m可能已经不同了。</p>
+<p><img src="/2019/05/31/面试问题/image-20200216143239116.png" alt="image-20200216143239116"></p>
+<p><img src="/2019/05/31/面试问题/image-20200216143256114.png" alt="image-20200216143256114"></p>
 <h2 id="5-synchronized关键字-非公平锁"><a href="#5-synchronized关键字-非公平锁" class="headerlink" title="5.synchronized关键字 (非公平锁)"></a>5.synchronized关键字 (非公平锁)</h2><blockquote>
 <ol>
 <li><strong>互斥锁的特性</strong><ul>
@@ -822,7 +1010,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

@@ -94,15 +94,19 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200216143532802.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200216133948650.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200216143239116.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200216143256114.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200213153607949.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200208153421212.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200208153438385.png">
 <meta property="og:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200208153447972.png">
-<meta property="og:updated_time" content="2020-02-13T08:45:02.995Z">
+<meta property="og:updated_time" content="2020-02-16T06:39:09.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试问题">
 <meta name="twitter:description" content="1. 关于static静态123456789public class TestClass &amp;#123;   private static void testMethod()&amp;#123;        System.out.println(&quot;testMethod&quot;);   &amp;#125;   public static void main(String[] args) &amp;#123;        ((">
-<meta name="twitter:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200213153607949.png">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/31/面试问题/image-20200216143532802.png">
 
 
 
@@ -356,7 +360,8 @@
 <p>反过来覆盖hashCode并不一定要覆盖equals方法。</p>
 </li>
 </ul>
-<h2 id="4-Hashtable和HashMap"><a href="#4-Hashtable和HashMap" class="headerlink" title="4.Hashtable和HashMap"></a>4.Hashtable和HashMap</h2><ul>
+<h2 id="4-Hashtable和HashMap-延迟创建"><a href="#4-Hashtable和HashMap-延迟创建" class="headerlink" title="4.Hashtable和HashMap(延迟创建)"></a>4.Hashtable和HashMap(延迟创建)</h2><p><img src="/2019/05/31/面试问题/image-20200216143532802.png" alt="image-20200216143532802"></p>
+<ul>
 <li><p>继承和实现方法不同</p>
 <ul>
 <li>HashMap和Hashtable都实现了Map、Cloneable、java.io.Serializable接口</li>
@@ -368,8 +373,9 @@
 <p>为什么Hashtable是线程安全的，它的remove,put，get做成了同步方法，保证了Hashtable的线程安全性。</p>
 </li>
 <li><p>HashMap的key、value都可以为null，Hashtable的key、value都不可以为null。</p>
-<p> 当HashMap的key为null时，HashMap会将其固定的插入table[0]位置(即HashMap散列表的第一个位置)；而且table[0]处只会容纳一个key为null的值，当有多个key为null的值插入的时候，table[0]会保留最后插入的value。</p>
+<p>当HashMap的key为null时，HashMap会将其固定的插入table[0]位置(即HashMap散列表的第一个位置)；而且table[0]处只会容纳一个key为null的值，当有多个key为null的值插入的时候，table[0]会保留最后插入的value。</p>
 <p>put()方法实现：首先hash(key)得到key的hashcode()，hashmap根据获得的hashcode找到要插入的位置所在的链，在这个链里面放的都是hashcode相同的Entry键值对，在找到这个链之后，会通过equals()方法判断是否已经存在要插入的键值对，而这个equals比较的其实就是key。它用来存放key-value这样的一个键值对，返回值是key在Map中存放的旧value，如果之前不存在则返回null。HashMap的put方法是这样实现的。</p>
+<p><img src="/2019/05/31/面试问题/image-20200216133948650.png" alt="image-20200216133948650"></p>
 </li>
 <li><p>容量的初始值和扩容方式不同</p>
 <ul>
@@ -398,6 +404,8 @@
 <p>并发问题：</p>
 <p><strong>若当前线程此时获得entry节点，但是被线程中断无法继续执行，此时线程二进入transfer函数，并把函数顺利执行，此时新表中的某个位置有了节点，之后线程一获得执行权继续执行，因为并发transfer，所以两者都是扩容的同一个链表，当线程一执行到e.next = new table[i] 的时候，由于线程二之前数据迁移的原因导致此时new table[i] 上就有ertry存在，所以线程一执行的时候，会将next节点，设置为自己，导致自己互相使用next引用对方，因此产生链表，导致死循环。</strong>(这个过程还需要再看看图和代码执行顺序)</p>
 <h3 id="concurrentHashMap"><a href="#concurrentHashMap" class="headerlink" title="concurrentHashMap"></a>concurrentHashMap</h3><p><strong>concurrentHashMap不支持key和value 值为null的原因</strong>：ConcurrentHashmap和Hashtable都是支持并发的，这样会有一个问题，当你通过get(k)获取对应的value时，如果获取到的是null时，你无法判断，它是put（k,v）的时候value为null，还是这个key从来没有做过映射。HashMap是非并发的，可以通过contains(key)来做这个判断。而支持并发的Map在调用m.contains（key）和m.get(key),m可能已经不同了。</p>
+<p><img src="/2019/05/31/面试问题/image-20200216143239116.png" alt="image-20200216143239116"></p>
+<p><img src="/2019/05/31/面试问题/image-20200216143256114.png" alt="image-20200216143256114"></p>
 <h2 id="5-synchronized关键字-非公平锁"><a href="#5-synchronized关键字-非公平锁" class="headerlink" title="5.synchronized关键字 (非公平锁)"></a>5.synchronized关键字 (非公平锁)</h2><blockquote>
 <ol>
 <li><strong>互斥锁的特性</strong><ul>
@@ -733,7 +741,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -779,7 +787,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于static静态"><span class="nav-number">1.</span> <span class="nav-text">1. 关于static静态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-值传递和引用传递"><span class="nav-number">2.</span> <span class="nav-text">2. 值传递和引用传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">3.</span> <span class="nav-text">3. equals和hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Hashtable和HashMap"><span class="nav-number">4.</span> <span class="nav-text">4.Hashtable和HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的死循环问题-在并发条件下"><span class="nav-number">4.1.</span> <span class="nav-text">HashMap的死循环问题(在并发条件下)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concurrentHashMap"><span class="nav-number">4.2.</span> <span class="nav-text">concurrentHashMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-synchronized关键字-非公平锁"><span class="nav-number">5.</span> <span class="nav-text">5.synchronized关键字 (非公平锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引"><span class="nav-number">6.</span> <span class="nav-text">6.索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Autowired"><span class="nav-number">7.</span> <span class="nav-text">7.@Autowired</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-如何定位并优化慢查询Sql"><span class="nav-number">8.</span> <span class="nav-text">8. 如何定位并优化慢查询Sql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-最左匹配原则"><span class="nav-number">9.</span> <span class="nav-text">9. 最左匹配原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-InnoDB可重复读隔离级别-RR-下如何避免幻读？"><span class="nav-number">10.</span> <span class="nav-text">10.InnoDB可重复读隔离级别(RR)下如何避免幻读？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Java反射"><span class="nav-number">11.</span> <span class="nav-text">11.Java反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Thread中的start和run方法的区别"><span class="nav-number">12.</span> <span class="nav-text">12.Thread中的start和run方法的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-Thread和Runnable是什么关系"><span class="nav-number">13.</span> <span class="nav-text">13.Thread和Runnable是什么关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-sleep-和wait-区别-yield-中断线程"><span class="nav-number">14.</span> <span class="nav-text">14.sleep()和wait()区别 yield() 中断线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-自旋锁和自适应自旋锁"><span class="nav-number">15.</span> <span class="nav-text">15.自旋锁和自适应自旋锁</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-关于static静态"><span class="nav-number">1.</span> <span class="nav-text">1. 关于static静态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-值传递和引用传递"><span class="nav-number">2.</span> <span class="nav-text">2. 值传递和引用传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-equals和hashcode"><span class="nav-number">3.</span> <span class="nav-text">3. equals和hashcode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Hashtable和HashMap-延迟创建"><span class="nav-number">4.</span> <span class="nav-text">4.Hashtable和HashMap(延迟创建)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap的死循环问题-在并发条件下"><span class="nav-number">4.1.</span> <span class="nav-text">HashMap的死循环问题(在并发条件下)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#concurrentHashMap"><span class="nav-number">4.2.</span> <span class="nav-text">concurrentHashMap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-synchronized关键字-非公平锁"><span class="nav-number">5.</span> <span class="nav-text">5.synchronized关键字 (非公平锁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-索引"><span class="nav-number">6.</span> <span class="nav-text">6.索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Autowired"><span class="nav-number">7.</span> <span class="nav-text">7.@Autowired</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-如何定位并优化慢查询Sql"><span class="nav-number">8.</span> <span class="nav-text">8. 如何定位并优化慢查询Sql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-最左匹配原则"><span class="nav-number">9.</span> <span class="nav-text">9. 最左匹配原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-InnoDB可重复读隔离级别-RR-下如何避免幻读？"><span class="nav-number">10.</span> <span class="nav-text">10.InnoDB可重复读隔离级别(RR)下如何避免幻读？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-Java反射"><span class="nav-number">11.</span> <span class="nav-text">11.Java反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-Thread中的start和run方法的区别"><span class="nav-number">12.</span> <span class="nav-text">12.Thread中的start和run方法的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-Thread和Runnable是什么关系"><span class="nav-number">13.</span> <span class="nav-text">13.Thread和Runnable是什么关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-sleep-和wait-区别-yield-中断线程"><span class="nav-number">14.</span> <span class="nav-text">14.sleep()和wait()区别 yield() 中断线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-自旋锁和自适应自旋锁"><span class="nav-number">15.</span> <span class="nav-text">15.自旋锁和自适应自旋锁</span></a></li></ol></div>
             
 
           </div>

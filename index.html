@@ -238,6 +238,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/15/Java异常体系/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/02/15/Java异常体系/" itemprop="url">Java异常体系</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-02-15T16:14:08+08:00">
+                2020-02-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-Java异常体系"><a href="#1-Java异常体系" class="headerlink" title="1. Java异常体系"></a>1. Java异常体系</h2><p><strong>Java的异常体系</strong></p>
+<p><img src="/2020/02/15/Java异常体系/image-20200215191639321.png" alt="image-20200215191639321"></p>
+<p>###Error和Exception的区别</p>
+<ul>
+<li>Error：程序无法处理的系统错误，编译器不做检查(比如JVM的问题，如系统崩溃、内存空间不足、虚拟机错误、方法调用栈溢出等)<ul>
+<li>NoClassDefFoundError —— 找不到class定义的异常</li>
+<li>StackOverflowError —— 深递归导致栈耗尽</li>
+<li>OutOfMemoryError —— 内存溢出异常</li>
+</ul>
+</li>
+<li>Exception：程序可以处理的异常，捕获后可能恢复<ul>
+<li>RuntimeException：不可预知的，程序应当自行避免。(数组下标越界、访问空指针等)<ul>
+<li>NullPointerException —— 空指针引用异常</li>
+<li>ClassCastException —— 类型强制转换异常</li>
+<li>IllegalArgumentException —— 传递非法参数异常</li>
+<li>IndexOutOfBoundsException —— 下标越界异常</li>
+<li>NumberFormatException —— 数字格式异常</li>
+</ul>
+</li>
+<li>非RuntimeException：可预知的，从编译器校验的异常。(IOException等)<ul>
+<li>ClassNotFoundException —— 找不到指定class的异常</li>
+<li>IOException —— IO操作异常</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p> <strong>finally会在catch的return语句之前执行</strong> </p>
+</blockquote>
+<p><strong>Java异常处理消耗性能的地方</strong></p>
+<ul>
+<li>try-catch块影响JVM的优化</li>
+<li>异常对象实例需要保存栈快照细信息，开销巨大</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/JVM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1268,9 +1422,9 @@
 <li>丰富的特性等。</li>
 </ul>
 <h3 id="Redis命令"><a href="#Redis命令" class="headerlink" title="Redis命令"></a>Redis命令</h3><p>客户端基本语法：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> redis-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> redis-cli</span></span><br></pre></td></tr></table></figure>
 <p>PING用来检测redis服务是否启动，若启动会出现PONG。</p>
-<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span>例如</span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span>其中runoobkey是一个键</span><br></pre></td></tr></table></figure>
+<h4 id="Redis键命令"><a href="#Redis键命令" class="headerlink" title="Redis键命令"></a>Redis键命令</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; COMMAND KEY_NAME</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">例如</span></span><br><span class="line">SET runoobkey redis</span><br><span class="line">GET runoobkey</span><br><span class="line">"redis"</span><br><span class="line">DEL runoobkey</span><br><span class="line"><span class="meta">#</span><span class="bash">其中runoobkey是一个键</span></span><br></pre></td></tr></table></figure>
 
           
         
@@ -2174,143 +2328,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/07/for循环中创建对象和for循环外创建对象/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Saikikky Wang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Saikikky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/08/07/for循环中创建对象和for循环外创建对象/" itemprop="url">for循环内外创建对象</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-07T08:59:05+08:00">
-                2019-08-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="for循环中创建对象和for循环外创建对象"><a href="#for循环中创建对象和for循环外创建对象" class="headerlink" title="for循环中创建对象和for循环外创建对象"></a>for循环中创建对象和for循环外创建对象</h3><ul>
-<li>示例：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; ++i)&#123;</span><br><span class="line"></span><br><span class="line">　　Object obj = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">　　System.out.println(<span class="string">"obj = "</span> + obj);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>和</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Object obj = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; ++i)&#123;</span><br><span class="line"></span><br><span class="line">	obj = <span class="keyword">new</span> Object();</span><br><span class="line"></span><br><span class="line">  System.out.println(<span class="string">"obj = "</span> + obj);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Object obj 是创建对象引用，引用的实例地址。 new Object() 是创建对象实例<br>两者都会占用系统资源。<br>改进之前for循环中创建了10000次引用和10000实例，改进后是创建了1次引用，10000实例。<br>在方法执行完后内存资源会被回收</p>
-</blockquote>
-<p>这两种创建对象的方法究竟有区别吗？？</p>
-<ul>
-<li><p>每次循环声明创建的变量，在本次循环结束之后即会被标记为“可以被GC回收了”。即使Java的垃圾回收线程优先级相当低，也许在被标记为“可以被回收”后，这些内存空间并不能马上被真正的释放。</p>
-</li>
-<li><p>声明在循环体外部的变量，人为地将其的声明周期拉长了。并不是什么好事。回收的时间被推后了不说，更将严重的后果可能是，原本就应该“不可达”的引用被有意无意的再次使用了。这是非常糟糕的事，也许数据就这么被破坏了，这种隐性的bug将大大增加。</p>
-</li>
-<li>Java的“foreach”循环。这个循环的写法例如for(Person p : personList)，明显的这就是使用的在循环体内声明变量的方式。</li>
-<li>对于基本数据类型，如int，声明在循环内和循环外，占用的都是栈内存，对真个内存管理控制意义不大。对于引用数据类型，写在循环内部确实多次开辟了内存，new出对象，消耗了内存。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2361,7 +2378,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
