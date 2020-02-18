@@ -238,6 +238,273 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/11/Java8 新特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Saikikky Wang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Saikikky">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/11/Java8 新特性/" itemprop="url">Java8新特性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-11T08:59:05+08:00">
+                2019-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Java8-新特性"><a href="#Java8-新特性" class="headerlink" title="Java8 新特性"></a>Java8 新特性</h3><blockquote>
+<p>Lambda函数式编程</p>
+<p>使用Stream改变集合使用方式：只关注结果，不关心过程</p>
+<p>新的客户端图形化工具界面库：JavaFX</p>
+<p>日期/时间API</p>
+<p>增强的并发/并行API</p>
+<p>Java与JS交互引擎 -nashorn</p>
+</blockquote>
+<p>+++</p>
+<h4 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a><strong>Lambda表达式</strong></h4><blockquote>
+<p>Lambda表达式，也称作闭包，允许把函数作为一个方法的参数，使代码变得更加简洁。</p>
+<p>带有参数变量的表达式，可以传递。</p>
+</blockquote>
+<h5 id="语法"><a href="#语法" class="headerlink" title="语法"></a><strong>语法</strong></h5><p>lambda表达式的语法格式如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(parameters) -&gt; expression或(parameters)-&gt;&#123;statements;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>方法体：可以是表达式或者代码块，是函数式接口里方法的实现，如果负责运算的代码无法用表达式表示，也可以使用代码块实现，但必须用{}包围并明确使用return语句。</p>
+<blockquote>
+<ul>
+<li>可选类型声明：不需要声明参数类型，编译器可以统一识别参数值。</li>
+<li>可选的参数圆括号：一个参数无需定义圆括号，但多个参数需要定义圆括号。</li>
+<li>可选的大括号：如果主体只包含一个语句，就不需要使用大括号。</li>
+<li>可选的返回关键字：如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定明表达式返回了一个数值。</li>
+</ul>
+</blockquote>
+</blockquote>
+<ul>
+<li>示例</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 不需要参数，返回值为5</span></span><br><span class="line">() -&gt; <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 接收一个参数(数字类型)，返回其2倍的值</span></span><br><span class="line">x -&gt; <span class="number">2</span> * x;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 接收两个参数(数字类型)，并返回他们的差值</span></span><br><span class="line">(x, y) -&gt; x - y;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.接收2个int型整数</span></span><br><span class="line">(<span class="keyword">int</span> x, <span class="keyword">int</span> y) -&gt; x + y;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 5. 接收一个String对象，并在控制台打印，不返回任何值(看起来返回void)</span></span><br><span class="line">(String s) -&gt; System.out.printf(s);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LambdaTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LambdaTest tester = <span class="keyword">new</span> LambdaTest();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 类型声明</span></span><br><span class="line">        MathOperation addition = (<span class="keyword">int</span> a, <span class="keyword">int</span> b) -&gt; a + b;</span><br><span class="line">        <span class="comment">// 不用类型声明</span></span><br><span class="line">        MathOperation subtraction = (a, b) -&gt; a - b;</span><br><span class="line">        <span class="comment">// 大括号中的返回语句</span></span><br><span class="line">        MathOperation multiplication = (<span class="keyword">int</span> a, <span class="keyword">int</span> b) -&gt; &#123;</span><br><span class="line">            <span class="keyword">return</span> a * b;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="comment">// 没有大括号及返回语句</span></span><br><span class="line">        MathOperation division = (<span class="keyword">int</span> a, <span class="keyword">int</span> b) -&gt; a / b;</span><br><span class="line">      </span><br><span class="line">        System.out.println(<span class="string">"10 + 5 = "</span> + tester.operate(<span class="number">10</span>, <span class="number">5</span>, addition));</span><br><span class="line">        System.out.println(<span class="string">"10 - 5 = "</span> + tester.operate(<span class="number">10</span>, <span class="number">5</span>, subtraction));</span><br><span class="line">        System.out.println(<span class="string">"10 * 5 = "</span> + tester.operate(<span class="number">10</span>, <span class="number">5</span>, multiplication));</span><br><span class="line">        System.out.println(<span class="string">"10 / 5 = "</span> + tester.operate(<span class="number">10</span>, <span class="number">5</span>, division));</span><br><span class="line"></span><br><span class="line">        <span class="comment">//不用括号</span></span><br><span class="line">        GreetingService greetingService1 = message -&gt;</span><br><span class="line">                System.out.println(<span class="string">"Hello "</span> + message);</span><br><span class="line">        <span class="comment">// 用括号</span></span><br><span class="line">        GreetingService greetingService2 = (message) -&gt;</span><br><span class="line">                System.out.println(<span class="string">"Hello"</span> + message);</span><br><span class="line">        greetingService1.sayMessage(<span class="string">"Saikikky"</span>);</span><br><span class="line">        greetingService2.sayMessage(<span class="string">"Jacky"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">MathOperation</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">int</span> <span class="title">operation</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">GreetingService</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">sayMessage</span><span class="params">(String message)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">operate</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, MathOperation mathOperation)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mathOperation.operation(a, b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Lambda表达式主要用来定义行内执行的方法类型接口，例如，一个简单方法接口。</p>
+<p>免去使用匿名方法的麻烦，并且给予Java简单但是强大的函数化编程能力。</p>
+</blockquote>
+<h5 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h5><p>lambda表达式只能引用标记了final的外层局部变量，不能在lambda内部修改定义在域外的局部变量。</p>
+<h5 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h5><blockquote>
+<p>对字符串数组按照字符串长度排序。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LambdaSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String[] strArr = &#123;<span class="string">"abc"</span>, <span class="string">"abcdf"</span>, <span class="string">"a"</span>, <span class="string">"ad"</span>, <span class="string">"asd"</span>&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 传统方法</span></span><br><span class="line">        <span class="comment">// 匿名内部类</span></span><br><span class="line">        Arrays.sort(strArr, <span class="keyword">new</span> Comparator&lt;String&gt;() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(String s1, String s2)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> Integer.compare(s2.length(), s1.length());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String s : strArr) System.out.println(s);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Lambda表达式</span></span><br><span class="line">        Arrays.sort(strArr, (s1, s2) -&gt; Integer.compare(s2.length(), s1.length()));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String s : strArr) System.out.println(s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Lambda实现多线程</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiThreading</span> </span>&#123;</span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// lambda表达式</span></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; System.out.println(<span class="number">1</span> + <span class="string">"hello world"</span>)).start();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 方法体</span></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">                System.out.println(<span class="number">2</span> + <span class="string">"hello world"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">输出结果:</span><br><span class="line"><span class="number">1</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br><span class="line"><span class="number">2</span>hello world</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>何时使用</p>
+<p>在需要显示创建函数是接口对象的地方都可以使用，lambda表达式必须要和Functional Interface一起使用，主要是用于替换内部匿名类和各种回掉，比如事件响应器和传入Thread类的Runnable等。</p>
+</li>
+<li><p><strong>公共定义的函数式接口</strong> java.util.function </p>
+<ul>
+<li><p>功能性接口：Function&lt;T, R&gt;</p>
+<blockquote>
+<p>有输入参数，有返回值</p>
+<p>是对接收一个T类型参数，返回R类型的结果的方法的抽象</p>
+<p>通过调用apply方法执行内容</p>
+<p>需求：给定一个字符串，返回字符串长度</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FunctionTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 定义字符串</span></span><br><span class="line">        String str = <span class="string">"hello world"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用方法</span></span><br><span class="line">        <span class="comment">// 在调用的时候写方法体，方法比较灵活</span></span><br><span class="line">        <span class="keyword">int</span> length = testFun(str, (s) -&gt; s.length());</span><br><span class="line"></span><br><span class="line">        System.out.println(length);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">testFun</span><span class="params">(String str, Function&lt;String, Integer&gt; fun)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 执行</span></span><br><span class="line">        Integer length = fun.apply(str);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>消费型接口：Consumer<t></t></p>
+<blockquote>
+<p>有输入参数，没有返回值，一般 Consumer 接口伴随一些期望状态的改变或者事件的发生</p>
+<p>forEach 就是使用的 Consumer 接口虽然没有任何的返回值，但是像控制台输出结果</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 创建字符串</span></span><br><span class="line">        String str = <span class="string">"hello, world"</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 调用</span></span><br><span class="line">        testCon(str, (s -&gt; System.out.println(s)));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testCon</span><span class="params">(String str, Consumer&lt;String&gt; consumer)</span> </span>&#123;</span><br><span class="line">        consumer.accept(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>供给型接口：Supplier<t></t></p>
+<blockquote>
+<p>没有参数传入，有返回值</p>
+<p>使用 get()方法获得这个返回值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SupplierTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String str = <span class="string">"hello world"</span>;</span><br><span class="line"></span><br><span class="line">        String sup = testSup(() -&gt; str);</span><br><span class="line">        System.out.println(sup);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">testSup</span><span class="params">(Supplier&lt;String&gt; supplier)</span> </span>&#123;</span><br><span class="line">        String s = supplier.get();</span><br><span class="line">        <span class="keyword">return</span> s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>断言型接口：Predicate<t></t></p>
+<blockquote>
+<p>有传入参数，也有返回值 Boolean</p>
+<p>多用于判断与过滤，使用 test()方法执行这段行为</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><ul>
+<li>极大的减少代码冗余，同时可读性也好过匿名内部类。</li>
+<li>与集合类批处理操作，实现内部迭代。</li>
+</ul>
+<h5 id="与匿名内部类的区别"><a href="#与匿名内部类的区别" class="headerlink" title="与匿名内部类的区别"></a>与匿名内部类的区别</h5><ul>
+<li>在lambda中，this不是指向lambda表达式产生的对象而是外部对象。</li>
+</ul>
+<h4 id="方法引用（简化代码）"><a href="#方法引用（简化代码）" class="headerlink" title="方法引用（简化代码）"></a>方法引用（简化代码）</h4><ul>
+<li>静态方法引用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> l1 = testAbs(-<span class="number">10L</span>, (s -&gt; Math.abs(s)));</span><br><span class="line">        System.out.println(l1);</span><br><span class="line">        <span class="keyword">long</span> l2 = testAbs(-<span class="number">10</span>, Math::abs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">testAbs</span><span class="params">(<span class="keyword">long</span> s, Function&lt;Long, Long&gt; fun)</span> </span>&#123;</span><br><span class="line">        Long l = fun.apply(s);</span><br><span class="line">        <span class="keyword">return</span> l;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>实例方法引用(List的排序和输出)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        list.add(<span class="string">"e"</span>);</span><br><span class="line">        list.add(<span class="string">"c"</span>);</span><br><span class="line">        list.add(<span class="string">"d"</span>);</span><br><span class="line">        list.add(<span class="string">"b"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 排序</span></span><br><span class="line">        list.sort((s1, s2) -&gt; s1.compareTo(s2));</span><br><span class="line">			</span><br><span class="line">        list.forEach((s -&gt; System.out.println(s)));</span><br><span class="line">        list.forEach(System.out::println);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="stream-流"><a href="#stream-流" class="headerlink" title="stream 流"></a>stream 流</h4><blockquote>
+<p>使用 for 循环的时候代码冗余且复杂，实现并行计算也很麻烦。</p>
+<p>stream 是一个更高级的 Iterator，不像 Iterator 只能显示一个个的遍历元素并对其执行操作</p>
+<p>stream给出操作就可以隐式的在内部进行遍历而且可以并行化操作，提高编码效率和程序可读性</p>
+</blockquote>
+<ul>
+<li><p>forEach</p>
+</li>
+<li><p>collect(toList())</p>
+<p>stream 中很多操作都是惰性求值，因此调用 Stream 一系列方法之后还需调用一个类似 collect 的及早求值方法返回集合。</p>
+<blockquote>
+<p>及早求值就是在约束到变量的时候求值，惰性求值并不立即返回结果</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        list.add(<span class="string">"sds"</span>);</span><br><span class="line">        list.add(<span class="string">"a"</span>);</span><br><span class="line">        list.add(<span class="string">"sdgjh"</span>);</span><br><span class="line">        list.add(<span class="string">"ab"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 统计长度超过 2 的数量</span></span><br><span class="line">        <span class="keyword">long</span> count = list.stream().filter((s -&gt; s.length() &gt; <span class="number">2</span>)).count();</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; list2 = list.stream().filter(s -&gt; s.length() &gt; <span class="number">2</span>).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">        System.out.println(count);</span><br><span class="line">        list2.forEach(System.out::println);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>map</p>
+<blockquote>
+<p>如果需要将一种类型的值转换成另外一种类型</p>
+<p>map操作可以将一个流中的值转换成一个新的流</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 转成大写</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        list.add((<span class="string">"ass"</span>));</span><br><span class="line">        list.add((<span class="string">"a"</span>));</span><br><span class="line">        list.add((<span class="string">"baskd"</span>));</span><br><span class="line">        list.add((<span class="string">"asss"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 转换成大写</span></span><br><span class="line">        List&lt;String&gt; list1 = list.stream().map(s -&gt; s.toUpperCase()).collect(Collectors.toList());</span><br><span class="line">        list1.forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>filter</p>
+<blockquote>
+<p>筛选元素 遍历数据并检查其中的元素，获取字符串 List 中以数字开始的字符集合</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list1 = list.stream().filter(s -&gt; Character.isDigit(s.charAt(<span class="number">0</span>))).collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>flatMap</p>
+<blockquote>
+<p>可用Stream 替换值，然后将多个 Stream 连接成一个 Stream，生成一个 stream 对象取而代之</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FlatMapTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Stream&lt;?&gt; flatMap = Stream.of(Arrays.asList(<span class="string">"a"</span>, <span class="string">"b"</span>), Arrays.asList(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)).flatMap((s) -&gt; s.stream());</span><br><span class="line">        flatMap.forEach(System.out::print);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line">ab123</span><br><span class="line">Process finished with exit code <span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>max和 min</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取最大值</span></span><br><span class="line"><span class="keyword">int</span> max = list.stream().map(s -&gt; s.length()).max(Integer::compareTo).get();</span><br><span class="line">System.out.println(max);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取最小值</span></span><br><span class="line"><span class="keyword">int</span> min = list.stream().min(Comparator.comparing(s -&gt; s.length())).get().length();</span><br><span class="line">System.out.println(min);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>reduce</p>
+<blockquote>
+<p>通过指定的函数把 stream 中的多个元素汇聚成一个元素</p>
+<p>reduce(初始值,(r,i)-&gt;r+i)或者 reduce((r,i)-&gt;r+”*”i)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReduceTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Long&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 封装集合</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; i++) &#123;</span><br><span class="line">            list.add(i);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 计算</span></span><br><span class="line">        <span class="comment">// reduce</span></span><br><span class="line">        Long sum = list.stream().parallel().reduce(<span class="number">0L</span>, (r, l) -&gt; r + l);</span><br><span class="line">        System.out.println(sum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/10/事务/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1744,140 +2011,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/02/并发编程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Saikikky Wang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Saikikky">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/07/02/并发编程/" itemprop="url">并发编程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-02T17:12:37+08:00">
-                2019-07-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="suspend-、resume-、stop"><a href="#suspend-、resume-、stop" class="headerlink" title="suspend()、resume()、stop()"></a>suspend()、resume()、stop()</h3><p>​        之所以不建议使用，以suspend()为例，在调用之后，线程不会释放已经占有的资源(比如锁)，而是占有着资源进入睡眠模式，而是占有着资源进入睡眠模式，容易引发死锁问题。同样，stop()方法在终结一个线程时不会保证线程的资源正常释放，通常是没有给予线程完成资源释放工作的机会，因此会导致程序可能工作在不确定状态下。</p>
-<h3 id="线程通信"><a href="#线程通信" class="headerlink" title="线程通信"></a>线程通信</h3><ul>
-<li><p>volatile和synchronized关键字</p>
-</li>
-<li><p>等待/通知机制（wait、notify、notifyAll）</p>
-</li>
-<li><p>管道输入/输出流</p>
-<p>管道输入/输出流和普通的文件输入/输出流或者网络输入/输出流不同之处在于，它主要用于线程之间的数据传输，而传输的媒介为内存。</p>
-</li>
-<li><p>Thread.join()</p>
-</li>
-<li><p>ThreadLocal</p>
-<p>即线程变量，是一个以ThreadLocal对象为键、任意对象为值的存储结构。这个结构被附带在线程上，也就是说一个线程可以根据一个ThreadLocal对象查询到绑定在这个线程上的一个值。可以通过set(T)方法来设置一个值，在当前线程下再通过get()方法获取到原先设置的值。</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1928,7 +2061,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1941,7 +2074,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
