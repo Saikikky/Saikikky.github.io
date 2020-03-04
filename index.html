@@ -928,7 +928,18 @@
 <li>分配方式：栈支持静态和动态分配，而堆是动态分配</li>
 <li>效率：栈的效率比堆(双向链表)高</li>
 </ol>
-<h2 id="3-JVM如何加载-class文件"><a href="#3-JVM如何加载-class文件" class="headerlink" title="3.JVM如何加载.class文件"></a>3.JVM如何加载.class文件</h2><h3 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h3><p><img src="/2020/02/08/JVM/image-20200208150045204.png" alt="image-20200208150045204"></p>
+<h2 id="3-JVM监控"><a href="#3-JVM监控" class="headerlink" title="3.JVM监控"></a>3.JVM监控</h2><ul>
+<li><p><strong>jps</strong>   Java版的ps命令，查看java进程及其相关的信息，如果你想找到一个java进程的pid，那可以用jps命令替代linux中的ps命令了，简单而方便。</p>
+</li>
+<li><p><strong>jinfo </strong>是用来查看JVM参数和动态修改部分JVM参数的命令</p>
+</li>
+<li><p><strong>jstat</strong> 命令是使用频率比较高的命令，主要用来查看JVM运行时的状态信息，包括内存状态、垃圾回收等。</p>
+</li>
+<li><strong>jstack </strong>是用来查看JVM线程快照的命令，线程快照是当前JVM线程正在执行的方法堆栈集合。使用jstack命令可以定位线程出现长时间卡顿的原因，例如死锁，死循环等。jstack还可以查看程序崩溃时生成的core文件中的stack信息。</li>
+<li><strong>jmap</strong> 是用来生成堆dump文件和查看堆相关的各类信息的命令，例如查看finalize执行队列，heap的详细信息和使用情况。</li>
+<li><strong>jhat</strong> 是用来分析jmap生成dump文件的命令，jhat内置了应用服务器，可以通过网页查看dump文件分析结果，jhat一般是用在离线分析上。</li>
+</ul>
+<h2 id="4-JVM如何加载-class文件"><a href="#4-JVM如何加载-class文件" class="headerlink" title="4.JVM如何加载.class文件"></a>4.JVM如何加载.class文件</h2><h3 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h3><p><img src="/2020/02/08/JVM/image-20200208150045204.png" alt="image-20200208150045204"></p>
 <p>JVM主要分为四个部分：Class Loader、Runtime Data Area、Execution Engine、Native Interface</p>
 <p>Class Loader：依据特定格式，加载class文件到内存。</p>
 <p>Execution Engine：对命令进行解析(class文件的字节码)，并提交给操作系统去执行。</p>
@@ -990,7 +1001,7 @@
 </ul>
 <p>对于一些需要执行静态方法的比如数据库驱动加载<code>Class.forName(&quot;com.mysql.jdbc.Driver&quot;)</code></p>
 <p>在SpringIOC中，在资源加载器获取要读入的资源时，在读取一些bean文件时，如果是以class path的方式加载，就需要使用ClassLoader.loadClass方法加载，跟SpringIOC的lazy loading(延迟加载)有关，SpringIOC为了加快初始化速度，大量使用延时加载，classLoader不需要执行类中的初始化步骤也不需要链接，可以加快加载速度，而初始化工作等到最后要使用到类的时候再去做。</p>
-<h2 id="4-GC"><a href="#4-GC" class="headerlink" title="4.GC"></a>4.GC</h2><h3 id="判断对象是否为垃圾的算法"><a href="#判断对象是否为垃圾的算法" class="headerlink" title="判断对象是否为垃圾的算法"></a>判断对象是否为垃圾的算法</h3><h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><ul>
+<h2 id="5-GC"><a href="#5-GC" class="headerlink" title="5.GC"></a>5.GC</h2><h3 id="判断对象是否为垃圾的算法"><a href="#判断对象是否为垃圾的算法" class="headerlink" title="判断对象是否为垃圾的算法"></a>判断对象是否为垃圾的算法</h3><h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><ul>
 <li>通过判断对象的引用数量来决定对象是否可以被回收</li>
 <li>每个对象实例都有一个引用计数器，被引用则+1，完成引用则-1</li>
 <li>任何引用计数为0的对象实例可以被当作垃圾收集</li>
