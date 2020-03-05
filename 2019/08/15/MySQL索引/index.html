@@ -94,10 +94,12 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-04T07:26:05.348Z">
+<meta property="og:image" content="http://yoursite.com/2019/08/15/MySQL索引/image-20200305145626469.png">
+<meta property="og:updated_time" content="2020-03-05T06:58:49.200Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL索引">
 <meta name="twitter:description" content="MySQL索引索引类型 普通索引   最基本的索引，没有任何限制   唯一索引 unique   与普通索引类似，区别是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。   主键索引 primary   特殊的唯一索引，一个表只能有一个主键，不允许有空值。一般在建表的时候同时创建主键索引。   组合索引   多个字段上创建的索引，只有在查询条件中使用了创建索引时的第一个字">
+<meta name="twitter:image" content="http://yoursite.com/2019/08/15/MySQL索引/image-20200305145626469.png">
 
 
 
@@ -478,6 +480,13 @@
 </ul>
 <h4 id="维护索引"><a href="#维护索引" class="headerlink" title="维护索引"></a>维护索引</h4><p>维护表的目的是找到并修复损坏的表，维护准确的索引统计信息，减少碎片。</p>
 <p>索引项的值发生改变，此时索引项在索引表中的位置，就需要发生改变，就叫索引维护。</p>
+<h3 id="Mysql为什么用自增列作为主键"><a href="#Mysql为什么用自增列作为主键" class="headerlink" title="Mysql为什么用自增列作为主键"></a>Mysql为什么用自增列作为主键</h3><p>​        如果定义了主键，就会选择主键作为聚集索引，如果没有显示定义主键，则会选择第一个不包含NULL值的唯一索引作为主键索引，如果也没有这样的唯一索引，则InnoDB会选择内置6字节长的ROWID作为隐含的聚集索引，这个ROWID随着行记录的写入而主键递增。</p>
+<p>​        数据记录本身被存于主索引(一颗B+Tree)的叶子节点上。这就要求同一个叶子节点内(大小为一个内存页或磁盘页)的各条数据记录按照主键顺序存放，因此每当有一条新的数据插入时，MySQL会根据其主键将其插入适当的节点和位置，如果页面达到装载因子(InnoDB默认15/16)，则开辟一个新的页(节点)。如果使用自增主键，那么每次插入新的记录，记录就会顺序添加到当前索引节点的后续位置，当一页写满，就会自动开辟一个新的页。</p>
+<p>​        如果使用非自增主键(uuid、身份证号、学号等)，由于每次插入主键的值近似于随机，因此每次新纪录都要被插到现有索引页的中间某个位置，此时MySQL不得不为了将新纪录插到合适的位置而移动数据，这是目标页面可能已经被写回到磁盘上而从缓存中清掉，此时又要从磁盘上读回来，增加了很多开销，而且频繁的移动、分页操作造成大量的碎片，得不到紧凑的索引结构，后续不得不通过OPTIMIZE TABLE来重建表并优化填充页面。</p>
+<h3 id="为什么有最左匹配原则"><a href="#为什么有最左匹配原则" class="headerlink" title="为什么有最左匹配原则"></a>为什么有最左匹配原则</h3><p>我们知道索引底层是一颗B+树，联合索引依旧是一颗B+树，只不过联合索引的键值数量不是一个，而是多个。构建一颗B+树只能根据一个值来构建，因此数据库依据联合索引最左的字段来构建B+树。</p>
+<p>e.g.创建一个(a,b)的联合索引，那么它的索引树为：</p>
+<p><img src="/2019/08/15/MySQL索引/image-20200305145626469.png" alt="image-20200305145626469"></p>
+<p>这其中a的值是有顺序的，1，1，2，2，3，3，但b的值是没有顺序的1，2，1，4，1，2. 所以b=2这种查询没有办法使用索引，联合索引是按a排序的。在a等值情况下b是有序的，但这种顺序是相对的，所以在遇到范围查询时就会停止，剩下的字段都无法使用索引。例如a = 1 and b = 2 a,b字段都可以使用索引，因为在a值确定的情况下b是相对有序的，而a&gt;1and b=2，a字段可以匹配上索引，但b值不可以，因为a的值是一个范围，在这个范围中b是无序的。</p>
 
       
     </div>
@@ -643,7 +652,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL索引"><span class="nav-number">1.</span> <span class="nav-text">MySQL索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引类型"><span class="nav-number">1.1.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语句"><span class="nav-number">1.2.</span> <span class="nav-text">语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引实现"><span class="nav-number">1.3.</span> <span class="nav-text">索引实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引效率"><span class="nav-number">1.4.</span> <span class="nav-text">索引效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚簇索引和非聚簇索引"><span class="nav-number">1.5.</span> <span class="nav-text">聚簇索引和非聚簇索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#密集索引、稀疏索引、聚集索引、聚簇索引？？？？聚集索引和聚簇索引应该是一个东西"><span class="nav-number">1.5.1.</span> <span class="nav-text">密集索引、稀疏索引、聚集索引、聚簇索引？？？？聚集索引和聚簇索引应该是一个东西</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚簇索引的优势"><span class="nav-number">1.5.2.</span> <span class="nav-text">聚簇索引的优势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维护索引"><span class="nav-number">1.6.</span> <span class="nav-text">维护索引</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL索引"><span class="nav-number">1.</span> <span class="nav-text">MySQL索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引类型"><span class="nav-number">1.1.</span> <span class="nav-text">索引类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语句"><span class="nav-number">1.2.</span> <span class="nav-text">语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引实现"><span class="nav-number">1.3.</span> <span class="nav-text">索引实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引效率"><span class="nav-number">1.4.</span> <span class="nav-text">索引效率</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#聚簇索引和非聚簇索引"><span class="nav-number">1.5.</span> <span class="nav-text">聚簇索引和非聚簇索引</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#密集索引、稀疏索引、聚集索引、聚簇索引？？？？聚集索引和聚簇索引应该是一个东西"><span class="nav-number">1.5.1.</span> <span class="nav-text">密集索引、稀疏索引、聚集索引、聚簇索引？？？？聚集索引和聚簇索引应该是一个东西</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚簇索引的优势"><span class="nav-number">1.5.2.</span> <span class="nav-text">聚簇索引的优势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#维护索引"><span class="nav-number">1.6.</span> <span class="nav-text">维护索引</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mysql为什么用自增列作为主键"><span class="nav-number">2.</span> <span class="nav-text">Mysql为什么用自增列作为主键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么有最左匹配原则"><span class="nav-number">3.</span> <span class="nav-text">为什么有最左匹配原则</span></a></li></ol></div>
             
 
           </div>

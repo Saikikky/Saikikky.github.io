@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Saikikky">
 <meta property="og:description" content="1.MyISAM和InnoDB关于锁的区别MyISAM：默认用的是表级锁，不支持行级锁。表级锁和索引无关  myIsam下，进行select操作时，会自动加上一个表级的读锁，增删改会自动加上一个表级的写锁。  当读锁未被释放时，如果有其他操作要进行写操作，会被阻碍直至所有的读锁都被释放。  当写锁未释放时，读操作也会被阻碍直至所有的写锁都被释放。  当写操作未释放时，写操作也会被阻碍直至所有的写锁">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-02-06T07:38:32.835Z">
+<meta property="og:updated_time" content="2020-03-05T08:37:24.900Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据库锁">
 <meta name="twitter:description" content="1.MyISAM和InnoDB关于锁的区别MyISAM：默认用的是表级锁，不支持行级锁。表级锁和索引无关  myIsam下，进行select操作时，会自动加上一个表级的读锁，增删改会自动加上一个表级的写锁。  当读锁未被释放时，如果有其他操作要进行写操作，会被阻碍直至所有的读锁都被释放。  当写锁未释放时，读操作也会被阻碍直至所有的写锁都被释放。  当写操作未释放时，写操作也会被阻碍直至所有的写锁">
@@ -333,19 +333,6 @@
 <p><strong>解锁</strong>：在一个事务中，只有在commit或者rollback时，才是解锁阶段。</p>
 </blockquote>
 <p>除此之外，InnoDB还支持表级的<strong>意向锁</strong>，意向锁是一种<strong><em>不与行级锁冲突表级锁</em></strong>，意向锁分为意向共享锁IS(事务有意向对表中的某些行加<strong>共享锁</strong>)和意向排他锁IX(事务有意向对表中的某些行加<strong>排他锁</strong>)。<strong>意向锁是由数据引擎自己维护的，用户无法手动操作意向锁</strong>，在为数据行加共享 / 排他锁之前，InooDB 会先获取该数据行所在在数据表的对应意向锁。在进行标级别操作时，不用一行一行去轮询是否存在行级锁，直接查询意向锁就ok。意向锁与表级锁时互斥的，意向锁和意向锁是兼容的。意向锁在保证并发性的前提下，实现了<code>行锁和表锁共存</code>且<code>满足事务隔离性</code>的要求。</p>
-<h2 id="MyISAM和InnoDB适合的场景"><a href="#MyISAM和InnoDB适合的场景" class="headerlink" title="MyISAM和InnoDB适合的场景"></a>MyISAM和InnoDB适合的场景</h2><ul>
-<li>MyISAM<ul>
-<li>频繁执行全表count语句。(专门用一个变量保存了全表数据行数，InnoDB则没有需要每次重复操作)</li>
-<li>查询频繁，增删改比较少(存储碎片比较多，即使在尾部插入)。</li>
-<li>没有事务。</li>
-</ul>
-</li>
-<li>InnoDB<ul>
-<li>数据增删改查比较频繁。</li>
-<li>可靠性要求比较高，要求支持事务。</li>
-</ul>
-</li>
-</ul>
 <h2 id="数据库的锁分类"><a href="#数据库的锁分类" class="headerlink" title="数据库的锁分类"></a>数据库的锁分类</h2><ul>
 <li>按照锁的粒度划分：表级锁、行级锁、页级锁(相邻逻辑块)</li>
 <li>按照锁的级别划分：共享锁、排他锁</li>
@@ -518,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MyISAM和InnoDB关于锁的区别"><span class="nav-number">1.</span> <span class="nav-text">1.MyISAM和InnoDB关于锁的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM：默认用的是表级锁，不支持行级锁。"><span class="nav-number">1.1.</span> <span class="nav-text">MyISAM：默认用的是表级锁，不支持行级锁。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB：默认的是行级锁，也支持表级锁。-支持事务"><span class="nav-number">1.2.</span> <span class="nav-text">InnoDB：默认的是行级锁，也支持表级锁。(支持事务)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyISAM和InnoDB适合的场景"><span class="nav-number">2.</span> <span class="nav-text">MyISAM和InnoDB适合的场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库的锁分类"><span class="nav-number">3.</span> <span class="nav-text">数据库的锁分类</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-MyISAM和InnoDB关于锁的区别"><span class="nav-number">1.</span> <span class="nav-text">1.MyISAM和InnoDB关于锁的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MyISAM：默认用的是表级锁，不支持行级锁。"><span class="nav-number">1.1.</span> <span class="nav-text">MyISAM：默认用的是表级锁，不支持行级锁。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB：默认的是行级锁，也支持表级锁。-支持事务"><span class="nav-number">1.2.</span> <span class="nav-text">InnoDB：默认的是行级锁，也支持表级锁。(支持事务)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库的锁分类"><span class="nav-number">2.</span> <span class="nav-text">数据库的锁分类</span></a></li></ol></div>
             
 
           </div>

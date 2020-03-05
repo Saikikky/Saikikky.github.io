@@ -95,7 +95,7 @@
 <meta property="og:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/11/15/MySQL体系结构和存储引擎/1.jpeg">
-<meta property="og:updated_time" content="2020-02-13T07:58:18.816Z">
+<meta property="og:updated_time" content="2020-03-05T08:37:13.283Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL体系结构和存储引擎">
 <meta name="twitter:description" content="MySQL体系结构数据库 : 物理操作系统文件或其他形式文件类型的集合。数据库是文件的集合，是依照某种数据模型组织起来并存放于二级存储器中的数据集合。 数据库实例 : MySQL数据库由后台线程以及一个共享内存区组成，数据库实例才是真正用于操作数据库文件的。 数据库实例是程序，是位于用户与操作系统之间的一层数据管理软件，用户对数据库数据的任何操作，包括数据库定义、数据库查询、数据维护、数据库运行控">
@@ -322,6 +322,55 @@
 <blockquote>
 <p>InnoDB索引文件相当于是整个数据文件，MyISAM索引文件仅仅只是索引文件。</p>
 </blockquote>
+<h5 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h5><ul>
+<li>MyISAM在磁盘上存储成三个文件<ul>
+<li>.frm 文件存储表定义</li>
+<li>.MYD 数据文件的扩展名 (MYData)</li>
+<li>.MYI 索引文件的扩展名 (MYIndex)</li>
+</ul>
+</li>
+<li>InnoDB在磁盘上存储成两个文件<ul>
+<li>.frm 表定义文件</li>
+<li>.ibd 数据文件</li>
+</ul>
+</li>
+</ul>
+<h5 id="存储空间"><a href="#存储空间" class="headerlink" title="存储空间"></a>存储空间</h5><ul>
+<li>MyISAM可被压缩，存储空间较小，索引和数据分开，索引有压缩</li>
+<li>InnoDB需要更多的内存和存储，会在主内存中建立其专用的缓冲池用于高速缓冲数据和索引</li>
+</ul>
+<h5 id="事务处理"><a href="#事务处理" class="headerlink" title="事务处理"></a>事务处理</h5><p>MyISAM 强调性能，执行速度比InnoDB更快，但不支持外键，不提供事务支持</p>
+<p>InnoDB 提供事务，支持事务，外键等</p>
+<ul>
+<li>如果执行大量的select，myisam☑️</li>
+<li>如果执行大量的insert或者update，innodb☑️</li>
+<li>delele from table时，innodb不会重新建立表，而是一行一行的删除，myisam重新建立表，innodb上如果要清空保存大量数据的表，最好使用truncate table</li>
+</ul>
+<h5 id="表的具体行数"><a href="#表的具体行数" class="headerlink" title="表的具体行数"></a>表的具体行数</h5><ul>
+<li>myisam保存有表的总行数</li>
+<li>innodb要遍历全表，消耗很大</li>
+<li>若加where之后，myisam和innodb一样</li>
+</ul>
+<h5 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h5><ul>
+<li>myisam支持fulltext全文索引，innodb不支持</li>
+</ul>
+<h5 id="表锁差异"><a href="#表锁差异" class="headerlink" title="表锁差异"></a>表锁差异</h5><ul>
+<li>MyISAM 只支持表级锁</li>
+<li>InnoDB 支持事务和行级锁 行锁大幅度提高了多用户并发操作的性能。如果在执行一个SQL语句时MySQL不能确定要扫描的范围，同样会锁全表 update table set num=1 where name like “%aaa%”</li>
+</ul>
+<h4 id="MyISAM和InnoDB适合的场景"><a href="#MyISAM和InnoDB适合的场景" class="headerlink" title="MyISAM和InnoDB适合的场景"></a>MyISAM和InnoDB适合的场景</h4><ul>
+<li>MyISAM<ul>
+<li>频繁执行全表count语句。(专门用一个变量保存了全表数据行数，InnoDB则没有需要每次重复操作)</li>
+<li>查询频繁，增删改比较少(存储碎片比较多，即使在尾部插入)。</li>
+<li>没有事务。</li>
+</ul>
+</li>
+<li>InnoDB<ul>
+<li>数据增删改查比较频繁。</li>
+<li>可靠性要求比较高，要求支持事务。</li>
+</ul>
+</li>
+</ul>
 <p>+++</p>
 <h3 id="InnoDB存储引擎"><a href="#InnoDB存储引擎" class="headerlink" title="InnoDB存储引擎"></a>InnoDB存储引擎</h3><blockquote>
 <p>在InnoDB存储引擎中，主键是行唯一的标识符，在应用程序中行记录的插入</p>
@@ -383,7 +432,40 @@
 <p>启用AHI之后，读取和写入速度可以提高2倍，辅助索引的连接操作性能可以提高5倍，是一种很好的优化模式，且其设计思想是数据库自优化的，无需DBA进行人为调整。</p>
 <h4 id="异步IO-Async-IO-：提高磁盘操作性能"><a href="#异步IO-Async-IO-：提高磁盘操作性能" class="headerlink" title="异步IO(Async IO)：提高磁盘操作性能"></a>异步IO(Async IO)：提高磁盘操作性能</h4><p>用户可以在发出一个IO请求后立即再发出另一个IO请求，当全部IO请求发送完毕之后，等待所有IO操作的完成，这就是AIO。AIO还可以进行IO Merge操作，也就是将多个IO合并为1个IO，这样可以提高IOPS性能。</p>
 <h4 id="刷新邻接表-Flush-Neighbor-Page"><a href="#刷新邻接表-Flush-Neighbor-Page" class="headerlink" title="刷新邻接表(Flush Neighbor Page)"></a>刷新邻接表(Flush Neighbor Page)</h4><p>当刷新一个脏页时，InnoDB存储引擎会检测该页所在区(extend)的所有页，如果是脏页，那么一起进行刷新。</p>
-<p>​            </p>
+<h3 id="MVCC"><a href="#MVCC" class="headerlink" title="MVCC"></a>MVCC</h3><p>InnoDB存储引擎，实现的是基于多版本的并发控制协议——MVCC(与MVCC相对的就是基于锁的并发控制)。</p>
+<p>MVCC最大的好处是：<strong>读不加锁、读写不冲突</strong></p>
+<p>现阶段几乎所有的RDBMS都支持MVCC。</p>
+<p>MVCC的实现，通过保存数据在某个时间点的快照来实现的。这意味着一个事务无论运行多长时间，在同一个事务里能够看到数据一致的视图。根据事务开始的时间不同，同时也意味着在同一个时刻不同事务看到的相同表里的数据可能是不同的。</p>
+<p>在MVCC并发控制中，读操作可以分为两类：</p>
+<ul>
+<li>快照读：读取的是记录的可见版本(有可能是历史版本)，不用加锁(共享读锁也不加，所以不会阻塞其他事务的写)</li>
+<li>当前读：读取的是记录的最新版本，并且当前读返回的记录，都会加上锁，保证其他事务不会再并发修改这条记录。</li>
+</ul>
+<p>特点：</p>
+<ul>
+<li>每行数据都存在一个版本，每次数据更新时都更新该版本。</li>
+<li>修改时copy出当前版本随意修改，各个事务之间无干扰</li>
+<li><p>保存时比较版本号，如果成功，则覆盖原纪录，失败则rollback</p>
+<h4 id="Innodb存储引擎MVCC实现策略"><a href="#Innodb存储引擎MVCC实现策略" class="headerlink" title="Innodb存储引擎MVCC实现策略"></a>Innodb存储引擎MVCC实现策略</h4></li>
+</ul>
+<p>每一行数据中额外保存两个隐藏的列：当前行创建时的版本号和删除时的版本号。       </p>
+<ul>
+<li>insert数据时：记录的create version版本号即当前事务的版本号</li>
+<li>update数据时：先标记旧的那行数据为已删除，删除版本号delete version是当前事务版本号，然后插入一行新的记录的方式，新纪录的create version是当前事务版本号</li>
+<li>delete操作时：将当前事务版本号做为删除版本号。</li>
+<li>查询select操作时，满足以下两个条件的记录才能被事务查询出来：<ul>
+<li>删除版本号未指定或者大于当前事务版本号，即查询事务开启后确保读取的行未被删除。也就是说事务id为2的事务查询时依然能读取到事务id为3所删除的数据行</li>
+<li>创建版本号小于或者等于当前事务版本号，就是说记录创建是在当前事务中或者在当前事务启动之前的其他事务进行的insert，也就是说事务id为2的事务可以读到create version&lt;=2的已提交的事务的数据集。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li>MVCC只适用于MySQL隔离级别中的读已提交和可重复读，读未提交存在脏读，能读到未能提交事务的数据行，不使用于MVCC，MVCC的创建版本和删除版本只有在事务提交之后才会产生。</li>
+<li>串行化会对所涉及到的表加锁，而非行锁，自然也就不存在行的版本控制问题。</li>
+<li>MVCC主要作用于事务性的，有行锁控制的数据库模型。</li>
+</ul>
+</blockquote>
 
       
     </div>
@@ -549,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB存储引擎"><span class="nav-number">2.</span> <span class="nav-text">InnoDB存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Checkpoint技术"><span class="nav-number">2.1.</span> <span class="nav-text">Checkpoint技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Master-Thread工作方式"><span class="nav-number">2.2.</span> <span class="nav-text">Master Thread工作方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB关键特性"><span class="nav-number">3.</span> <span class="nav-text">InnoDB关键特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入缓冲-Insert-Buffer-：性能提升"><span class="nav-number">3.1.</span> <span class="nav-text">插入缓冲(Insert Buffer)：性能提升</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Change-Buffer-Insert-Buffer升级版"><span class="nav-number">3.1.1.</span> <span class="nav-text">Change Buffer  (Insert Buffer升级版)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Insert-Buffer的内部实现"><span class="nav-number">3.1.2.</span> <span class="nav-text">Insert Buffer的内部实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Merge-Insert-Buffer"><span class="nav-number">3.1.3.</span> <span class="nav-text">Merge Insert Buffer</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两次写-Double-Write-：数据页的可靠性"><span class="nav-number">3.2.</span> <span class="nav-text">两次写(Double Write)：数据页的可靠性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自适应哈希索引-Adaptive-Hash-Index"><span class="nav-number">3.3.</span> <span class="nav-text">自适应哈希索引(Adaptive Hash Index)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步IO-Async-IO-：提高磁盘操作性能"><span class="nav-number">3.4.</span> <span class="nav-text">异步IO(Async IO)：提高磁盘操作性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷新邻接表-Flush-Neighbor-Page"><span class="nav-number">3.5.</span> <span class="nav-text">刷新邻接表(Flush Neighbor Page)</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL体系结构"><span class="nav-number">1.</span> <span class="nav-text">MySQL体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#InnoDB和MyISAM"><span class="nav-number">1.1.</span> <span class="nav-text">InnoDB和MyISAM</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#存储结构"><span class="nav-number">1.1.1.</span> <span class="nav-text">存储结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#存储空间"><span class="nav-number">1.1.2.</span> <span class="nav-text">存储空间</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事务处理"><span class="nav-number">1.1.3.</span> <span class="nav-text">事务处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#表的具体行数"><span class="nav-number">1.1.4.</span> <span class="nav-text">表的具体行数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#全文索引"><span class="nav-number">1.1.5.</span> <span class="nav-text">全文索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#表锁差异"><span class="nav-number">1.1.6.</span> <span class="nav-text">表锁差异</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MyISAM和InnoDB适合的场景"><span class="nav-number">1.2.</span> <span class="nav-text">MyISAM和InnoDB适合的场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB存储引擎"><span class="nav-number">2.</span> <span class="nav-text">InnoDB存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Checkpoint技术"><span class="nav-number">2.1.</span> <span class="nav-text">Checkpoint技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Master-Thread工作方式"><span class="nav-number">2.2.</span> <span class="nav-text">Master Thread工作方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB关键特性"><span class="nav-number">3.</span> <span class="nav-text">InnoDB关键特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插入缓冲-Insert-Buffer-：性能提升"><span class="nav-number">3.1.</span> <span class="nav-text">插入缓冲(Insert Buffer)：性能提升</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Change-Buffer-Insert-Buffer升级版"><span class="nav-number">3.1.1.</span> <span class="nav-text">Change Buffer  (Insert Buffer升级版)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Insert-Buffer的内部实现"><span class="nav-number">3.1.2.</span> <span class="nav-text">Insert Buffer的内部实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Merge-Insert-Buffer"><span class="nav-number">3.1.3.</span> <span class="nav-text">Merge Insert Buffer</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#两次写-Double-Write-：数据页的可靠性"><span class="nav-number">3.2.</span> <span class="nav-text">两次写(Double Write)：数据页的可靠性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自适应哈希索引-Adaptive-Hash-Index"><span class="nav-number">3.3.</span> <span class="nav-text">自适应哈希索引(Adaptive Hash Index)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#异步IO-Async-IO-：提高磁盘操作性能"><span class="nav-number">3.4.</span> <span class="nav-text">异步IO(Async IO)：提高磁盘操作性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#刷新邻接表-Flush-Neighbor-Page"><span class="nav-number">3.5.</span> <span class="nav-text">刷新邻接表(Flush Neighbor Page)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC"><span class="nav-number">4.</span> <span class="nav-text">MVCC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Innodb存储引擎MVCC实现策略"><span class="nav-number">4.1.</span> <span class="nav-text">Innodb存储引擎MVCC实现策略</span></a></li></ol></li></ol></div>
             
 
           </div>
