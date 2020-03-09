@@ -939,6 +939,12 @@
 <li><strong>jmap</strong> 是用来生成堆dump文件和查看堆相关的各类信息的命令，例如查看finalize执行队列，heap的详细信息和使用情况。</li>
 <li><strong>jhat</strong> 是用来分析jmap生成dump文件的命令，jhat内置了应用服务器，可以通过网页查看dump文件分析结果，jhat一般是用在离线分析上。</li>
 </ul>
+<h3 id="发现虚拟机频繁的full-GC怎么办"><a href="#发现虚拟机频繁的full-GC怎么办" class="headerlink" title="发现虚拟机频繁的full GC怎么办"></a>发现虚拟机频繁的full GC怎么办</h3><ul>
+<li>首先用命令查看触发GC的原因是什么 <code>jstat -gccause 进程id</code></li>
+<li>如果是System.gc()，则看下代码哪里调用了这个方法</li>
+<li>如果是heap inspection(内存检查)，可能是哪里执行<code>jmap –histo[:live]</code>命令</li>
+<li>如果是GC locker，可能是程序依赖的JNI库的原因</li>
+</ul>
 <h2 id="4-JVM如何加载-class文件"><a href="#4-JVM如何加载-class文件" class="headerlink" title="4.JVM如何加载.class文件"></a>4.JVM如何加载.class文件</h2><h3 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h3><p><img src="/2020/02/08/JVM/image-20200208150045204.png" alt="image-20200208150045204"></p>
 <p>JVM主要分为四个部分：Class Loader、Runtime Data Area、Execution Engine、Native Interface</p>
 <p>Class Loader：依据特定格式，加载class文件到内存。</p>
@@ -1693,8 +1699,11 @@
 <p>对于非聚簇索引的插入或更新操作，不是每一次直接插入到索引页中，而是先判断插入的非聚集索引页是否在缓冲池中，若在，直接插入，若不在，先放入到一个Insert Buffer对象中，此时起到欺骗的效果，看似数据库这个非聚簇的索引已经插入到叶子节点中，而实际却没有，只是存放在另一个位置，然后再以一定的频率和情况进行Insert Buffer和辅助索引叶子节点的merge操作，这时通常能将多个插入合并到一个操作中，因为在一个索引页中，这就大大提高了对于非聚集索引插入的性能。</p>
 <p>Insert Buffer的使用需要同时满足两个条件：</p>
 <ul>
-<li>索引是辅助索引</li>
-<li>索引不是唯一的</li>
+<li><p>索引是辅助索引</p>
+</li>
+<li><p>索引不是唯一的</p>
+<p>​        因为唯一索引在插入时要去判断是否违反唯一性约束，就必须判断是否存在该列等于某值的情况，这个操作必须要将数据页读入内存才能知道，如果都已经读入内存了，直接插入会比较快，没有必要用InsertBuffer</p>
+</li>
 </ul>
 <p>满足以上两个条件时，InnoDB存储引擎会使用Insert Buffer，这样就能提高插入操作的性能了。</p>
 <p><strong>例外情况</strong> ：当应用程序大量的插入操作且都涉及到不唯一的非聚集索引时，也就是使用了Insert Buffer，若此时数据库发生宕机，大量的Insert Buffer还没有合并到实际的非聚簇索引中，这个情况下的数据库恢复可能需要很长时间。</p>
@@ -2332,7 +2341,7 @@
 <li><strong>聚集索引</strong>：指索引项的排列方式和表中数据记录排序方式一致的索引。也就是说聚集索引的顺序就是数据的物理存储顺序，它会根据聚集索引键的顺序来存储表中的数据，即对表的数据按索引键的顺序进行排序，然后重新存储到磁盘上。因为数据在物理存放时只能有一种排列方式，所以一个表只能有一个聚集索引。(主键是一种聚集索引)<strong>？？？</strong></li>
 <li><p><strong>聚簇索引</strong>：术语“聚族”表示数据行和相邻的键值紧凑的存储在一起。因为无法同时把数据行放在两个不同的地方，所以一个表只能有一个聚族索引。 </p>
 </li>
-<li><p>myisam对应非聚簇索引，mysql对应聚簇索引</p>
+<li><p>myisam对应非聚簇索引，innodb对应聚簇索引</p>
 </li>
 </ul>
 <blockquote>
