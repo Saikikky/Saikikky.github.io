@@ -702,7 +702,7 @@
 <h2 id="18-进程通信"><a href="#18-进程通信" class="headerlink" title="18.进程通信"></a>18.进程通信</h2><h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><ul>
 <li><p><strong>匿名管道</strong></p>
 <p>常见的Linux命令 “|” 其实就是匿名管道，表示把一个进程的输出传输到另外一个进程</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo "Happyjava" | awk -F 'j' '&#123;print $2&#125;'</span><br><span class="line"><span class="meta">#</span> 输出 ava</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo "Happyjava" | awk -F 'j' '&#123;print $2&#125;'</span><br><span class="line"><span class="meta">#</span><span class="bash"> 输出 ava</span></span><br></pre></td></tr></table></figure>
 <p><strong>特点</strong></p>
 <ul>
 <li>只能⽤用于具有<strong>共同祖先</strong>的进程（具有亲缘关系的进程）之间进⾏行通信；通常，一个管道由一个进程创建，然后该进程调⽤用fork，此后⽗父、⼦子进程之间就可应⽤用该管道。</li>

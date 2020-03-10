@@ -399,6 +399,30 @@
 <p><img src="/2020/02/17/Spring/image-20200217154510424.png" alt="image-20200217154510424"></p>
 </li>
 </ul>
+<h3 id="循环依赖怎么处理"><a href="#循环依赖怎么处理" class="headerlink" title="循环依赖怎么处理"></a>循环依赖怎么处理</h3><p>Spring容器加载bean时，会按照工作所需的顺序创建bean，如果没有循环依赖A-B-C，Spring将创建bean C，然后创建B，将bean注入其中，然后创建A，并将bean B注入其中。 要么是构造器循环依赖，要么是属性注入。</p>
+<p><strong>单例的循环依赖问题</strong></p>
+<p>Spring采用三级缓存，一级缓存用于保存所有的singletonBean实例，二级缓存用于存放所有早期创建的Bean对象，这个Bean还没有完成依赖注入，三级缓存，singletonBean的生产工程，用于解决循环依赖。并有一个Set用来保存所有已经完成初始化的Bean的名字，还有一个Set用来标示name的Bean对象是否处于创建状态。创建中状态是指对象已经new出来但是所有的属性均为null等待被init。</p>
+<blockquote>
+<p>初始化A，调用doGetBean方法，然后去缓存中找是否已经初始化，第一次肯定没有缓存没办法get到，然后instantiate(实例化)A，B是A通过Autowired关联的，所以初始化A时并不会触发B的初始化。然后A虽然已经初始化但没有设置值，将A放入三级缓存中(addSingletonFactory)，然后populateBean(A)相当于填充属性，设置Bean对象的依赖关系，对依赖属性进行填充，此时会触发getBean(B)。</p>
+<p>然后开始初始化B，调用doGetBean方法，后续一样同样B会放入三级缓存SingletonFactory中，此时填充B的属性时，触发getBean(A)，再次出发doGetBean(A)，这个时候A已经初始化过，直接在singletonFactory中拿到了之前放进去的A返回。</p>
+<p>A继续初始化。</p>
+</blockquote>
+<p><strong><em>先让最底层的对象完成初始化，通过三级缓存和二级缓存提前曝光创建中的Bean，让其他Bean率先完成初始化</em></strong></p>
+<blockquote>
+<ul>
+<li>构造器注入和prototype类型的field注入发生循环依赖时无法初始化</li>
+<li>field注入单例的bean，尽管有循环依赖，但bean仍然可以被成功初始化</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>使用构造注入存在循环依赖不能注入成功，instantiate实例化其实就是new一个对象的过程，而new的时候需要执行构造方法。A在addSingeltonFactory()之前就去初始化了B导致三级缓存中并没有A，所以会发生死循环，就会抛出异常</p>
+</li>
+<li><p>prototype会保存正在创建的prototype的beanName，并且会把每个正在创建的prototype的BeanName放入一个set中并且会循环依赖时检查beanName是否处于创建状态，如果是就抛出异常。所以无论是构造注入还是设值注入都不能完成注入。</p>
+</li>
+<li><p>使用Setter注入，而不使用构造函数注入</p>
+<p>Spring会创建bean，但是在需要之前不会注入依赖项。</p>
+</li>
+</ul>
 <h2 id="2-Spring-AOP"><a href="#2-Spring-AOP" class="headerlink" title="2.Spring AOP"></a>2.Spring AOP</h2><h3 id="AOP的三种织入方式"><a href="#AOP的三种织入方式" class="headerlink" title="AOP的三种织入方式"></a>AOP的三种织入方式</h3><ul>
 <li>编译时织入：需要特殊的Java编译器，如AspectJ</li>
 <li>类加载时织入：需要特殊的Java编译器，如AspectJ和AspectWerkz</li>
