@@ -987,10 +987,14 @@
 <li><strong>jhat</strong> 是用来分析jmap生成dump文件的命令，jhat内置了应用服务器，可以通过网页查看dump文件分析结果，jhat一般是用在离线分析上。</li>
 </ul>
 <h3 id="发现虚拟机频繁的full-GC怎么办"><a href="#发现虚拟机频繁的full-GC怎么办" class="headerlink" title="发现虚拟机频繁的full GC怎么办"></a>发现虚拟机频繁的full GC怎么办</h3><ul>
-<li>首先用命令查看触发GC的原因是什么 <code>jstat -gccause 进程id</code></li>
-<li>如果是System.gc()，则看下代码哪里调用了这个方法</li>
-<li>如果是heap inspection(内存检查)，可能是哪里执行<code>jmap –histo[:live]</code>命令</li>
-<li>如果是GC locker，可能是程序依赖的JNI库的原因</li>
+<li><p>首先用命令查看触发GC的原因是什么 <code>jstat -gccause 进程id</code></p>
+</li>
+<li><p>如果是System.gc()，则看下代码哪里调用了这个方法</p>
+</li>
+<li><p>如果是heap inspection(内存检查)，可能是哪里执行<code>jmap –histo[:live]</code>命令</p>
+</li>
+<li><p>如果是GC locker，可能是程序依赖的JNI库的原因</p>
+</li>
 </ul>
 <h2 id="4-JVM如何加载-class文件"><a href="#4-JVM如何加载-class文件" class="headerlink" title="4.JVM如何加载.class文件"></a>4.JVM如何加载.class文件</h2><h3 id="JVM架构"><a href="#JVM架构" class="headerlink" title="JVM架构"></a>JVM架构</h3><p><img src="/2020/02/08/JVM/image-20200208150045204.png" alt="image-20200208150045204"></p>
 <p>JVM主要分为四个部分：Class Loader、Runtime Data Area、Execution Engine、Native Interface</p>
