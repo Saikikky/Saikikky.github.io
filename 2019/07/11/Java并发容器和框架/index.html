@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216145951291.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216150205088.png">
 <meta property="og:image" content="http://yoursite.com/2019/07/11/Java并发容器和框架/image-20200216150551790.png">
-<meta property="og:updated_time" content="2020-02-16T08:11:42.758Z">
+<meta property="og:updated_time" content="2020-03-11T06:40:26.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java并发容器和框架">
 <meta name="twitter:description" content="PS：集合简介 ConcurrentHashMap早期​        ConcurrentHashMap是由Segment数组结构和HashEntry数组结构组成。Segment是一种可重入锁(ReentrantLock)，在ConcurrentHashMap里扮演锁的角色；Segment的结构和HashEntry类似，是一种数组和链表结构，一个Segment里面包含一个HashEntry数组，">
@@ -375,10 +375,28 @@
 <li>支持阻塞的移除方法：在队列为空时，获取元素的线程会等待队列变为非空。</li>
 </ol>
 <p>阻塞队列经常用于生产者和消费者的场景，生产者是向队列里添加元素的线程，消费者则是取元素的线程，阻塞队列就是生产者用来存放元素、消费者用来获取元素的容器。(7种阻塞队列)</p>
+<p>ArrayBlockingQueue 基于数组的有界阻塞队列，按FIFO排序</p>
+<p>LinkedBlockingQueue 基于链表的无界阻塞队列，按FIFO排序 maxPoolSize不起作用</p>
+<p>SynchronousQueue 不缓存任务的阻塞队列 生产者放入一个任务必须等到消费者取出这个任务，也就是说新任务进来时，不会缓存，而是直接被调度执行该任务</p>
+<p>PriorityBlockingQueue 具有优先级的无界阻塞队列，优先级通过参数Comparator实现</p>
 <p><strong>实现原理</strong></p>
 <p>使用通知模式实现，就是当生产者往满的队列里添加元素时会阻塞住生产者，当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。</p>
 <hr>
-<h3 id="Java线程池"><a href="#Java线程池" class="headerlink" title="Java线程池"></a>Java线程池</h3><ul>
+<h3 id="Java线程池"><a href="#Java线程池" class="headerlink" title="Java线程池"></a>Java线程池</h3><h4 id="核心参数及含义"><a href="#核心参数及含义" class="headerlink" title="核心参数及含义"></a>核心参数及含义</h4><p>corePoolSize 线程池核心线程大小</p>
+<p>maximumPoolSize 线程池最大线程数量</p>
+<p>keepAliveTime 空闲线程存活时间 <code>一个线程如果处于空闲状态，并且当前的线程数量大于corePoolSize，那么在指定时间后，这个空闲线程会被销毁，这里的指定时间由keepAliveTime来设定</code></p>
+<p>workQueue 工作队列 <code>新任务被提交后，会先进入到此工作队列中，任务调度时再从队列中取出任务</code></p>
+<p>threadFactory 线程工厂 <code>创建一个新线程时使用的工厂，可以用来设定线程名或者是否为守护线程等等</code></p>
+<p>handler 拒绝策略</p>
+<blockquote>
+<ul>
+<li>CallerRunsPolicy 在调用者线程中直接执行被拒绝任务的run方法，除非线程池已经shutdown，则直接抛弃任务</li>
+<li>AbortPolicy 在该策略下，直接丢弃任务，并抛出RejectedExcutionException异常 <strong>默认</strong></li>
+<li>DiscardPolicy 在该策略下，直接丢弃任务，什么都不做</li>
+<li>DiscardOldestPolicy 在该策略下，抛弃进入队列最早的那个任务，然后尝试把这次拒绝的任务放入队列</li>
+</ul>
+</blockquote>
+<ul>
 <li>利用Executors创建不同的线程池满足不同的场景需求</li>
 </ul>
 <p><img src="/2019/07/11/Java并发容器和框架/image-20200214183653425.png" alt="image-20200214183653425"></p>
@@ -386,7 +404,6 @@
 <li>使用线程池的好处：<ul>
 <li>降低资源消耗</li>
 <li>提高线程的可管理性</li>
-<li></li>
 </ul>
 </li>
 </ul>
@@ -597,7 +614,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.1.</span> <span class="nav-text">Executors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发工具类-同步器"><span class="nav-number">5.</span> <span class="nav-text">并发工具类(同步器)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#闭锁-CountDownLatch"><span class="nav-number">5.1.</span> <span class="nav-text">闭锁 CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栅栏-CyclicBarrier"><span class="nav-number">5.2.</span> <span class="nav-text">栅栏 CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量-Semaphore"><span class="nav-number">5.3.</span> <span class="nav-text">信号量 Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交换器-Exchanger"><span class="nav-number">5.4.</span> <span class="nav-text">交换器 Exchanger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue-阻塞队列"><span class="nav-number">6.</span> <span class="nav-text">BlockingQueue(阻塞队列)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PS：集合简介"><span class="nav-number">1.</span> <span class="nav-text">PS：集合简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.</span> <span class="nav-text">ConcurrentHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#早期"><span class="nav-number">2.1.</span> <span class="nav-text">早期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#现在"><span class="nav-number">2.2.</span> <span class="nav-text">现在</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程安全的队列"><span class="nav-number">3.</span> <span class="nav-text">线程安全的队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞队列"><span class="nav-number">3.1.</span> <span class="nav-text">阻塞队列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java线程池"><span class="nav-number">4.</span> <span class="nav-text">Java线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#核心参数及含义"><span class="nav-number">4.1.</span> <span class="nav-text">核心参数及含义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Executors"><span class="nav-number">4.2.</span> <span class="nav-text">Executors</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发工具类-同步器"><span class="nav-number">5.</span> <span class="nav-text">并发工具类(同步器)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#闭锁-CountDownLatch"><span class="nav-number">5.1.</span> <span class="nav-text">闭锁 CountDownLatch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#栅栏-CyclicBarrier"><span class="nav-number">5.2.</span> <span class="nav-text">栅栏 CyclicBarrier</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#信号量-Semaphore"><span class="nav-number">5.3.</span> <span class="nav-text">信号量 Semaphore</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交换器-Exchanger"><span class="nav-number">5.4.</span> <span class="nav-text">交换器 Exchanger</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BlockingQueue-阻塞队列"><span class="nav-number">6.</span> <span class="nav-text">BlockingQueue(阻塞队列)</span></a></li></ol></div>
             
 
           </div>
