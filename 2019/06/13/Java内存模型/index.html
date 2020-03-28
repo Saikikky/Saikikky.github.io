@@ -95,7 +95,7 @@
 <meta property="og:description" content="Java内存模型(JMM)的基础​    Java的并发采用的是共享内存模型，线程之间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。同步是显式进行的，程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。 PS：堆内存(实例域、静态域、数组)在线程之间共享。 ###JMM抽象结构 Java线程之间的通信由JMM控制，它决定一个线程对共享变量写入何时对另一个线程可见。JMM定义了">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/06/13/Java内存模型/image-20200214144857996.png">
-<meta property="og:updated_time" content="2020-03-10T05:12:06.825Z">
+<meta property="og:updated_time" content="2020-03-28T07:06:36.978Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java内存模型">
 <meta name="twitter:description" content="Java内存模型(JMM)的基础​    Java的并发采用的是共享内存模型，线程之间共享程序的公共状态，通过写-读内存中的公共状态进行隐式通信。同步是显式进行的，程序员必须显式指定某个方法或某段代码需要在线程之间互斥执行。 PS：堆内存(实例域、静态域、数组)在线程之间共享。 ###JMM抽象结构 Java线程之间的通信由JMM控制，它决定一个线程对共享变量写入何时对另一个线程可见。JMM定义了">
@@ -353,6 +353,19 @@
 <h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>内存屏障(四类)StoreLoad Barriers是一个全能型屏障，但开销昂贵。</p>
 <p><strong>happens-before</strong> 对应于一个或多个编译器和处理器冲排序规则。</p>
 <p><strong><em>如果一个操作执行的结果需要对另一个操作可见且前一个操作按顺序排在第二个操作之前</em></strong>(<strong>并不意味着前一个操作必须要在后一个操作之前执行</strong>)，那么这两个操作之间必须要存在happens-before关系，这两个操作既可以是在一个线程之内也可以是在不同线程之间。</p>
+<p><strong>1. 如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。</strong></p>
+<p><strong>2. 两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</strong></p>
+<p>下面是happens-before原则规则：</p>
+<ol>
+<li>程序次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在后面的操作；</li>
+<li>锁定规则：一个unLock操作先行发生于后面对同一个锁额lock操作；</li>
+<li>volatile变量规则：对一个变量的写操作先行发生于后面对这个变量的读操作；</li>
+<li>传递规则：如果操作A先行发生于操作B，而操作B又先行发生于操作C，则可以得出操作A先行发生于操作C；</li>
+<li>线程启动规则：Thread对象的start()方法先行发生于此线程的每个一个动作；</li>
+<li>线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生；</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；</li>
+</ol>
 <h3 id="顺序一致性"><a href="#顺序一致性" class="headerlink" title="顺序一致性"></a>顺序一致性</h3><p>提供了极强的内存可见性保证</p>
 <p>两大特性：</p>
 <ul>

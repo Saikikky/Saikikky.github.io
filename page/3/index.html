@@ -485,6 +485,19 @@
 <h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>内存屏障(四类)StoreLoad Barriers是一个全能型屏障，但开销昂贵。</p>
 <p><strong>happens-before</strong> 对应于一个或多个编译器和处理器冲排序规则。</p>
 <p><strong><em>如果一个操作执行的结果需要对另一个操作可见且前一个操作按顺序排在第二个操作之前</em></strong>(<strong>并不意味着前一个操作必须要在后一个操作之前执行</strong>)，那么这两个操作之间必须要存在happens-before关系，这两个操作既可以是在一个线程之内也可以是在不同线程之间。</p>
+<p><strong>1. 如果一个操作happens-before另一个操作，那么第一个操作的执行结果将对第二个操作可见，而且第一个操作的执行顺序排在第二个操作之前。</strong></p>
+<p><strong>2. 两个操作之间存在happens-before关系，并不意味着一定要按照happens-before原则制定的顺序来执行。如果重排序之后的执行结果与按照happens-before关系来执行的结果一致，那么这种重排序并不非法。</strong></p>
+<p>下面是happens-before原则规则：</p>
+<ol>
+<li>程序次序规则：一个线程内，按照代码顺序，书写在前面的操作先行发生于书写在后面的操作；</li>
+<li>锁定规则：一个unLock操作先行发生于后面对同一个锁额lock操作；</li>
+<li>volatile变量规则：对一个变量的写操作先行发生于后面对这个变量的读操作；</li>
+<li>传递规则：如果操作A先行发生于操作B，而操作B又先行发生于操作C，则可以得出操作A先行发生于操作C；</li>
+<li>线程启动规则：Thread对象的start()方法先行发生于此线程的每个一个动作；</li>
+<li>线程中断规则：对线程interrupt()方法的调用先行发生于被中断线程的代码检测到中断事件的发生；</li>
+<li>线程终结规则：线程中所有的操作都先行发生于线程的终止检测，我们可以通过Thread.join()方法结束、Thread.isAlive()的返回值手段检测到线程已经终止执行；</li>
+<li>对象终结规则：一个对象的初始化完成先行发生于他的finalize()方法的开始；</li>
+</ol>
 <h3 id="顺序一致性"><a href="#顺序一致性" class="headerlink" title="顺序一致性"></a>顺序一致性</h3><p>提供了极强的内存可见性保证</p>
 <p>两大特性：</p>
 <ul>
@@ -1526,6 +1539,37 @@
 <li>DispatcherServlet将模型数据填充到视图中</li>
 <li>DispatcherServlet将结果响应给用户</li>
 </ol>
+<h2 id="24-Http2-0和Http1-X相比的新特性"><a href="#24-Http2-0和Http1-X相比的新特性" class="headerlink" title="24.Http2.0和Http1.X相比的新特性"></a>24.Http2.0和Http1.X相比的新特性</h2><ul>
+<li><p>新的二进制格式。</p>
+<p>Http1.X的解析是基于文本的，基于文本协议的格式解析存在天然缺陷，文本的表现形式有多样性，要做到健壮性考虑的场景必然很多，二进制则不同，只认0和1的组合。基于这种考虑HTTP2.0的协议解析决定采用二进制格式，实现方便且健壮。</p>
+</li>
+<li><p>多路复用，即共享连接。</p>
+<p>即每一个request都是用作连接共享机制，一个request对应一个id，这样一个连接上可以有多个request。每个连接的request可以随机的混杂在一起，接收方可以根据request的 id将request再归属到各自不同的服务端请求里面。</p>
+</li>
+<li><p>header压缩</p>
+<p>Http1.X的header带有大量信息，而且每次都要重复发送，Http2.0使用encoder(编码器)来减少需要传输的header大小，通讯双方各自cache一份header fields表，既避免了重复header的传输，又减小了需要传输的大小。</p>
+</li>
+<li><p>服务器推送</p>
+<p>Http1.1也支持服务器推送。</p>
+<p>服务端推送能把客户端所需要的资源伴随着index.html一起发送到客户端，省去了客户端重复请求的步骤。正因为没有发起请求，建立连接等操作，所以静态资源通过服务端推送的方式可以极大地提升速度。</p>
+</li>
+</ul>
+<p><strong><em>PS：Http1.1</em></strong></p>
+<p><strong>长连接</strong>，HTTP 1.1支持长连接（PersistentConnection）和请求的流水线（Pipelining）处理，在一个TCP连接上可以传送多个HTTP请求和响应，减少了建立和关闭连接的消耗和延迟，在HTTP1.1中默认开启Connection： keep-alive，一定程度上弥补了HTTP1.0每次请求都要创建连接的缺点。</p>
+<p><strong>Http2.0的多路复用和Http1.X的长连接复用有什么区别？</strong></p>
+<ul>
+<li>HTTP/1.* 一次请求-响应，建立一个连接，用完关闭；每一个请求都要建立一个连接；</li>
+<li>HTTP/1.1 Pipeling解决方式为，若干个请求排队串行化单线程处理，后面的请求等待前面请求的返回才能获得执行机会，一旦有某请求超时等，后续请求只能被阻塞，毫无办法，也就是人们常说的线头阻塞；</li>
+<li>HTTP/2多个请求可同时在一个连接上并行执行。某个请求任务耗时严重，不会影响到其它连接的正常执行；<br>具体如图：</li>
+</ul>
+<p><img src="/2019/05/31/面试问题/image-20200326150344343.png" alt="image-20200326150344343"></p>
+<h2 id="25-Http和Https的区别"><a href="#25-Http和Https的区别" class="headerlink" title="25.Http和Https的区别"></a>25.Http和Https的区别</h2><ul>
+<li>HTTPS协议需要到CA申请证书，一般免费证书很少，需要交费。</li>
+<li>HTTP协议运行在TCP之上，所有传输的内容都是明文，HTTPS运行在SSL/TLS之上，SSL/TLS运行在TCP之上，所有传输的内容都经过加密的。</li>
+<li>HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</li>
+<li>HTTPS可以有效的防止运营商劫持，解决了防劫持的一个大问题。</li>
+</ul>
+<p><img src="/2019/05/31/面试问题/image-20200326151317908.png" alt="image-20200326151317908"></p>
 
           
         
